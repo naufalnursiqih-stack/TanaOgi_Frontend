@@ -1,58 +1,258 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏛️ TanaOgi Frontend
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Project ini adalah platform informasi pariwisata Sulawesi Selatan yang dibangun dengan stack modern **Laravel 13**, **Inertia.js**, dan **React**.
 
-## About Laravel
+## 📂 Struktur Folder
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Berikut adalah gambaran struktur folder utama dalam project **TanaOgi**:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
-```
-
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+TanaOgi/
+│
+├── 📁 app/
+│   │
+│   ├── 📁 Http/
+│   │   ├── 📁 Controllers/
+│   │   │   ├── 📁 Admin/
+│   │   │   │   ├── AdminDashboardController.php
+│   │   │   │   ├── AdminDestinationController.php
+│   │   │   │   ├── AdminRegencyController.php
+│   │   │   │   └── AdminAccommodationController.php
+│   │   │   ├── HomeController.php
+│   │   │   ├── RegencyController.php
+│   │   │   ├── DestinationController.php
+│   │   │   └── AccommodationController.php
+│   │   │
+│   │   ├── 📁 Middleware/
+│   │   │   ├── HandleInertiaRequests.php
+│   │   │   └── EnsureUserIsAdmin.php
+│   │   │
+│   │   └── 📁 Requests/
+│   │       ├── StoreDestinationRequest.php
+│   │       ├── UpdateDestinationRequest.php
+│   │       ├── StoreAccommodationRequest.php
+│   │       └── StoreTransportOptionRequest.php
+│   │
+│   ├── 📁 Models/
+│   │   │   ← Laravel 13: Models sekarang bisa pakai PHP Attributes
+│   │   │     menggantikan $table, $fillable, $hidden, dll.
+│   │   ├── User.php
+│   │   ├── Regency.php
+│   │   ├── Destination.php
+│   │   ├── DestinationImage.php
+│   │   ├── TransportOption.php
+│   │   └── Accommodation.php
+│   │
+│   ├── 📁 Services/
+│   │   ├── WhatsAppLinkService.php     ← Generate WA deep-link otomatis
+│   │   └── DestinationFilterService.php
+│   │
+│   └── 📁 Providers/
+│       └── AppServiceProvider.php      ← Slim: hanya 1 provider default
+│
+│
+├── 📁 bootstrap/
+│   ├── app.php          ← ⚠️ KUNCI Laravel 13: Middleware & routing
+│   │                       didaftarkan DI SINI (bukan Kernel.php)
+│   ├── providers.php    ← Daftar service providers
+│   └── cache/
+│       ├── config.php
+│       ├── events.php
+│       └── routes.php
+│
+│
+├── 📁 config/
+│   ├── app.php
+│   ├── auth.php
+│   ├── cache.php
+│   ├── database.php
+│   ├── filesystems.php
+│   ├── logging.php
+│   ├── mail.php
+│   ├── queue.php
+│   ├── session.php
+│   └── inertia.php       ← Konfigurasi Inertia SSR (opsional)
+│
+│
+├── 📁 database/
+│   │
+│   ├── 📁 migrations/
+│   │   ├── 0001_01_01_000000_create_users_table.php
+│   │   ├── 0001_01_01_000001_create_cache_table.php
+│   │   ├── 0001_01_01_000002_create_jobs_table.php
+│   │   ├── 2026_05_01_create_regencies_table.php
+│   │   ├── 2026_05_02_create_destinations_table.php
+│   │   ├── 2026_05_03_create_destination_images_table.php
+│   │   ├── 2026_05_04_create_transport_options_table.php
+│   │   └── 2026_05_05_create_accommodations_table.php
+│   │
+│   ├── 📁 seeders/
+│   │   ├── DatabaseSeeder.php
+│   │   ├── AdminUserSeeder.php
+│   │   ├── RegencySeeder.php
+│   │   ├── DestinationSeeder.php
+│   │   ├── TransportOptionSeeder.php
+│   │   └── AccommodationSeeder.php
+│   │
+│   └── 📁 factories/
+│       ├── DestinationFactory.php
+│       └── AccommodationFactory.php
+│
+│
+├── 📁 public/
+│   ├── 📁 videos/
+│   │   ├── hero-sulsel.mp4       ← Video hero utama (720p/1080p)
+│   │   └── hero-sulsel-mobile.mp4 ← Versi ringan untuk mobile
+│   ├── 📁 images/
+│   │   ├── 📁 destinations/      ← Gambar statis fallback
+│   │   ├── 📁 accommodations/
+│   │   ├── 📁 regencies/
+│   │   └── 📁 og/                ← Open Graph images (SEO)
+│   ├── build/                    ← Output Vite (auto-generated)
+│   ├── index.php
+│   └── .htaccess
+│
+│
+├── 📁 resources/
+│   │
+│   ├── 📁 css/
+│   │   ├── app.css               ← Root: @import semua CSS
+│   │   │
+│   │   ├── 📁 base/
+│   │   │   ├── _variables.css    ← Design tokens (colors, fonts, spacing)
+│   │   │   ├── _reset.css        ← Modern CSS reset
+│   │   │   └── _typography.css   ← Global type scale
+│   │   │
+│   │   ├── 📁 components/
+│   │   │   ├── _preloader.css      ← Tahap 1
+│   │   │   ├── _navbar.css
+│   │   │   ├── _hero.css           ← Tahap 2
+│   │   │   ├── _regency-filter.css ← Tahap 3
+│   │   │   ├── _destination-card.css
+│   │   │   ├── _transport-form.css ← Tahap 4
+│   │   │   ├── _driver-panel.css
+│   │   │   ├── _accommodation.css  ← Tahap 5
+│   │   │   ├── _button.css
+│   │   │   └── _badge.css
+│   │   │
+│   │   └── 📁 pages/
+│   │       ├── _home.css
+│   │       ├── _destination-detail.css
+│   │       └── _admin.css
+│   │
+│   ├── 📁 js/
+│   │   │
+│   │   ├── app.jsx               ← Entry point: Inertia + React mount
+│   │   ├── bootstrap.js          ← Axios config, CSRF
+│   │   │
+│   │   ├── 📁 Components/
+│   │   │   │
+│   │   │   ├── 📁 Layout/
+│   │   │   │   ├── AppLayout.jsx       ← Root layout (Navbar + slot)
+│   │   │   │   ├── AdminLayout.jsx     ← Admin panel layout
+│   │   │   │   └── Navbar.jsx
+│   │   │   │
+│   │   │   ├── 📁 Preloader/
+│   │   │   │   └── Preloader.jsx
+│   │   │   │     ← State: isLoading (true → false saat window.onload)
+│   │   │   │     ← Animasi: fade-out 0.5s via CSS transition
+│   │   │   │
+│   │   │   ├── 📁 Hero/
+│   │   │   │   └── HeroSection.jsx
+│   │   │   │     ← <video autoPlay loop muted playsInline>
+│   │   │   │     ← Overlay + CTA "Explore Now" → scroll ke filter
+│   │   │   │
+│   │   │   ├── 📁 Regency/
+│   │   │   │   ├── RegencyFilter.jsx
+│   │   │   │   │ ← State: selectedRegency
+│   │   │   │   │ ← Inertia.get('/') dengan params ?regency=bulukumba
+│   │   │   │   └── RegencyChip.jsx
+│   │   │   │
+│   │   │   ├── 📁 Destination/
+│   │   │   │   ├── DestinationGrid.jsx
+│   │   │   │   └── DestinationCard.jsx
+│   │   │   │     ← Link ke /wisata/{slug} via Inertia <Link>
+│   │   │   │
+│   │   │   ├── 📁 Transport/
+│   │   │   │   ├── TransportDecision.jsx
+│   │   │   │   │ ← State: hasVehicle (null | 'yes' | 'no')
+│   │   │   │   ├── SelfDrivePanel.jsx
+│   │   │   │   │ ← Tampil jika hasVehicle === 'yes'
+│   │   │   │   │ ← Tombol orange → buka Google Maps URL
+│   │   │   │   ├── DriverBookingPanel.jsx
+│   │   │   │   │ ← Tampil jika hasVehicle === 'no'
+│   │   │   │   │ ← Pilih: Mobil | Bus
+│   │   │   │   └── VehicleTypeCard.jsx
+│   │   │   │     ← Harga + tombol aqua → WA deep-link
+│   │   │   │
+│   │   │   ├── 📁 Accommodation/
+│   │   │   │   ├── AccommodationToggle.jsx
+│   │   │   │   │ ← State: wantStay (false | true)
+│   │   │   │   │ ← Checkbox → slide-down animasi CSS
+│   │   │   │   └── AccommodationCard.jsx
+│   │   │   │     ← Tombol aqua → booking_url eksternal
+│   │   │   │
+│   │   │   └── 📁 UI/
+│   │   │       ├── Button.jsx        ← Variant: primary (orange) | accent (aqua)
+│   │   │       ├── Badge.jsx
+│   │   │       ├── Divider.jsx
+│   │   │       └── LoadingSpinner.jsx
+│   │   │
+│   │   └── 📁 Pages/
+│   │       │   ← Inertia pages: 1 file = 1 route
+│   │       ├── Home.jsx                    ← GET /
+│   │       ├── DestinationDetail.jsx       ← GET /wisata/{slug}
+│   │       │
+│   │       └── 📁 Admin/
+│   │           ├── Dashboard.jsx           ← GET /admin
+│   │           ├── 📁 Destinations/
+│   │           │   ├── Index.jsx           ← GET /admin/destinasi
+│   │           │   ├── Create.jsx          ← GET /admin/destinasi/tambah
+│   │           │   └── Edit.jsx            ← GET /admin/destinasi/{id}/edit
+│   │           ├── 📁 Regencies/
+│   │           │   ├── Index.jsx
+│   │           │   └── Create.jsx
+│   │           └── 📁 Accommodations/
+│   │               ├── Index.jsx
+│   │               ├── Create.jsx
+│   │               └── Edit.jsx
+│   │
+│   └── 📁 views/
+│       └── app.blade.php     ← Satu-satunya Blade file (root HTML shell)
+│
+│
+├── 📁 routes/
+│   ├── web.php       ← Public routes + Admin routes (via prefix group)
+│   └── console.php   ← Artisan command routes (gantikan routes/console.php)
+│   ← ⚠️ Laravel 13: TIDAK ada lagi api.php & channels.php secara default
+│      Ditambahkan manual jika butuh API atau Broadcasting
+│
+│
+├── 📁 storage/
+│   ├── 📁 app/
+│   │   └── 📁 public/          ← Upload gambar admin (symlink ke public/)
+│   ├── 📁 framework/
+│   │   ├── cache/
+│   │   ├── sessions/
+│   │   └── views/
+│   └── 📁 logs/
+│       └── laravel.log
+│
+│
+├── 📁 tests/
+│   ├── 📁 Feature/
+│   │   ├── HomePageTest.php
+│   │   ├── DestinationFilterTest.php
+│   │   └── AdminCrudTest.php
+│   └── 📁 Unit/
+│       └── WhatsAppLinkServiceTest.php
+│
+│
+├── .env                  ← DB, APP_KEY, WA_DEFAULT_NUMBER, dll
+├── .env.example
+├── .gitignore
+├── artisan
+├── composer.json         ← laravel/framework: ^13.0, PHP: ^8.3
+├── composer.lock
+├── package.json          ← react, @inertiajs/react, vite
+├── package-lock.json
+└── vite.config.js        ← laravel/vite-plugin config
