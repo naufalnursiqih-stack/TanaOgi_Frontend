@@ -1,0 +1,278 @@
+/* ============================================================
+   _driver-panel.css — Driver Booking Panel (Tahap 4 — TIDAK)
+   ============================================================
+   Panel pemilihan kendaraan: Mobil vs Bus.
+   Kartu kendaraan + tombol WA berwarna Aqua.
+   ============================================================ */
+
+/* ── Panel Wrapper ───────────────────────────────────────── */
+.driver-panel {
+    margin-top: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+}
+
+/* ── Panel Intro ─────────────────────────────────────────── */
+.driver-panel__intro {
+    padding: var(--space-6) var(--space-6);
+    background: var(--color-accent-ghost);
+    border: 1.5px solid var(--color-accent-dark);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+}
+
+.driver-panel__intro-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.driver-panel__intro-text {
+    font-size: var(--text-base);
+    color: var(--color-ink-secondary);
+    line-height: var(--leading-snug);
+}
+
+.driver-panel__intro-text strong {
+    color: var(--color-ink);
+    font-weight: var(--weight-semibold);
+}
+
+/* ── Vehicle Type Tabs ───────────────────────────────────── */
+.vehicle-type-tabs {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-1);
+    background: var(--color-bg-cool);
+    border-radius: var(--radius-lg);
+    width: fit-content;
+}
+
+.vehicle-type-tab {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-ink-muted);
+    cursor: pointer;
+    transition:
+        background var(--duration-normal) var(--ease-out),
+        color var(--duration-normal) var(--ease-out),
+        box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.vehicle-type-tab:hover {
+    color: var(--color-ink);
+}
+
+.vehicle-type-tab--active {
+    background: var(--color-surface);
+    color: var(--color-ink);
+    box-shadow: var(--shadow-sm);
+}
+
+.vehicle-type-tab__icon {
+    font-size: 1.1rem;
+}
+
+/* ── Vehicle Cards Grid ──────────────────────────────────── */
+.vehicle-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+    gap: var(--space-5);
+}
+
+/* ── Individual Vehicle Card ─────────────────────────────── */
+.vehicle-card {
+    position: relative;
+    background: var(--color-surface);
+    border-radius: var(--radius-xl);
+    border: 2px solid var(--color-ink-ghost);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    overflow: hidden;
+
+    transition:
+        border-color var(--duration-normal) var(--ease-out),
+        transform var(--duration-fast) var(--ease-bounce),
+        box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.vehicle-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.vehicle-card:hover {
+    border-color: var(--color-accent-dark);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-accent);
+}
+
+.vehicle-card:hover::before {
+    transform: scaleX(1);
+}
+
+/* ── Card Header ─────────────────────────────────────────── */
+.vehicle-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-3);
+}
+
+.vehicle-card__icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-lg);
+    background: var(--color-accent-ghost);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+
+.vehicle-card__type-badge {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    background: var(--color-accent-ghost);
+    color: var(--color-accent-dark);
+    border: 1px solid var(--color-accent-light);
+}
+
+/* ── Card Name & Description ─────────────────────────────── */
+.vehicle-card__name {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-ink);
+    letter-spacing: var(--tracking-snug);
+}
+
+.vehicle-card__description {
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+    line-height: var(--leading-snug);
+}
+
+/* ── Card Specs ──────────────────────────────────────────── */
+.vehicle-card__specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.vehicle-spec {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-ink-secondary);
+}
+
+.vehicle-spec svg {
+    width: 15px;
+    height: 15px;
+    stroke: var(--color-accent-dark);
+    fill: none;
+    flex-shrink: 0;
+}
+
+/* ── Card Price ──────────────────────────────────────────── */
+.vehicle-card__price-block {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    padding-top: var(--space-4);
+    border-top: var(--border-thin);
+}
+
+.vehicle-card__price {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-black);
+    color: var(--color-ink);
+    letter-spacing: var(--tracking-tight);
+}
+
+.vehicle-card__price-period {
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+}
+
+/* ── WhatsApp Booking Button ─────────────────────────────── */
+.vehicle-card__wa-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-pill);
+    background: var(--color-accent);
+    color: var(--color-ink);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+
+    box-shadow: 0 4px 16px rgba(35, 247, 219, 0.35);
+
+    transition:
+        background var(--duration-fast) var(--ease-out),
+        transform var(--duration-fast) var(--ease-bounce),
+        box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.vehicle-card__wa-btn:hover {
+    background: var(--color-accent-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(35, 247, 219, 0.4);
+    color: var(--color-ink);
+}
+
+.vehicle-card__wa-btn:active {
+    transform: translateY(0);
+}
+
+.vehicle-card__wa-icon {
+    width: 18px;
+    height: 18px;
+    fill: var(--color-ink);
+    flex-shrink: 0;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .vehicle-type-tabs {
+        width: 100%;
+    }
+
+    .vehicle-type-tab {
+        flex: 1;
+        justify-content: center;
+    }
+}
