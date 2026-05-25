@@ -2,10 +2,11 @@
 
 Project ini adalah platform informasi pariwisata Sulawesi Selatan yang dibangun dengan stack modern **Laravel 13**, **Inertia.js**, dan **React**.
 
-## 📂 Struktur Folder
+# 🏛️ TanaOgi Frontend
 
-Berikut adalah gambaran struktur folder utama dalam project **TanaOgi**:
+## 📂 Project Structure
 
+```text
 TanaOgi/
 │
 ├── 📁 app/
