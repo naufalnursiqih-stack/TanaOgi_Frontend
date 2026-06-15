@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-export default function LoginPage({ onNavigateHome, onNavigateRegister }) {
+export default function LoginPage({ onNavigateHome, onNavigateRegister, onNavigateAdmin, onLoginSuccess }) {
     const [showPassword, setShowPassword] = useState(false);
     const [parallax, setParallax] = useState({ x: 0, y: 0 });
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [emailFocused, setEmailFocused] = useState(false);
     const [passwordFocused, setPasswordFocused] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     // --- STATE ANIMASI LOGO LONTARA ---
     const titles = ["ᨈᨊ ᨕᨚᨁᨗ", "TanaOgi'"];
@@ -36,9 +38,89 @@ export default function LoginPage({ onNavigateHome, onNavigateRegister }) {
         return () => clearInterval(interval);
     }, []);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert('Login sedang dalam pengembangan!');
+        setError('');
+        setLoading(true);
+        try {
+            const res = await fetch('/api/v1/auth/user-login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+                setError(data.message || 'Login gagal. Periksa email dan password.');
+                setLoading(false);
+                return;
+            }
+            // Save token and user to localStorage
+            localStorage.setItem('auth_token', data.data.token);
+            localStorage.setItem('auth_user', JSON.stringify(data.data.user));
+            if (onLoginSuccess) onLoginSuccess(data.data.user, data.data.token);
+        } catch (err) {
+            setError('Terjadi kesalahan jaringan. Coba lagi.');
+        }
+        setLoading(false);
+    };
+
+    const handleGoogleAuth = () => {
+        setError('');
+        if (!window.google) {
+            setError("Google SDK tidak dapat dimuat. Silakan periksa koneksi internet Anda.");
+            return;
+        }
+
+        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+        if (!clientId) {
+            setError("Client ID Google belum dikonfigurasi di file .env");
+            console.error("VITE_GOOGLE_CLIENT_ID is missing from environment variables.");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const client = window.google.accounts.oauth2.initTokenClient({
+                client_id: clientId,
+                scope: 'email profile openid',
+                callback: async (response) => {
+                    if (response.error) {
+                        setError(`Google Auth Error: ${response.error_description || response.error}`);
+                        setLoading(false);
+                        return;
+                    }
+
+                    if (response.access_token) {
+                        try {
+                            const res = await fetch('/api/v1/auth/google', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                },
+                                body: JSON.stringify({ access_token: response.access_token }),
+                            });
+                            const data = await res.json();
+                            if (!res.ok || !data.success) {
+                                setError(data.message || 'Gagal masuk dengan Google.');
+                                setLoading(false);
+                                return;
+                            }
+                            localStorage.setItem('auth_token', data.data.token);
+                            localStorage.setItem('auth_user', JSON.stringify(data.data.user));
+                            if (onLoginSuccess) onLoginSuccess(data.data.user, data.data.token);
+                        } catch (err) {
+                            setError('Terjadi kesalahan jaringan saat menghubungi server.');
+                        }
+                    }
+                    setLoading(false);
+                },
+            });
+            client.requestAccessToken();
+        } catch (err) {
+            setError('Gagal memulai Google Sign-In.');
+            setLoading(false);
+        }
     };
 
     const labelStyle = {
@@ -91,6 +173,10 @@ export default function LoginPage({ onNavigateHome, onNavigateRegister }) {
                 }}
                     onMouseEnter={e => e.currentTarget.style.color = '#b32000'}
                     onMouseLeave={e => e.currentTarget.style.color = '#131e1b'}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        if (onNavigateAdmin) onNavigateAdmin(); // Pemicu pindah halaman
+                    }}
                 >
                     <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>admin_panel_settings</span>
                     <span>Login sebagai Admin</span>
@@ -240,6 +326,22 @@ export default function LoginPage({ onNavigateHome, onNavigateRegister }) {
                         }}>Enter your credentials to access your explorer dashboard.</p>
                     </header>
 
+                    {error && (
+                        <div style={{
+                            backgroundColor: 'rgba(179,32,0,0.08)',
+                            border: '1px solid rgba(179,32,0,0.2)',
+                            borderRadius: '12px',
+                            padding: '14px 20px',
+                            marginBottom: '8px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                        }}>
+                            <span className="material-symbols-outlined" style={{ color: '#b32000', fontSize: '20px' }}>error</span>
+                            <span style={{ fontFamily: font, fontSize: '14px', color: '#b32000', fontWeight: 500 }}>{error}</span>
+                        </div>
+                    )}
+
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                             <label htmlFor="login-email" style={labelStyle}>Email Address</label>
@@ -312,9 +414,10 @@ export default function LoginPage({ onNavigateHome, onNavigateRegister }) {
                         <div style={{ paddingTop: '24px' }}>
                             <button
                                 type="submit"
+                                disabled={loading}
                                 style={{
                                     width: '100%',
-                                    backgroundColor: '#b32000',
+                                    backgroundColor: loading ? '#916f68' : '#b32000',
                                     color: '#ffffff',
                                     fontFamily: font,
                                     fontSize: '12px',
@@ -324,25 +427,30 @@ export default function LoginPage({ onNavigateHome, onNavigateRegister }) {
                                     padding: '24px',
                                     borderRadius: '9999px',
                                     border: 'none',
-                                    cursor: 'pointer',
+                                    cursor: loading ? 'not-allowed' : 'pointer',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     gap: '12px',
                                     boxShadow: '0 20px 40px -10px rgba(179,32,0,0.35)',
                                     transition: 'all 0.3s ease',
+                                    opacity: loading ? 0.7 : 1,
                                 }}
                                 onMouseEnter={e => {
-                                    e.currentTarget.style.backgroundColor = '#de2f08';
-                                    e.currentTarget.style.boxShadow = '0 20px 40px -10px rgba(179,32,0,0.5)';
+                                    if (!loading) {
+                                        e.currentTarget.style.backgroundColor = '#de2f08';
+                                        e.currentTarget.style.boxShadow = '0 20px 40px -10px rgba(179,32,0,0.5)';
+                                    }
                                 }}
                                 onMouseLeave={e => {
-                                    e.currentTarget.style.backgroundColor = '#b32000';
-                                    e.currentTarget.style.boxShadow = '0 20px 40px -10px rgba(179,32,0,0.35)';
+                                    if (!loading) {
+                                        e.currentTarget.style.backgroundColor = '#b32000';
+                                        e.currentTarget.style.boxShadow = '0 20px 40px -10px rgba(179,32,0,0.35)';
+                                    }
                                 }}
                             >
-                                Login Now
-                                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_forward</span>
+                                {loading ? 'Memproses...' : 'Login Now'}
+                                {!loading && <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_forward</span>}
                             </button>
                         </div>
                     </form>
@@ -363,6 +471,8 @@ export default function LoginPage({ onNavigateHome, onNavigateRegister }) {
 
                     <button
                         type="button"
+                        onClick={handleGoogleAuth}
+                        disabled={loading}
                         style={{
                             width: '100%',
                             display: 'flex',
