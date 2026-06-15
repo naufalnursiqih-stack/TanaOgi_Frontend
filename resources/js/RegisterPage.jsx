@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-export default function RegisterPage({ onNavigateHome, onNavigateLogin }) {
+export default function RegisterPage({ onNavigateHome, onNavigateLogin, onRegisterSuccess }) {
     const [parallax, setParallax] = useState({ x: 0, y: 0 });
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
@@ -8,8 +8,11 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin }) {
         email: '',
         whatsapp: '',
         password: '',
+        password_confirmation: '',
         address: ''
     });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     // --- STATE ANIMASI LOGO LONTARA ---
     const titles = ["ᨈᨊ ᨕᨚᨁᨗ", "TanaOgi'"];
@@ -45,9 +48,112 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin }) {
         setFormData(prev => ({ ...prev, [field]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert('Registrasi berhasil! (Demo)');
+        setError('');
+
+        if (formData.password !== formData.password_confirmation) {
+            setError('Konfirmasi password tidak cocok.');
+            return;
+        }
+        if (formData.password.length < 8) {
+            setError('Password minimal 8 karakter.');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const res = await fetch('/api/v1/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    name: formData.fullName,
+                    email: formData.email,
+                    password: formData.password,
+                    password_confirmation: formData.password_confirmation,
+                    whatsapp: formData.whatsapp,
+                    address: formData.address,
+                }),
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+                // Extract first validation error if available
+                if (data.errors) {
+                    const firstErr = Object.values(data.errors)[0];
+                    setError(Array.isArray(firstErr) ? firstErr[0] : firstErr);
+                } else {
+                    setError(data.message || 'Registrasi gagal. Coba lagi.');
+                }
+                setLoading(false);
+                return;
+            }
+            // Save token and user to localStorage
+            localStorage.setItem('auth_token', data.data.token);
+            localStorage.setItem('auth_user', JSON.stringify(data.data.user));
+            if (onRegisterSuccess) onRegisterSuccess(data.data.user, data.data.token);
+        } catch (err) {
+            setError('Terjadi kesalahan jaringan. Coba lagi.');
+        }
+        setLoading(false);
+    };
+
+    const handleGoogleAuth = () => {
+        setError('');
+        if (!window.google) {
+            setError("Google SDK tidak dapat dimuat. Silakan periksa koneksi internet Anda.");
+            return;
+        }
+
+        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+        if (!clientId) {
+            setError("Client ID Google belum dikonfigurasi di file .env");
+            console.error("VITE_GOOGLE_CLIENT_ID is missing from environment variables.");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const client = window.google.accounts.oauth2.initTokenClient({
+                client_id: clientId,
+                scope: 'email profile openid',
+                callback: async (response) => {
+                    if (response.error) {
+                        setError(`Google Auth Error: ${response.error_description || response.error}`);
+                        setLoading(false);
+                        return;
+                    }
+
+                    if (response.access_token) {
+                        try {
+                            const res = await fetch('/api/v1/auth/google', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                },
+                                body: JSON.stringify({ access_token: response.access_token }),
+                            });
+                            const data = await res.json();
+                            if (!res.ok || !data.success) {
+                                setError(data.message || 'Gagal masuk dengan Google.');
+                                setLoading(false);
+                                return;
+                            }
+                            localStorage.setItem('auth_token', data.data.token);
+                            localStorage.setItem('auth_user', JSON.stringify(data.data.user));
+                            if (onRegisterSuccess) onRegisterSuccess(data.data.user, data.data.token);
+                        } catch (err) {
+                            setError('Terjadi kesalahan jaringan saat menghubungi server.');
+                        }
+                    }
+                    setLoading(false);
+                },
+            });
+            client.requestAccessToken();
+        } catch (err) {
+            setError('Gagal memulai Google Sign-In.');
+            setLoading(false);
+        }
     };
 
     const font = "'Plus Jakarta Sans', sans-serif";
@@ -324,6 +430,22 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin }) {
                         </div>
                     </div>
 
+                    {error && (
+                        <div style={{
+                            backgroundColor: 'rgba(179,32,0,0.08)',
+                            border: '1px solid rgba(179,32,0,0.2)',
+                            borderRadius: '12px',
+                            padding: '14px 20px',
+                            marginBottom: '8px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                        }}>
+                            <span className="material-symbols-outlined" style={{ color: '#b32000', fontSize: '20px' }}>error</span>
+                            <span style={{ fontFamily: font, fontSize: '14px', color: '#b32000', fontWeight: 500 }}>{error}</span>
+                        </div>
+                    )}
+
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }} className="register-form-grid">
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -412,6 +534,24 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin }) {
                             </div>
                         </div>
 
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }} className="register-form-grid">
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                <label style={labelStyle}>Confirm Password</label>
+                                <div style={{ position: 'relative' }}>
+                                    <input
+                                        type={showPassword ? 'text' : 'password'}
+                                        placeholder="••••••••"
+                                        value={formData.password_confirmation}
+                                        onChange={e => handleInputChange('password_confirmation', e.target.value)}
+                                        onFocus={inputFocusHandler}
+                                        onBlur={inputBlurHandler}
+                                        style={inputStyle}
+                                    />
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                             <label style={labelStyle}>Current Residence Address</label>
                             <textarea
@@ -428,8 +568,9 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin }) {
                         <div style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
                             <button
                                 type="submit"
+                                disabled={loading}
                                 style={{
-                                    backgroundColor: '#F5401B',
+                                    backgroundColor: loading ? '#916f68' : '#F5401B',
                                     color: '#ffffff',
                                     padding: '24px 48px',
                                     borderRadius: '9999px',
@@ -437,19 +578,20 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin }) {
                                     fontWeight: 700,
                                     fontSize: '18px',
                                     border: 'none',
-                                    cursor: 'pointer',
+                                    cursor: loading ? 'not-allowed' : 'pointer',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     gap: '12px',
                                     transition: 'all 0.3s ease',
-                                    boxShadow: '0 10px 40px -5px rgba(245, 64, 27, 0.4)'
+                                    boxShadow: '0 10px 40px -5px rgba(245, 64, 27, 0.4)',
+                                    opacity: loading ? 0.7 : 1,
                                 }}
-                                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
-                                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                                onMouseEnter={e => { if (!loading) e.currentTarget.style.transform = 'scale(1.02)'; }}
+                                onMouseLeave={e => { if (!loading) e.currentTarget.style.transform = 'scale(1)'; }}
                             >
-                                Register Now
-                                <span className="material-symbols-outlined">arrow_forward</span>
+                                {loading ? 'Memproses...' : 'Register Now'}
+                                {!loading && <span className="material-symbols-outlined">arrow_forward</span>}
                             </button>
 
                             <div style={{ display: 'flex', alignItems: 'center', padding: '24px 0' }}>
@@ -468,6 +610,8 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin }) {
 
                             <button
                                 type="button"
+                                onClick={handleGoogleAuth}
+                                disabled={loading}
                                 style={{
                                     display: 'flex',
                                     alignItems: 'center',
