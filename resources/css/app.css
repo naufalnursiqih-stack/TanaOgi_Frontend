@@ -515,6 +515,22 @@
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
 }
 
+/* ── GPS Spinner animation ── */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── GPS location pulse indicator ── */
+@keyframes gps-pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.4; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.gps-pulse-dot {
+    animation: gps-pulse 1.5s ease-in-out infinite;
+}
+
 /* ===================================
    Preloader / Loading Screen Styles
    =================================== */
