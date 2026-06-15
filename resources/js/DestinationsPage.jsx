@@ -1,8 +1,8 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
-export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateAllDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail }) {
+export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateAllDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, currentUser, onLogout }) {
     const [scrolled, setScrolled] = useState(false);
     const [heroVisible, setHeroVisible] = useState(false);
     const font = "'Plus Jakarta Sans', sans-serif";
@@ -58,6 +58,8 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                 onNavigateExperiences={onNavigateExperiences}
                 onNavigateCulture={onNavigateCulture}
                 onNavigateJournal={onNavigateJournal}
+                currentUser={currentUser}
+                onLogout={onLogout}
             />
 
             {/* â”€â”€ Hero Section â”€â”€ */}

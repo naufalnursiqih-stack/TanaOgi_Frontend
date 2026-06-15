@@ -4,24 +4,20 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Tana Ogi - Jelajahi Keajaiban Sulawesi</title>
+        <title>{{ $exception->getStatusCode() }} - {{ $exception->getMessage() ?: 'Error' }} | TANA OGI</title>
 
         <!-- Google Fonts: Plus Jakarta Sans -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         <!-- Material Symbols -->
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 
-        <!-- Google Identity Services -->
-        <script src="https://accounts.google.com/gsi/client" async defer></script>
-
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.jsx'])
     </head>
-    <body class="bg-surface font-body-md text-on-surface overflow-x-hidden">
-        <div id="root"></div>
+    <body class="bg-[#E4F0ED] overflow-x-hidden">
+        <div id="error-root" data-code="{{ $exception->getStatusCode() }}"></div>
     </body>
 </html>

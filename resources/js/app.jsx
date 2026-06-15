@@ -10,6 +10,10 @@ import JournalPage from './JournalPage';
 import DestinationDetailPage from './DestinationDetailPage';
 import DriversPage from './DriversPage';
 import Preloader from './Preloader';
+import AdminLoginPage from './AdminLoginPage';
+import AdminDashboard from './AdminDashboard';
+import ErrorPage from './ErrorPage';
+
 
 /**
  * Shared Navbar Component — Tana Ogi (Default)
@@ -19,11 +23,14 @@ function Navbar({
     onNavigateHome,
     onNavigateLogin,
     onNavigateRegister,
+    onNavigateAdmin,
     onNavigateDestinations,
     onNavigateExperiences,
     onNavigateCulture,
     onNavigateJournal,
     isHeroTheme = false, // Atribut pendeteksi halaman utama
+    currentUser = null,
+    onLogout,
 }) {
     const [scrolled, setScrolled] = useState(false);
     const titles = ["ᨈᨊ ᨕᨚᨁᨗ", "TanaOgi'"];
@@ -159,56 +166,136 @@ function Navbar({
                     ))}
                 </div>
 
-                {/* Bagian Kanan: Akses Tombol */}
+                {/* Bagian Kanan: Akses Tombol / User Profile */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-                    <button
-                        onClick={onNavigateLogin}
-                        style={{
-                            background: 'none',
-                            border: 'none',
-                            cursor: 'pointer',
-                            fontFamily: font,
-                            fontSize: '16px',
-                            fontWeight: 500,
-                            color: isHeroTheme && !scrolled ? '#ffffff' : 'rgba(19,30,27,0.7)',
-                            padding: 0,
-                            transition: 'color 0.3s',
-                        }}
-                        onMouseEnter={e => e.currentTarget.style.color = isHeroTheme && !scrolled ? 'rgba(255,255,255,0.7)' : '#b32000'}
-                        onMouseLeave={e => e.currentTarget.style.color = isHeroTheme && !scrolled ? '#ffffff' : 'rgba(19,30,27,0.7)'}
-                    >
-                        Masuk
-                    </button>
-                    <button
-                        onClick={onNavigateRegister}
-                        style={{
-                            border: isHeroTheme && !scrolled ? '1px solid #ffffff' : '1.5px solid #b32000',
-                            color: isHeroTheme && !scrolled ? '#ffffff' : '#b32000',
-                            padding: '8px 24px',
-                            borderRadius: '9999px',
-                            fontFamily: font,
-                            fontSize: '15px',
-                            fontWeight: 500,
-                            backgroundColor: 'transparent',
-                            cursor: 'pointer',
-                            transition: 'all 0.3s ease',
-                        }}
-                        onMouseEnter={e => {
-                            if (isHeroTheme && !scrolled) {
-                                e.currentTarget.style.backgroundColor = '#ffffff';
-                                e.currentTarget.style.color = '#000000';
-                            } else {
-                                e.currentTarget.style.backgroundColor = '#b32000';
-                                e.currentTarget.style.color = '#ffffff';
-                            }
-                        }}
-                        onMouseLeave={e => {
-                            e.currentTarget.style.backgroundColor = 'transparent';
-                            e.currentTarget.style.color = isHeroTheme && !scrolled ? '#ffffff' : '#b32000';
-                        }}
-                    >
-                        Daftar
-                    </button>
+                    {currentUser ? (
+                        /* Logged-in state: show user avatar + name + logout */
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            {currentUser.avatar ? (
+                                <img
+                                    src={currentUser.avatar}
+                                    alt={currentUser.name}
+                                    style={{
+                                        width: '36px',
+                                        height: '36px',
+                                        borderRadius: '50%',
+                                        objectFit: 'cover',
+                                        flexShrink: 0,
+                                        border: '1.5px solid #b32000'
+                                    }}
+                                />
+                            ) : (
+                                <div style={{
+                                    width: '36px',
+                                    height: '36px',
+                                    borderRadius: '50%',
+                                    background: 'linear-gradient(135deg, #F5401B, #FF9900)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: '#fff',
+                                    fontFamily: font,
+                                    fontWeight: 700,
+                                    fontSize: '14px',
+                                    textTransform: 'uppercase',
+                                    flexShrink: 0,
+                                }}>
+                                    {currentUser.name ? currentUser.name.charAt(0) : 'U'}
+                                </div>
+                            )}
+                            <span style={{
+                                fontFamily: font,
+                                fontSize: '14px',
+                                fontWeight: 600,
+                                color: isHeroTheme && !scrolled ? '#ffffff' : '#131e1b',
+                                maxWidth: '120px',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                                transition: 'color 0.3s',
+                            }}>
+                                {currentUser.name}
+                            </span>
+                            <button
+                                onClick={onLogout}
+                                style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    color: isHeroTheme && !scrolled ? 'rgba(255,255,255,0.7)' : 'rgba(19,30,27,0.5)',
+                                    padding: '4px',
+                                    borderRadius: '50%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    transition: 'all 0.3s',
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.color = '#b32000';
+                                    e.currentTarget.style.backgroundColor = 'rgba(179,32,0,0.08)';
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.color = isHeroTheme && !scrolled ? 'rgba(255,255,255,0.7)' : 'rgba(19,30,27,0.5)';
+                                    e.currentTarget.style.backgroundColor = 'transparent';
+                                }}
+                                title="Logout"
+                            >
+                                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>logout</span>
+                            </button>
+                        </div>
+                    ) : (
+                        /* Guest state: show login + register buttons */
+                        <>
+                            <button
+                                onClick={onNavigateLogin}
+                                style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    fontFamily: font,
+                                    fontSize: '16px',
+                                    fontWeight: 500,
+                                    color: isHeroTheme && !scrolled ? '#ffffff' : 'rgba(19,30,27,0.7)',
+                                    padding: 0,
+                                    transition: 'color 0.3s',
+                                }}
+                                onMouseEnter={e => e.currentTarget.style.color = isHeroTheme && !scrolled ? 'rgba(255,255,255,0.7)' : '#b32000'}
+                                onMouseLeave={e => e.currentTarget.style.color = isHeroTheme && !scrolled ? '#ffffff' : 'rgba(19,30,27,0.7)'}
+                            >
+                                Masuk
+                            </button>
+                            <button
+                                onClick={onNavigateRegister}
+                                style={{
+                                    border: isHeroTheme && !scrolled ? '1px solid #ffffff' : '1.5px solid #b32000',
+                                    color: isHeroTheme && !scrolled ? '#ffffff' : '#b32000',
+                                    padding: '8px 24px',
+                                    borderRadius: '9999px',
+                                    fontFamily: font,
+                                    fontSize: '15px',
+                                    fontWeight: 500,
+                                    backgroundColor: 'transparent',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                }}
+                                onMouseEnter={e => {
+                                    if (isHeroTheme && !scrolled) {
+                                        e.currentTarget.style.backgroundColor = '#ffffff';
+                                        e.currentTarget.style.color = '#000000';
+                                    } else {
+                                        e.currentTarget.style.backgroundColor = '#b32000';
+                                        e.currentTarget.style.color = '#ffffff';
+                                    }
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.backgroundColor = 'transparent';
+                                    e.currentTarget.style.color = isHeroTheme && !scrolled ? '#ffffff' : '#b32000';
+                                }}
+                            >
+                                Daftar
+                            </button>
+                        </>
+                    )}
                 </div>
             </nav>
         </header>
@@ -217,7 +304,7 @@ function Navbar({
 /**
  * HomePage Component
  */
-function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations, onNavigateAllDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal }) {
+function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations, onNavigateAllDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, currentUser, onLogout }) {
     const [parallax, setParallax] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
@@ -255,6 +342,8 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
                 onNavigateExperiences={onNavigateExperiences}
                 onNavigateCulture={onNavigateCulture}
                 onNavigateJournal={onNavigateJournal}
+                currentUser={currentUser}
+                onLogout={onLogout}
             />
 
             {/* Hero Section */}
@@ -302,7 +391,7 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
                             >
                                 Jelajahi<br />
                                 <span className="text-gradient-sunset" style={{ background: 'linear-gradient(45deg, #F5401B, #FF9900)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Keajaiban</span><br />
-                                Sulawesi
+                                Sulawesi Selatan
                             </h1>
                         </div>
 
@@ -419,6 +508,19 @@ function App() {
     const [selectedDestination, setSelectedDestination] = useState(null);
     const [showLoader, setShowLoader] = useState(true);
 
+    // Auth State
+    const [currentUser, setCurrentUser] = useState(() => {
+        const saved = localStorage.getItem('auth_user');
+        try {
+            return saved ? JSON.parse(saved) : null;
+        } catch (e) {
+            return null;
+        }
+    });
+
+    // Kept redirect state to return to protected page after successful login
+    const [redirectAfterLogin, setRedirectAfterLogin] = useState(null);
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowLoader(false);
@@ -443,7 +545,56 @@ function App() {
         };
     }, [currentPage]);
 
+    const handleLoginSuccess = (user, token) => {
+        setCurrentUser(user);
+        if (redirectAfterLogin) {
+            const { page, destData } = redirectAfterLogin;
+            setRedirectAfterLogin(null);
+            navigateTo(page, destData);
+        } else {
+            navigateTo('home');
+        }
+    };
+
+    const handleRegisterSuccess = (user, token) => {
+        setCurrentUser(user);
+        navigateTo('home');
+    };
+
+    const handleLogout = async () => {
+        const token = localStorage.getItem('auth_token');
+        if (token) {
+            try {
+                await fetch('/api/v1/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+            } catch (e) {
+                console.error("Logout request failed:", e);
+            }
+        }
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('auth_user');
+        setCurrentUser(null);
+        navigateTo('home');
+    };
+
     const navigateTo = (page, destData = null) => {
+        // Protected pages: destination-detail and drivers
+        const protectedPages = ['destination-detail', 'drivers'];
+
+        if (protectedPages.includes(page) && !currentUser) {
+            // Save destination data if navigating to detail, so we can return to it
+            setRedirectAfterLogin({ page, destData });
+
+            // Redirect to login page instead
+            page = 'login';
+            destData = null;
+        }
+
         const pagesWithLoader = ['destinations', 'all-destinations', 'destination-detail', 'login', 'register', 'drivers'];
 
         if (pagesWithLoader.includes(page)) {
@@ -486,20 +637,30 @@ function App() {
                         onNavigateExperiences={() => navigateTo('experiences')}
                         onNavigateCulture={() => navigateTo('culture')}
                         onNavigateJournal={() => navigateTo('journal')}
+                        currentUser={currentUser}
+                        onLogout={handleLogout}
                     />
                 )}
                 {currentPage === 'register' && (
                     <RegisterPage
                         onNavigateHome={() => navigateTo('home')}
                         onNavigateLogin={() => navigateTo('login')}
+                        onRegisterSuccess={handleRegisterSuccess}
                     />
                 )}
                 {currentPage === 'login' && (
                     <LoginPage
                         onNavigateHome={() => navigateTo('home')}
                         onNavigateRegister={() => navigateTo('register')}
+                        onNavigateAdmin={() => setCurrentPage('admin-login')}
+                        onLoginSuccess={handleLoginSuccess}
                     />
                 )}
+                {currentPage === 'admin-login' && (
+                    <AdminLoginPage 
+                    onNavigateBack={() => setCurrentPage('login')}
+                    onLoginSuccess={() => setCurrentPage('admin-dashboard')} />
+                    )}
                 {currentPage === 'destinations' && (
                     <DestinationsPage
                         onNavigateHome={() => navigateTo('home')}
@@ -510,6 +671,8 @@ function App() {
                         onNavigateCulture={() => navigateTo('culture')}
                         onNavigateJournal={() => navigateTo('journal')}
                         onNavigateDestinationDetail={(dest) => navigateTo('destination-detail', dest)}
+                        currentUser={currentUser}
+                        onLogout={handleLogout}
                     />
                 )}
                 {currentPage === 'all-destinations' && (
@@ -522,6 +685,8 @@ function App() {
                         onNavigateCulture={() => navigateTo('culture')}
                         onNavigateJournal={() => navigateTo('journal')}
                         onNavigateDestinationDetail={(dest) => navigateTo('destination-detail', dest)}
+                        currentUser={currentUser}
+                        onLogout={handleLogout}
                     />
                 )}
                 {currentPage === 'experiences' && (
@@ -532,6 +697,8 @@ function App() {
                         onNavigateDestinations={() => navigateTo('destinations')}
                         onNavigateCulture={() => navigateTo('culture')}
                         onNavigateJournal={() => navigateTo('journal')}
+                        currentUser={currentUser}
+                        onLogout={handleLogout}
                     />
                 )}
                 {currentPage === 'culture' && (
@@ -543,6 +710,8 @@ function App() {
                         onNavigateAllDestinations={() => navigateTo('all-destinations')}
                         onNavigateExperiences={() => navigateTo('experiences')}
                         onNavigateJournal={() => navigateTo('journal')}
+                        currentUser={currentUser}
+                        onLogout={handleLogout}
                     />
                 )}
                 {currentPage === 'journal' && (
@@ -554,6 +723,8 @@ function App() {
                         onNavigateAllDestinations={() => navigateTo('all-destinations')}
                         onNavigateExperiences={() => navigateTo('experiences')}
                         onNavigateCulture={() => navigateTo('culture')}
+                        currentUser={currentUser}
+                        onLogout={handleLogout}
                     />
                 )}
                 {currentPage === 'destination-detail' && (
@@ -568,6 +739,8 @@ function App() {
                         onNavigateJournal={() => navigateTo('journal')}
                         onNavigateDrivers={() => navigateTo('drivers')}
                         destination={selectedDestination || {}}
+                        currentUser={currentUser}
+                        onLogout={handleLogout}
                     />
                 )}
                 {currentPage === 'drivers' && (
@@ -579,6 +752,21 @@ function App() {
                         onNavigateExperiences={() => navigateTo('experiences')}
                         onNavigateCulture={() => navigateTo('culture')}
                         onNavigateJournal={() => navigateTo('journal')}
+                        currentUser={currentUser}
+                        onLogout={handleLogout}
+                    />
+                )}
+                {currentPage === 'admin-dashboard' && (
+                    <AdminDashboard 
+                        adminName="Naufal" 
+                        onLogout={() => setCurrentPage('login')} 
+                    />
+                )}
+                {!['home', 'register', 'login', 'admin-login', 'destinations', 'all-destinations', 'experiences', 'culture', 'journal', 'destination-detail', 'drivers', 'admin-dashboard'].includes(currentPage) && (
+                    <ErrorPage
+                        errorCode={404}
+                        onNavigateHome={() => navigateTo('home')}
+                        onNavigateLogin={() => navigateTo('login')}
                     />
                 )}
             </div>
@@ -593,4 +781,18 @@ if (container && !container.__reactRootContainer) {
     const root = createRoot(container);
     container.__reactRootContainer = root;
     root.render(<App />);
+}
+
+const errorContainer = document.getElementById('error-root');
+if (errorContainer && !errorContainer.__reactRootContainer) {
+    const code = errorContainer.getAttribute('data-code') || 404;
+    const root = createRoot(errorContainer);
+    errorContainer.__reactRootContainer = root;
+    root.render(
+        <ErrorPage 
+            errorCode={code} 
+            onNavigateHome={() => window.location.href = '/'}
+            onNavigateLogin={() => window.location.href = '/login'} 
+        />
+    );
 }
