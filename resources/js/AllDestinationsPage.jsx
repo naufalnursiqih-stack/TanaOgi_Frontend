@@ -2,7 +2,7 @@
 import Navbar from './Navbar';
 import Footer from './Footer';
 
-export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail }) {
+export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, currentUser, onLogout }) {
     const [scrolled, setScrolled] = useState(false);
     const [activeRegion, setActiveRegion] = useState('Semua Wilayah');
     const font = "'Plus Jakarta Sans', sans-serif";
@@ -136,6 +136,8 @@ export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, o
                 onNavigateExperiences={onNavigateExperiences}
                 onNavigateCulture={onNavigateCulture}
                 onNavigateJournal={onNavigateJournal}
+                currentUser={currentUser}
+                onLogout={onLogout}
             />
 
             {/* â”€â”€ Main Content Area â”€â”€ */}

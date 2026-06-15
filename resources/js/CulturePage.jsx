@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
-export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateExperiences, onNavigateAllDestinations, onNavigateJournal }) {
+export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateExperiences, onNavigateAllDestinations, onNavigateJournal, currentUser, onLogout }) {
     const [scrolled, setScrolled] = useState(false);
     const [heroParallax, setHeroParallax] = useState(0);
 
@@ -47,6 +47,8 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                 onNavigateExperiences={onNavigateExperiences}
                 onNavigateCulture={() => {}}
                 onNavigateJournal={onNavigateJournal}
+                currentUser={currentUser}
+                onLogout={onLogout}
             />
 
             <main style={{ paddingTop: 0 }}>

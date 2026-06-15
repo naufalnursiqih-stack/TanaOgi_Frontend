@@ -10,6 +10,8 @@ export default function JournalPage({
     onNavigateAllDestinations,
     onNavigateExperiences,
     onNavigateCulture,
+    currentUser,
+    onLogout,
 }) {
     const [scrolled, setScrolled] = useState(false);
     const [subscribed, setSubscribed] = useState(false);
@@ -83,6 +85,8 @@ export default function JournalPage({
                 onNavigateExperiences={onNavigateExperiences}
                 onNavigateCulture={onNavigateCulture}
                 onNavigateJournal={() => {}}
+                currentUser={currentUser}
+                onLogout={onLogout}
             />
 
             <main style={{ paddingTop: '88px' }}>
