@@ -348,13 +348,19 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
 
             {/* Hero Section */}
             <main className="relative h-screen w-full overflow-hidden flex items-end z-10">
-                {/* Background Image */}
+                {/* Background Video */}
                 <div className="absolute inset-0 z-0">
-                    <img
-                        alt="Landscape of Rammang-Rammang"
+                    <video
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
                         className="w-full h-full object-cover"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5Un9-77fsnpAh97g-3uFPx6ibZ2ekWi4FbAPA_Br76y1Vfl73A15t6IO0I56ExggFzZfI1RpDaEn5murmEJDSWClHM2H5xHEuQXXAkrlbkO6x6b19RzmIA06cnNLpgBrlBxwW7ohRuUZKWcCl2r4uoU8MEDv58M5wskUWnT-ObEDo-41Fjodmv3P5yb4uEKYgjGU8JVQRLD8w4tOoQQS4gZoRBZEWu8UXxVkveyL0HQ4qeYrGncHyK9IK5sBFqDw65V2sf1_MTlM"
-                    />
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    >
+                        <source src="/final-web2.mp4" type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
                     <div className="absolute inset-0 hero-gradient" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.4) 100%)' }}></div>
                 </div>
 

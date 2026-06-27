@@ -201,7 +201,7 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                                 letterSpacing: '-0.02em',
                                 color: '#131e1b',
                                 marginBottom: '24px',
-                            }}>The Master Shipbuilders</h2>
+                            }}>Mahakarya Sang Pembuat Kapal</h2>
 
                             <p style={{
                                 fontFamily: font,
@@ -290,7 +290,7 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                                         letterSpacing: '-0.02em',
                                         color: '#131e1b',
                                         marginBottom: '24px',
-                                    }}>Threads of Tradition</h2>
+                                    }}>Benang Warisan</h2>
 
                                     <blockquote style={{
                                         fontStyle: 'italic',
@@ -385,7 +385,7 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                                 letterSpacing: '-0.03em',
                                 color: '#131e1b',
                                 marginBottom: '16px',
-                            }}>Sacred Movements</h2>
+                            }}>Langkah Sakral</h2>
 
                             <div style={{ width: '64px', height: '4px', backgroundColor: '#31fde1', margin: '0 auto 24px' }} />
 
@@ -412,7 +412,7 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                             }}>
                                 <img
                                     alt="Toraja Traditional Dance Performance"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmL1Fj7EOsR49pdk6B-b1KwOPAVnml04xM9dkJSCfnIjpoqqeY_gmKHCGBiLTP84s4lmyU4DcKp20lDQmZA4oiv940iYnhUuI0pdaLqiJZvdaxI8X3QTwizJ48GQbxNsSux1s7IDo8LgZyVr8WkuJSslSlV0Wqo2dTdb2M__d_Pg3Mp2sDVmyNjv7h1iVkqeAxG1g_WbGpJAk3ImxK1HkTqTlzQDYsJiRw6oOy6jyDUrs4oFFCEb2xo6UnYnoLGptHaZBvLfe4TAU"
+                                    src="taripagellu.jpg"
                                     style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.7s ease' }}
                                     onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.03)'}
                                     onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}

@@ -51,7 +51,7 @@ export default function JournalPage({
             category: 'ARSITEKTUR',
             title: 'Tertulis dalam Kayu: Membaca Geometri Rumah Tongkonan',
             desc: 'Setiap garis, warna, dan ukiran menyimpan kisah tentang leluhur dan alam semesta di jantung Tana Toraja.',
-            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCRXcaM4jwyA4Rw-Zr9gF4UCdCq946zaLySQ9i4k-_BaJGLCBahHnHMiOJ8suZsa6WRhA5Aklkv-b6FWQ2c2rwOK0ytXSp9zY4gUr9gYdr4k9AknK2k4AltDf9YvZTwUn9jlbTYBrhZR64Evq4cCsr1Ru--feqgtQc0ryV0IFZGAPKHZ-sLrVg8W45TCIVNlO-PqvMeEfRbaXgEJms2FjK-7M6RNdnMgOscRCdXAojZ9HCxV6SMmYK-IdbuRg7SBbQpLQI6ERfk',
+            image: 'foto-ornamen-ukiran-tongkonan.webp',
             offset: true,
         },
         {
@@ -149,7 +149,7 @@ export default function JournalPage({
                             <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden' }}>
                                 <img
                                     alt="Formasi Karst Maros-Pangkep saat Golden Hour"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKc4qjAT3ilx9wqMZNm4joMOHZsrrXHFpiPTugsb0ofCThS0R10Ziw2gHXvEkBpRPTN6ieJe2x41Vi8qxPGgfArz621P63-4-DmTxGwkwAXJoZx2YBGDfr69zt8XPvFAk6iu1QIbIKmbacJuTJw9ccW2lLQHKc6nbvHDiSd_YkoIC260iCYgyiB7iwgxVgNJbYn-mS9WKxLwCbtl3K9XzqFxJGrN_JXN_92DenbgdnqQaD6vJhAWzWQtw6RbOeX_dNUV0yIuix_wE"
+                                    src="hutankarsmaros.jpg"
                                     style={{
                                         width: '100%', height: '100%', objectFit: 'cover',
                                         transition: 'transform 0.7s ease',

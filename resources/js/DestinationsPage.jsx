@@ -24,7 +24,7 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
             id: 1,
             colSpan: '8',
             height: '600px',
-            image: 'https://lh3.googleusercontent.com/aida/AP1WRLvYeqrFdeRQkI8xbVEV6cMH7JOrbWRCkKLeIokvPZjE3C0Rt_Cpuu3EZPPXZHSP7NsyDJwqYBq3xbfpC8Evsj0zfYM91C0K5nH4gw3ztbX_7uTlLtptZ3KwNsdnihGdbwh05dY1uyPEOcY6ca540N0pzwYFAVw4hUU6ZBGRyeHPPA6Ga7Az_KCbMemzLl4yZmriqjNNRYNroAv0eayLwsKeh64oiv8hBdxp5OKmFkxK-2CAyjsmbB7FEQ',
+            image: '60a0e3f-1c7b-4d5a-9f8e-2b6c1e3f4d5a.jpg',
             alt: 'Tana Toraja',
             tag: 'WARISAN LELUHUR',
             title: 'Lembah Para Raja, Tana Toraja',
@@ -75,8 +75,9 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                 {/* Hero BG */}
                 <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                     <img
-                        alt="Rammang-Rammang Landscape"
-                        src="https://lh3.googleusercontent.com/aida/AP1WRLuAOoMo5ZLRB3A-86TQtjsTOzYSz4VTp9k9zZ0nT-e0ahpUGZLIgDSVi9n7ImYc7VyVSLqSqj0elGRehztFNPTeaDjhGz3YEhbP60UBAdrrvwwE3wiFoeDbVyiynBzkiyfBt3fyAWIcZAmcXMB3re-hYUyl9chDZY3V5HIeGAyYrTu5uh9l8aFWjCj1rLQ4CmiQHjFFxvCH1Wc7hSlWZPg2IdbQI4-JJexQfrl5z7ORbZ1ToVwRtMwa1mc"
+                        alt="Pantai Pasir Putih"
+                        src="/pantai-pasir-putih.jpg"
+                        className="w-full h-full object-cover"
                         style={{
                             width: '100%',
                             height: '100%',
@@ -84,11 +85,11 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                             transform: 'scale(1.05)',
                         }}
                     />
-                    {/* gradient: transparent â†’ surface */}
+                    {/* gradient: transparent â†’ dark overlay to keep text readable */}
                     <div style={{
                         position: 'absolute',
                         inset: 0,
-                        background: 'linear-gradient(to bottom, transparent 0%, rgba(240,252,247,0.2) 70%, #f0fcf7 100%)',
+                        background: 'linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.55) 100%)',
                     }} />
                 </div>
 
@@ -219,7 +220,7 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                     >
                         <img
                             alt="Tana Toraja"
-                            src="https://lh3.googleusercontent.com/aida/AP1WRLvYeqrFdeRQkI8xbVEV6cMH7JOrbWRCkKLeIokvPZjE3C0Rt_Cpuu3EZPPXZHSP7NsyDJwqYBq3xbfpC8Evsj0zfYM91C0K5nH4gw3ztbX_7uTlLtptZ3KwNsdnihGdbwh05dY1uyPEOcY6ca540N0pzwYFAVw4hUU6ZBGRyeHPPA6Ga7Az_KCbMemzLl4yZmriqjNNRYNroAv0eayLwsKeh64oiv8hBdxp5OKmFkxK-2CAyjsmbB7FEQ"
+                            src="/Kete-Kesu.jpg"
                             className="dest-card-img"
                             style={{
                                 width: '100%',

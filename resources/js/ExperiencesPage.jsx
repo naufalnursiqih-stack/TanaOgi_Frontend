@@ -29,10 +29,10 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
         {
             id: 1,
             title: 'Sunrise Phinisi Sailing',
-            duration: '4 Hours',
+            duration: '4 Jam',
             durationVal: 4, // 4 hours
-            capacity: '10 People',
-            language: 'English',
+            capacity: '10 Orang',
+            language: 'Indonesian & English',
             price: 'Rp 750.000',
             image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDAkussKryD2YD-eTXLCJN8WnXw5pWHIi0uKdGCXCSmLvSs9eEzAGuhx1GFjGmjM-fuEEfR1XVrSptpsXbTm_ddS3gpOZiHBI102dbCwCQPfFCevWu1-jgbZP3yGj8wfAlhIOSj5egLvWWPTM569dc4TQAWdsTetHYLsWB7btRihsKkU1BraOaA6uxB1IzxZJLExodjk-ihLvDGbR1Zt_Yxt1KD_WUhCGbUhiXTgtYUzo0B1yEoYr3zwd-829zUKwGs2ycwFizaTdU',
             badges: ['Best Seller', 'Instant Booking'],
@@ -41,9 +41,9 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
         {
             id: 2,
             title: 'Coral Reef Snorkeling',
-            duration: '2 Hours',
+            duration: '2 Jam',
             durationVal: 2, // 2 hours
-            capacity: '6 People',
+            capacity: '6 Orang',
             language: 'Local Guide',
             price: 'Rp 350.000',
             image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAftx8ZhJ-_xPttHESA2zjq_groQzkBqa4k99UHGLJkMb-X-64bIDFKddOHpZ6Cg2vqxCkb4HNAew8h4mVGTl-OpavOPCiMuEEEZb6iurV2b8BcykuihP4paLcrcA0fFARxIxnB2XMcbix_nQCDoSMOX44M9qkmBQWxNoWWvWwCY12GYBSfsV0kjwUNWHW-mAqHLVv5nHUDjAWB2BUqCJMvm_qi3Gr6SlREhfrtv-YNL1hRPuF8nvDIutCq75XbxrR2r99-EhJOHtY',
@@ -53,9 +53,9 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
         {
             id: 3,
             title: 'Cultural Weaver Workshop',
-            duration: '3 Hours',
+            duration: '3 Jam',
             durationVal: 3, // 3 hours
-            capacity: '4 People',
+            capacity: '4 Orang',
             language: 'Multi-lang',
             price: 'Rp 250.000',
             image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAwY3_OppzLU6zTOtd5J-5i3ePLCF_ekQRRRecjVc0s888lmj_kaSQW4kO06CTi2iuKRgo7nqPoiTis1_iV8mjnHIBqRP6t7E1qki-jERxYxfpZgQa1897LrCU_gamxeM4cnyxZZ0Q865cBm5D33yI2N50zF3MqW6ubUelYICBGEyEmUx5Cgilxp3w4YeZ9EbW7MdL_AyUil0puUqMn-9ochBbgpX16PHoX2k9mHCK-jCd-kWvlheGlTzv29C0VFJgC-3wihSTreBs',
@@ -120,7 +120,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
             }}>
                 <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                     <img 
-                        alt="Tanjung Bira Coast" 
+                        alt="Pantai Tanjung Bira" 
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoBf4kHVlDZhroavsqD1Bm3SQ26q4QSwXJBemvCt1h8L594u8Ck2KeErkR2WKP9cUbFvXF-KeEypRg2PWNvbZh9NRLmG9ON8MdbrTkGd_ZSGZdihARnB0rkAeHQA3CWfFXCWPvDmYaJ6Q-v9CFPutBLDkaxWf1qcZ0-2Jj4TjiE-dG1CpL_uliWNCMg1SJAdo8yjmYqn9zXT4NJQxT5hsYVETMAxItk8y3xz9OXz2G1HQuYZb9B_JP7QYaKNyTUlbnHTbHz0-juC0"
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
@@ -142,7 +142,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                         marginBottom: '24px',
                         textShadow: '0 4px 12px rgba(0,0,0,0.3)'
                     }} className="text-display-lg-mobile md:text-display-lg">
-                        Unforgettable Experiences in Tanjung Bira
+                        Pengalaman Tak Terlupakan di Tanjung Bira
                     </h1>
                     <p style={{
                         fontFamily: font,
@@ -152,7 +152,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                         margin: 0,
                         textShadow: '0 2px 8px rgba(0,0,0,0.3)'
                     }}>
-                        Don't just visit. Live the culture, feel the adventure, and make memories.
+                        Jangan hanya berkunjung. Rasakan budayanya, nikmati petualangannya, dan ciptakan kenangan.
                     </p>
                 </div>
             </header>
@@ -229,9 +229,9 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                             }}
                         >
                             <option value="Duration">Duration</option>
-                            <option value="Short (1-3 hours)">Short (1-3 hours)</option>
-                            <option value="Half Day (4-6 hours)">Half Day (4-6 hours)</option>
-                            <option value="Full Day (8+ hours)">Full Day (8+ hours)</option>
+                            <option value="Short (1-3 Jam)">Short (1-3 Jam)</option>
+                            <option value="Half Day (4-6 Jam)">Half Day (4-6 Jam)</option>
+                            <option value="Full Day (8+ Jam)">Full Day (8+ Jam)</option>
                         </select>
                         <span className="material-symbols-outlined" style={{
                             position: 'absolute',
@@ -349,7 +349,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                                     alignItems: 'center'
                                 }}>
                                     <div>
-                                        <p style={{ margin: '0 0 4px 0', fontSize: '10px', fontWeight: 700, letterSpacing: '0.20em', textTransform: 'uppercase', color: '#5c4039' }}>Starts from</p>
+                                        <p style={{ margin: '0 0 4px 0', fontSize: '10px', fontWeight: 700, letterSpacing: '0.20em', textTransform: 'uppercase', color: '#5c4039' }}>Mulai dari</p>
                                         <p style={{ margin: 0, fontSize: '24px', fontWeight: 800, color: '#b32000' }}>{exp.price}</p>
                                     </div>
                                     <button 
@@ -368,7 +368,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                                             border: 'none',
                                             cursor: 'pointer'
                                         }}
-                                    >Book Now</button>
+                                    >Order Sekarang</button>
                                 </div>
                             </div>
                         </article>
@@ -394,7 +394,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                         color: '#131e1b',
                         textAlign: 'center',
                         marginBottom: '64px'
-                    }}>Preparing for Adventure</h2>
+                    }}>Siapkan Petualangan</h2>
                     
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '48px' }}>
                         {/* What's Included */}
@@ -405,14 +405,14 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                         }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
                                 <span className="material-symbols-outlined" style={{ color: '#006b5e', fontSize: '36px', fontVariationSettings: "'FILL' 1" }}>check_circle</span>
-                                <h3 style={{ fontFamily: font, fontSize: '24px', fontWeight: 700, margin: 0 }}>What's Included</h3>
+                                <h3 style={{ fontFamily: font, fontSize: '24px', fontWeight: 700, margin: 0 }}>Fasilitas termasuk</h3>
                             </div>
                             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '20px' }}>
                                 {[
-                                    { icon: 'directions_car', text: 'Pick-up service from local hotels' },
-                                    { icon: 'security', text: 'Professional safety gear & equipment' },
-                                    { icon: 'restaurant', text: 'Traditional Bugis lunch & refreshments' },
-                                    { icon: 'medical_services', text: 'Travel insurance coverage' }
+                                    { icon: 'directions_car', text: 'Layanan antar-jemput dari hotel' },
+                                    { icon: 'security', text: 'Alat keselamatan profesional & peralatan' },
+                                    { icon: 'restaurant', text: 'Makan siang tradisional Bugis & minuman segar' },
+                                    { icon: 'medical_services', text: 'Cakupan asuransi perjalanan' }
                                 ].map((item, idx) => (
                                     <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                                         <span className="material-symbols-outlined" style={{ color: '#006b5e' }}>{item.icon}</span>
@@ -430,14 +430,14 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                         }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
                                 <span className="material-symbols-outlined" style={{ color: '#b32000', fontSize: '36px', fontVariationSettings: "'FILL' 1" }}>backpack</span>
-                                <h3 style={{ fontFamily: font, fontSize: '24px', fontWeight: 700, margin: 0 }}>What to Bring</h3>
+                                <h3 style={{ fontFamily: font, fontSize: '24px', fontWeight: 700, margin: 0 }}>Persiapan perjalanan</h3>
                             </div>
                             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '20px' }}>
                                 {[
-                                    { icon: 'wb_sunny', text: 'Sunblock & sunglasses' },
-                                    { icon: 'checkroom', text: 'Extra change of clothes' },
-                                    { icon: 'footprint', text: 'Comfortable walking shoes' },
-                                    { icon: 'payments', text: 'Cash for personal expenses' }
+                                    { icon: 'wb_sunny', text: 'Tabir surya & kacamata hitam' },
+                                    { icon: 'checkroom', text: 'Pakaian cadangan' },
+                                    { icon: 'footprint', text: 'Sepatu jalan yang nyaman' },
+                                    { icon: 'payments', text: 'Uang tunai untuk pengeluaran pribadi' }
                                 ].map((item, idx) => (
                                     <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                                         <span className="material-symbols-outlined" style={{ color: '#b32000' }}>{item.icon}</span>
@@ -454,55 +454,30 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
             <section style={{ padding: '80px 64px', maxWidth: '1440px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '64px' }}>
                     
-                    {/* Phone Frame Mockup for Explorer Map */}
+                    {/* Explorer Map Card */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                        <h2 style={{ fontFamily: font, fontSize: '32px', fontWeight: 700, margin: 0 }}>Where You'll Go</h2>
+                        <h2 style={{ fontFamily: font, fontSize: '32px', fontWeight: 700, margin: 0 }}>Jelajahi destinasi anda</h2>
                         
                         <div style={{
-                            position: 'relative',
-                            width: '280px',
-                            height: '560px',
+                            width: '100%',
+                            maxWidth: '640px',
                             margin: '0 auto',
-                            backgroundColor: '#131e1b',
-                            borderRadius: '40px',
-                            padding: '10px',
-                            boxShadow: '0 30px 60px -15px rgba(0,0,0,0.4)',
-                            border: '4px solid #27332f',
-                            boxSizing: 'border-box'
+                            borderRadius: '32px',
+                            overflow: 'hidden',
+                            backgroundColor: '#ffffff',
+                            boxShadow: '0 28px 80px rgba(0, 0, 0, 0.12)',
+                            border: '1px solid rgba(0, 0, 0, 0.06)'
                         }}>
-                            {/* Island/Notch */}
-                            <div style={{
-                                position: 'absolute',
-                                top: '15px',
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                                width: '100px',
-                                height: '22px',
-                                backgroundColor: '#131e1b',
-                                borderRadius: '9999px',
-                                zIndex: 30
-                            }}></div>
-
-                            {/* Screen Container */}
-                            <div style={{
-                                width: '100%',
-                                height: '100%',
-                                borderRadius: '32px',
-                                overflow: 'hidden',
-                                position: 'relative',
-                                backgroundColor: '#deebe6',
-                                boxSizing: 'border-box'
-                            }}>
-                                {/* Map Loading Pulse */}
+                            <div style={{ position: 'relative', width: '100%', paddingTop: '58%', backgroundColor: '#f7faf8' }}>
                                 {!mapLoaded && (
                                     <div style={{
                                         position: 'absolute',
                                         inset: 0,
-                                        backgroundColor: '#deebe6',
+                                        backgroundColor: '#f7faf8',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        zIndex: 20
+                                        zIndex: 10
                                     }}>
                                         <div style={{
                                             width: '40px',
@@ -515,52 +490,74 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                                     </div>
                                 )}
 
-                                {/* Map Image */}
-                                <img 
-                                    alt="Map of Tanjung Bira" 
+                                <img
+                                    alt="Peta Tanjung Bira"
                                     className="map-glow-hover"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnq1s60DtPrjxa70sCSqGG_rkcczMIyIzifJa2O9m8vFNz5BVlG-UQpEEw5BlPvP_fLop8KWkKJlI2Mq0dktWdAP2Re-RVm3biy0DAMGyJB8E5GaEQ60AAKNW16_b5cTW-lTQ6fTVAJ1pYrHtsJpLqo0Gr8h9sIysen0clP968KnbzcenJ7iW6wkTDrXnAZZcMYbnCTHrPbaN7P5mig_ikuvOawkPQNcsfYMSB_YhnrpYVTIzfLbDx3ENCAe9rG_wPfVEahFJEyYQ"
+                                    src="mapsbira.jpg"
                                     style={{
+                                        position: 'absolute',
+                                        inset: 0,
                                         width: '100%',
                                         height: '100%',
                                         objectFit: 'cover',
-                                        filter: 'grayscale(1) brightness(0.8)',
-                                        cursor: 'pointer'
+                                        filter: 'brightness(0.98) contrast(1.05)',
+                                        transform: 'scale(1.02)'
                                     }}
                                 />
 
-                                {/* Map Pill Badge Overlay */}
                                 <div style={{
                                     position: 'absolute',
-                                    bottom: '24px',
-                                    left: '50%',
-                                    transform: 'translateX(-50%)',
-                                    width: '80%',
-                                    zIndex: 25,
-                                    pointerEvents: 'none'
+                                    top: '18px',
+                                    left: '18px',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    padding: '10px 14px',
+                                    borderRadius: '9999px',
+                                    backgroundColor: 'rgba(0, 0, 0, 0.36)',
+                                    color: '#ffffff',
+                                    fontSize: '12px',
+                                    fontWeight: 700,
+                                    letterSpacing: '0.08em'
                                 }}>
-                                    <div style={{
-                                        backgroundColor: 'rgba(179,32,0,0.95)',
-                                        color: '#fff',
-                                        padding: '10px 16px',
-                                        borderRadius: '9999px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        gap: '6px',
-                                        boxShadow: '0 10px 20px rgba(0,0,0,0.2)'
-                                    }}>
-                                        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>location_on</span>
-                                        <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>Bira Explorer Map</span>
-                                    </div>
+                                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>location_on</span>
+                                    Jelajahi Bira
                                 </div>
+                            </div>
+
+                            <div style={{ padding: '28px 30px 24px', display: 'flex', flexDirection: 'column', gap: '18px' }}>
+                                <div>
+                                    <p style={{ margin: 0, fontSize: '18px', fontWeight: 700, color: '#131e1b' }}>Tanjung Bira, Sulawesi Selatan</p>
+                                    <p style={{ margin: '10px 0 0', fontSize: '14px', color: '#4f5f57', lineHeight: 1.7 }}>Temukan rute terbaik, pantai tersembunyi, dan highlights budaya lokal dalam satu tampilan peta yang bersih.</p>
+                                </div>
+
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '12px' }}>
+                                    <div style={{ padding: '16px', borderRadius: '20px', backgroundColor: '#f2faf7', color: '#006b5e', fontWeight: 700, fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Pantai</div>
+                                    <div style={{ padding: '16px', borderRadius: '20px', backgroundColor: '#f7f7f9', color: '#3a4f5d', fontWeight: 700, fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Budaya</div>
+                                    <div style={{ padding: '16px', borderRadius: '20px', backgroundColor: '#f7f7f9', color: '#3a4f5d', fontWeight: 700, fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Kuliner</div>
+                                    <div style={{ padding: '16px', borderRadius: '20px', backgroundColor: '#f2faf7', color: '#006b5e', fontWeight: 700, fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Adventure</div>
+                                </div>
+
+                                <button style={{
+                                    alignSelf: 'start',
+                                    padding: '14px 24px',
+                                    borderRadius: '9999px',
+                                    border: 'none',
+                                    backgroundColor: '#006b5e',
+                                    color: '#ffffff',
+                                    fontWeight: 700,
+                                    cursor: 'pointer',
+                                    boxShadow: '0 16px 30px rgba(0, 107, 94, 0.18)'
+                                }}>
+                                    Mulai Jelajah
+                                </button>
                             </div>
                         </div>
                     </div>
 
                     {/* Social Proof & Reviews */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-                        <h2 style={{ fontFamily: font, fontSize: '32px', fontWeight: 700, margin: 0 }}>Guest Stories</h2>
+                        <h2 style={{ fontFamily: font, fontSize: '32px', fontWeight: 700, margin: 0 }}>Kisah Perjalanan</h2>
                         
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
                             {/* Testimonial 1 */}
@@ -571,12 +568,12 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                                     ))}
                                 </div>
                                 <p style={{ fontSize: '14px', fontStyle: 'italic', color: '#5c4039', lineHeight: 1.6, marginBottom: '20px', margin: 0 }}>
-                                    "The Phinisi sunrise tour was life-changing. Watching the sun rise over the Flores Sea while drinking local coffee was pure magic."
+                                    "Tur menyaksikan matahari terbit di Phinisi benar-benar mengubah hidup. Menyaksikan matahari terbit di atas Laut Flores sambil menikmati kopi lokal adalah pengalaman yang sangat ajaib."
                                 </p>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                     <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#31fde1' }} />
                                     <div>
-                                        <p style={{ margin: 0, fontSize: '12px', fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase' }}>Elena S.</p>
+                                        <p style={{ margin: 0, fontSize: '12px', fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase' }}>Sayyid Kamal Assegaf</p>
                                         <p style={{ margin: 0, fontSize: '11px', color: '#5c4039' }}>August 2024</p>
                                     </div>
                                 </div>
@@ -591,12 +588,12 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                                     <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>star_half</span>
                                 </div>
                                 <p style={{ fontSize: '14px', fontStyle: 'italic', color: '#5c4039', lineHeight: 1.6, marginBottom: '20px', margin: 0 }}>
-                                    "The weaving workshop taught me so much about the Bugis heritage. Our guide was incredibly patient and talented."
+                                    "Lokakarya tenun itu mengajari saya banyak hal tentang warisan Bugis. Alhamdulillah Pemandu kami sangat sabar dan berbakat."
                                 </p>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                     <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#ffdad3' }} />
                                     <div>
-                                        <p style={{ margin: 0, fontSize: '12px', fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase' }}>Marcus W.</p>
+                                        <p style={{ margin: 0, fontSize: '12px', fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase' }}>Gus Thoriq Ziyad</p>
                                         <p style={{ margin: 0, fontSize: '11px', color: '#5c4039' }}>July 2024</p>
                                     </div>
                                 </div>
@@ -613,7 +610,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                             marginTop: 'auto'
                         }}>
                             <p style={{ fontSize: '32px', fontWeight: 800, color: '#006b5e', margin: '0 0 4px 0' }}>4.9 / 5.0</p>
-                            <p style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.20em', textTransform: 'uppercase', color: '#006b5e', opacity: 0.7, margin: '0 0 24px 0' }}>Based on 1,200+ Reviews</p>
+                            <p style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.20em', textTransform: 'uppercase', color: '#006b5e', opacity: 0.7, margin: '0 0 24px 0' }}>Berdasarkan 1,200+ ulasan tamu</p>
                             
                             {/* Avatars row */}
                             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
