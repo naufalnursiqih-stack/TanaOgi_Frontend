@@ -1,14 +1,163 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import DestinationMapCard from './DestinationMapCard';
 
-export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateCulture, onNavigateJournal, currentUser, onLogout }) {
+export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout }) {
     const [scrolled, setScrolled] = useState(false);
     const [activeCategory, setActiveCategory] = useState('All Experiences');
     const [selectedDuration, setSelectedDuration] = useState('Duration');
+    
+    // Reviews state
+    const [reviews, setReviews] = useState([
+        {
+            id: 1,
+            name: 'Sayyid Kamal Assegaf',
+            avatar: '#31fde1',
+            rating: 5,
+            text: 'Tur menyaksikan matahari terbit di Phinisi benar-benar mengubah hidup. Menyaksikan matahari terbit di atas Laut Flores sambil menikmati kopi lokal adalah pengalaman yang sangat ajaib.',
+            date: 'August 2024'
+        },
+        {
+            id: 2,
+            name: 'Gus Thoriq Ziyad',
+            avatar: '#ffdad3',
+            rating: 4,
+            text: 'Lokakarya tenun itu mengajari saya banyak hal tentang warisan Bugis. Alhamdulillah Pemandu kami sangat sabar dan berbakat.',
+            date: 'July 2024'
+        }
+    ]);
+    
+    // Review form state
+    const [newReviewRating, setNewReviewRating] = useState(0);
+    const [newReviewName, setNewReviewName] = useState('');
+    const [newReviewText, setNewReviewText] = useState('');
+    const [showReviewForm, setShowReviewForm] = useState(false);
     const [mapLoaded, setMapLoaded] = useState(false);
 
     const font = "'Plus Jakarta Sans', sans-serif";
+
+    const destinationRegionMap = {
+        'tanjung-bira': 'Kabupaten Bulukumba',
+        toraja: 'Kabupaten Toraja Utara',
+        malino: 'Kabupaten Gowa',
+        bantimurung: 'Kabupaten Maros',
+        selayar: 'Kabupaten Kepulauan Selayar',
+        gowa: 'Kabupaten Gowa',
+        pangkep: 'Kabupaten Pangkajene dan Kepulauan',
+    };
+
+    const curatedDestinationIds = {
+        'tanjung-bira': 3,
+        toraja: 1,
+        bantimurung: 2,
+    };
+
+    const handleExploreDestination = (destinationData) => {
+        if (!destinationData) return;
+
+        const curatedId = curatedDestinationIds[destinationData.id];
+        if (curatedId && onNavigateDestinationDetail) {
+            onNavigateDestinationDetail({ id: curatedId });
+            return;
+        }
+
+        const region = destinationRegionMap[destinationData.id] || 'Sulawesi Selatan';
+        const durationText = destinationData.routeInfo?.durationText || 'Estimasi sedang dihitung';
+        const distanceText = destinationData.routeInfo?.distanceText || 'Jarak sedang dihitung';
+
+        if (onNavigateDestinationDetail) {
+            onNavigateDestinationDetail({
+                id: destinationData.id,
+                title: destinationData.name,
+                region,
+                price: 'Hubungi tim TanaOgi',
+                coordinates: destinationData.coordinates,
+                aboutParagraphs: [
+                    destinationData.description,
+                    `Perjalanan dari ${destinationData.origin.name} menuju ${destinationData.name} memiliki estimasi ${durationText.toLowerCase()} dengan jarak sekitar ${distanceText.toLowerCase()}. Tim TanaOgi dapat membantu itinerary, transportasi, dan rekomendasi aktivitas terbaik untuk destinasi ini.`
+                ],
+                sidebarInfo: {
+                    jamOperasional: 'Sesuai jadwal tur',
+                    waktuTerbaik: 'Hubungi admin untuk rekomendasi musim terbaik',
+                    jarakMakassar: `${distanceText} (${durationText})`,
+                    weatherStatus: 'INFO',
+                    weatherTemp: '-'
+                }
+            });
+            return;
+        }
+
+        if (onNavigateDestinations) {
+            onNavigateDestinations();
+        }
+    };
+    
+    // Fungsi submit review
+    const handleSubmitReview = (e) => {
+        e.preventDefault();
+        if (!newReviewName.trim() || !newReviewText.trim() || newReviewRating === 0) {
+            alert('Mohon isi nama, rating, dan ulasan Anda!');
+            return;
+        }
+        
+        const currentDate = new Date();
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const formattedDate = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+        
+        // Generate random avatar color
+        const colors = ['#31fde1', '#ffdad3', '#fde047', '#86efac', '#93c5fd', '#d8b4fe'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        const newReview = {
+            id: Date.now(),
+            name: newReviewName,
+            avatar: randomColor,
+            rating: newReviewRating,
+            text: newReviewText,
+            date: formattedDate
+        };
+        
+        setReviews([newReview, ...reviews]);
+        
+        // Reset form
+        setNewReviewName('');
+        setNewReviewText('');
+        setNewReviewRating(0);
+        setShowReviewForm(false);
+        
+        console.log('Review submitted! (Akan disimpan ke database nanti):', newReview);
+    };
+    
+    // Hitung rata-rata rating
+    const averageRating = reviews.length > 0 
+        ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1)
+        : 0;
+    
+    // Komponen bintang rating
+    const StarRating = ({ rating, onRatingChange, interactive = false }) => {
+        return (
+            <div style={{ display: 'flex', gap: '2px' }}>
+                {[1, 2, 3, 4, 5].map(star => (
+                    <span
+                        key={star}
+                        onClick={interactive ? () => onRatingChange(star) : undefined}
+                        className="material-symbols-outlined"
+                        style={{
+                            fontVariationSettings: "'FILL' 1",
+                            color: star <= rating ? '#006b5e' : '#d1d5db',
+                            cursor: interactive ? 'pointer' : 'default',
+                            fontSize: '20px',
+                            transition: 'transform 0.2s ease',
+                            transform: interactive && star <= rating ? 'scale(1.1)' : 'scale(1)'
+                        }}
+                    >
+                        star
+                    </span>
+                ))}
+            </div>
+        );
+    };
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -121,7 +270,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                 <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                     <img 
                         alt="Pantai Tanjung Bira" 
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoBf4kHVlDZhroavsqD1Bm3SQ26q4QSwXJBemvCt1h8L594u8Ck2KeErkR2WKP9cUbFvXF-KeEypRg2PWNvbZh9NRLmG9ON8MdbrTkGd_ZSGZdihARnB0rkAeHQA3CWfFXCWPvDmYaJ6Q-v9CFPutBLDkaxWf1qcZ0-2Jj4TjiE-dG1CpL_uliWNCMg1SJAdo8yjmYqn9zXT4NJQxT5hsYVETMAxItk8y3xz9OXz2G1HQuYZb9B_JP7QYaKNyTUlbnHTbHz0-juC0"
+                        src="bira.jpg"
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                     <div style={{
@@ -383,6 +532,8 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                 </div>
             </main>
 
+
+
             {/* â”€â”€ Preparing for Adventure â”€â”€ */}
             <section style={{ backgroundColor: '#e4f1eb', padding: '80px 0' }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 64px', boxSizing: 'border-box' }}>
@@ -454,150 +605,131 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
             <section style={{ padding: '80px 64px', maxWidth: '1440px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '64px' }}>
                     
-                    {/* Explorer Map Card */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                        <h2 style={{ fontFamily: font, fontSize: '32px', fontWeight: 700, margin: 0 }}>Jelajahi destinasi anda</h2>
-                        
-                        <div style={{
-                            width: '100%',
-                            maxWidth: '640px',
-                            margin: '0 auto',
-                            borderRadius: '32px',
-                            overflow: 'hidden',
-                            backgroundColor: '#ffffff',
-                            boxShadow: '0 28px 80px rgba(0, 0, 0, 0.12)',
-                            border: '1px solid rgba(0, 0, 0, 0.06)'
-                        }}>
-                            <div style={{ position: 'relative', width: '100%', paddingTop: '58%', backgroundColor: '#f7faf8' }}>
-                                {!mapLoaded && (
-                                    <div style={{
-                                        position: 'absolute',
-                                        inset: 0,
-                                        backgroundColor: '#f7faf8',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        zIndex: 10
-                                    }}>
-                                        <div style={{
-                                            width: '40px',
-                                            height: '40px',
-                                            border: '4px solid #006b5e',
-                                            borderTopColor: 'transparent',
-                                            borderRadius: '50%',
-                                            animation: 'bounce-arrow 1s linear infinite'
-                                        }}></div>
-                                    </div>
-                                )}
-
-                                <img
-                                    alt="Peta Tanjung Bira"
-                                    className="map-glow-hover"
-                                    src="mapsbira.jpg"
-                                    style={{
-                                        position: 'absolute',
-                                        inset: 0,
-                                        width: '100%',
-                                        height: '100%',
-                                        objectFit: 'cover',
-                                        filter: 'brightness(0.98) contrast(1.05)',
-                                        transform: 'scale(1.02)'
-                                    }}
-                                />
-
-                                <div style={{
-                                    position: 'absolute',
-                                    top: '18px',
-                                    left: '18px',
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: '8px',
-                                    padding: '10px 14px',
-                                    borderRadius: '9999px',
-                                    backgroundColor: 'rgba(0, 0, 0, 0.36)',
-                                    color: '#ffffff',
-                                    fontSize: '12px',
-                                    fontWeight: 700,
-                                    letterSpacing: '0.08em'
-                                }}>
-                                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>location_on</span>
-                                    Jelajahi Bira
-                                </div>
-                            </div>
-
-                            <div style={{ padding: '28px 30px 24px', display: 'flex', flexDirection: 'column', gap: '18px' }}>
-                                <div>
-                                    <p style={{ margin: 0, fontSize: '18px', fontWeight: 700, color: '#131e1b' }}>Tanjung Bira, Sulawesi Selatan</p>
-                                    <p style={{ margin: '10px 0 0', fontSize: '14px', color: '#4f5f57', lineHeight: 1.7 }}>Temukan rute terbaik, pantai tersembunyi, dan highlights budaya lokal dalam satu tampilan peta yang bersih.</p>
-                                </div>
-
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '12px' }}>
-                                    <div style={{ padding: '16px', borderRadius: '20px', backgroundColor: '#f2faf7', color: '#006b5e', fontWeight: 700, fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Pantai</div>
-                                    <div style={{ padding: '16px', borderRadius: '20px', backgroundColor: '#f7f7f9', color: '#3a4f5d', fontWeight: 700, fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Budaya</div>
-                                    <div style={{ padding: '16px', borderRadius: '20px', backgroundColor: '#f7f7f9', color: '#3a4f5d', fontWeight: 700, fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Kuliner</div>
-                                    <div style={{ padding: '16px', borderRadius: '20px', backgroundColor: '#f2faf7', color: '#006b5e', fontWeight: 700, fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Adventure</div>
-                                </div>
-
-                                <button style={{
-                                    alignSelf: 'start',
-                                    padding: '14px 24px',
-                                    borderRadius: '9999px',
-                                    border: 'none',
-                                    backgroundColor: '#006b5e',
-                                    color: '#ffffff',
-                                    fontWeight: 700,
-                                    cursor: 'pointer',
-                                    boxShadow: '0 16px 30px rgba(0, 107, 94, 0.18)'
-                                }}>
-                                    Mulai Jelajah
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    {/* Explorer Map Card - New DestinationMapCard */}
+                    <DestinationMapCard 
+                        onNavigateDetail={handleExploreDestination}
+                    />
 
                     {/* Social Proof & Reviews */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-                        <h2 style={{ fontFamily: font, fontSize: '32px', fontWeight: 700, margin: 0 }}>Kisah Perjalanan</h2>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <h2 style={{ fontFamily: font, fontSize: '32px', fontWeight: 700, margin: 0 }}>Kisah Perjalanan</h2>
+                            <button 
+                                onClick={() => setShowReviewForm(!showReviewForm)}
+                                style={{
+                                    padding: '8px 24px',
+                                    borderRadius: '9999px',
+                                    backgroundColor: '#006b5e',
+                                    color: 'white',
+                                    border: 'none',
+                                    fontFamily: font,
+                                    fontSize: '14px',
+                                    fontWeight: 700,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease'
+                                }}
+                                onMouseOver={(e) => e.target.style.backgroundColor = '#004d44'}
+                                onMouseOut={(e) => e.target.style.backgroundColor = '#006b5e'}
+                            >
+                                {showReviewForm ? 'Batal' : 'Tulis Ulasan'}
+                            </button>
+                        </div>
                         
+                        {/* Form Review */}
+                        {showReviewForm && (
+                            <div className="glass-card-opaque cinematic-shadow" style={{
+                                padding: '24px',
+                                borderRadius: '12px',
+                                backgroundColor: 'rgba(0,107,94,0.03)',
+                                border: '1px solid rgba(0,107,94,0.15)'
+                            }}>
+                                <form onSubmit={handleSubmitReview} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                    <div>
+                                        <label style={{ fontSize: '14px', fontWeight: 700, color: '#131e1b', marginBottom: '8px', display: 'block' }}>Rating Anda</label>
+                                        <StarRating 
+                                            rating={newReviewRating} 
+                                            onRatingChange={setNewReviewRating} 
+                                            interactive={true} 
+                                        />
+                                    </div>
+                                    <div>
+                                        <label style={{ fontSize: '14px', fontWeight: 700, color: '#131e1b', marginBottom: '8px', display: 'block' }}>Nama Anda</label>
+                                        <input 
+                                            type="text" 
+                                            value={newReviewName}
+                                            onChange={(e) => setNewReviewName(e.target.value)}
+                                            placeholder="Masukkan nama Anda"
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                borderRadius: '8px',
+                                                border: '1px solid rgba(0,107,94,0.2)',
+                                                fontSize: '14px',
+                                                fontFamily: font,
+                                                outline: 'none'
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label style={{ fontSize: '14px', fontWeight: 700, color: '#131e1b', marginBottom: '8px', display: 'block' }}>Ulasan Anda</label>
+                                        <textarea 
+                                            value={newReviewText}
+                                            onChange={(e) => setNewReviewText(e.target.value)}
+                                            placeholder="Ceritakan pengalaman Anda..."
+                                            rows="4"
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                borderRadius: '8px',
+                                                border: '1px solid rgba(0,107,94,0.2)',
+                                                fontSize: '14px',
+                                                fontFamily: font,
+                                                outline: 'none',
+                                                resize: 'vertical'
+                                            }}
+                                        />
+                                    </div>
+                                    <button 
+                                        type="submit"
+                                        style={{
+                                            padding: '12px 24px',
+                                            borderRadius: '8px',
+                                            backgroundColor: '#006b5e',
+                                            color: 'white',
+                                            border: 'none',
+                                            fontFamily: font,
+                                            fontSize: '14px',
+                                            fontWeight: 700,
+                                            cursor: 'pointer',
+                                            transition: 'all 0.3s ease',
+                                            marginTop: '8px'
+                                        }}
+                                        onMouseOver={(e) => e.target.style.backgroundColor = '#004d44'}
+                                        onMouseOut={(e) => e.target.style.backgroundColor = '#006b5e'}
+                                    >
+                                        Kirim Ulasan
+                                    </button>
+                                </form>
+                            </div>
+                        )}
+                        
+                        {/* Daftar Ulasan */}
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
-                            {/* Testimonial 1 */}
-                            <div className="glass-card-opaque p-md rounded-lg cinematic-shadow" style={{ padding: '24px', borderRadius: '12px' }}>
-                                <div style={{ display: 'flex', gap: '2px', color: '#006b5e', marginBottom: '12px' }}>
-                                    {[...Array(5)].map((_, i) => (
-                                        <span key={i} className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1", fontSize: '20px' }}>star</span>
-                                    ))}
-                                </div>
-                                <p style={{ fontSize: '14px', fontStyle: 'italic', color: '#5c4039', lineHeight: 1.6, marginBottom: '20px', margin: 0 }}>
-                                    "Tur menyaksikan matahari terbit di Phinisi benar-benar mengubah hidup. Menyaksikan matahari terbit di atas Laut Flores sambil menikmati kopi lokal adalah pengalaman yang sangat ajaib."
-                                </p>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#31fde1' }} />
-                                    <div>
-                                        <p style={{ margin: 0, fontSize: '12px', fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase' }}>Sayyid Kamal Assegaf</p>
-                                        <p style={{ margin: 0, fontSize: '11px', color: '#5c4039' }}>August 2024</p>
+                            {reviews.map(review => (
+                                <div key={review.id} className="glass-card-opaque p-md rounded-lg cinematic-shadow" style={{ padding: '24px', borderRadius: '12px' }}>
+                                    <StarRating rating={review.rating} />
+                                    <p style={{ fontSize: '14px', fontStyle: 'italic', color: '#5c4039', lineHeight: 1.6, marginBottom: '20px', marginTop: '12px' }}>
+                                        "{review.text}"
+                                    </p>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: review.avatar }} />
+                                        <div>
+                                            <p style={{ margin: 0, fontSize: '12px', fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase' }}>{review.name}</p>
+                                            <p style={{ margin: 0, fontSize: '11px', color: '#5c4039' }}>{review.date}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            {/* Testimonial 2 */}
-                            <div className="glass-card-opaque p-md rounded-lg cinematic-shadow" style={{ padding: '24px', borderRadius: '12px' }}>
-                                <div style={{ display: 'flex', gap: '2px', color: '#006b5e', marginBottom: '12px' }}>
-                                    {[...Array(4)].map((_, i) => (
-                                        <span key={i} className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1", fontSize: '20px' }}>star</span>
-                                    ))}
-                                    <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>star_half</span>
-                                </div>
-                                <p style={{ fontSize: '14px', fontStyle: 'italic', color: '#5c4039', lineHeight: 1.6, marginBottom: '20px', margin: 0 }}>
-                                    "Lokakarya tenun itu mengajari saya banyak hal tentang warisan Bugis. Alhamdulillah Pemandu kami sangat sabar dan berbakat."
-                                </p>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#ffdad3' }} />
-                                    <div>
-                                        <p style={{ margin: 0, fontSize: '12px', fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase' }}>Gus Thoriq Ziyad</p>
-                                        <p style={{ margin: 0, fontSize: '11px', color: '#5c4039' }}>July 2024</p>
-                                    </div>
-                                </div>
-                            </div>
+                            ))}
                         </div>
 
                         {/* Overall Rating card */}
@@ -609,41 +741,47 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                             textAlign: 'center',
                             marginTop: 'auto'
                         }}>
-                            <p style={{ fontSize: '32px', fontWeight: 800, color: '#006b5e', margin: '0 0 4px 0' }}>4.9 / 5.0</p>
-                            <p style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.20em', textTransform: 'uppercase', color: '#006b5e', opacity: 0.7, margin: '0 0 24px 0' }}>Berdasarkan 1,200+ ulasan tamu</p>
+                            <p style={{ fontSize: '32px', fontWeight: 800, color: '#006b5e', margin: '0 0 4px 0' }}>{averageRating} / 5.0</p>
+                            <p style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.20em', textTransform: 'uppercase', color: '#006b5e', opacity: 0.7, margin: '0 0 24px 0' }}>Berdasarkan {reviews.length} ulasan tamu</p>
                             
                             {/* Avatars row */}
                             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <img 
-                                    alt="User avatar 1" 
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPcAXA0eYzzL17Th54MFeukGezfs_MywJXRz5voD5qJwlzolON7QnXsvc8Iq6iGZ0v0uH6SwkrlRGHVCTEVtUJl9tTHImFojRJ5RHLFMBfitcqVlU9GxXsEAFDd3NV1Ly706YkU0NRo5eeNyzkoOycCehlN4IaWkwSkqdpA15kg1Iul0UcARHS_A4CCWYdMIZV96TP6CfeBMpAAq0EXAzJy75Pya-nkOliPIyXMhPclsXTwb6IEsYM8d1iAv3sHDLozCzNOazqMZw"
-                                    style={{ width: '32px', height: '32px', borderRadius: '50%', border: '2px solid #ffffff', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
-                                />
-                                <img 
-                                    alt="User avatar 2" 
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1I8FrAojga6cGhmVHnpAcbLpWCCEsXXsl4oqH7SOh1JCylfSULQmP0Aimwd8nqzdXrFEJLv1FjEmB0REor0S9jKtXy3CayUY6mkutgAVgOBjfLfJKvJmS3GmhAJMkaBDq8N-rrcFLL6h2APGrmv4nqJI_yexXCZfiwYcZyLMo3eZYSclGIbbiRWK00gh_wYz2snjDrl5Xj2WKXsxoHp0FbZZIU86uRNMgYZdQrXSCRYXXafAg0Zb5N2IlCzhTT15wL6g6_Qjpr6E"
-                                    style={{ width: '32px', height: '32px', borderRadius: '50%', border: '2px solid #ffffff', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginLeft: '-12px' }}
-                                />
-                                <img 
-                                    alt="User avatar 3" 
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2JxX80OhTIoK2A2u7Sre5XN4zwGmwzhd3mu9ELafczcOIHmkfu4wgRlKScK7bMa1WRyEjt6TLqFD1jIUsCu5DFDj8hFLhioj6aUt0FPnPQZ4XLzUSQbQxw9eu1bIWOT7qJ771O6gWkCgTNDx-wpMMVw1cjCRtjjMe0jz6iltvlH-krAxkX8b9ygIhHkfUnZ1KtRdS6EYqYc9E0RWhCmBgfszjG-EDc5l6p_YwqlnApyJBO3vfERU1lbXDgiag_zMR7AGOLtLgTjc"
-                                    style={{ width: '32px', height: '32px', borderRadius: '50%', border: '2px solid #ffffff', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginLeft: '-12px' }}
-                                />
-                                <div style={{
-                                    width: '32px',
-                                    height: '32px',
-                                    borderRadius: '50%',
-                                    backgroundColor: '#d9e5e0',
-                                    border: '2px solid #ffffff',
-                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                                    marginLeft: '-12px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    fontSize: '10px',
-                                    fontWeight: 700,
-                                    color: '#131e1b'
-                                }}>+1k</div>
+                                {reviews.slice(0, 3).map((review, idx) => (
+                                    <div 
+                                        key={idx}
+                                        style={{
+                                            width: '32px',
+                                            height: '32px',
+                                            borderRadius: '50%',
+                                            backgroundColor: review.avatar,
+                                            border: '2px solid #ffffff',
+                                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                                            marginLeft: idx > 0 ? '-12px' : '0',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            fontSize: '10px',
+                                            fontWeight: 700
+                                        }}
+                                    />
+                                ))}
+                                {reviews.length > 3 && (
+                                    <div style={{
+                                        width: '32px',
+                                        height: '32px',
+                                        borderRadius: '50%',
+                                        backgroundColor: '#d9e5e0',
+                                        border: '2px solid #ffffff',
+                                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                                        marginLeft: '-12px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        fontSize: '10px',
+                                        fontWeight: 700,
+                                        color: '#131e1b'
+                                    }}>+{reviews.length - 3}</div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -657,6 +795,12 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                 onNavigateExperiences={() => {}}
                 onNavigateCulture={onNavigateCulture}
                 onNavigateJournal={onNavigateJournal}
+                onNavigateTravelGuide={onNavigateTravelGuide}
+                onNavigateSustainability={onNavigateSustainability}
+                onNavigateAbout={onNavigateAbout}
+                onNavigatePressKit={onNavigatePressKit}
+                onNavigatePrivacyPolicy={onNavigatePrivacyPolicy}
+                onNavigateTerms={onNavigateTerms}
             />
         </div>
     );

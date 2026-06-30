@@ -676,3 +676,22 @@
         opacity: 0;
     }
 }
+
+/* Fix Leaflet Z-Index Issue - Ensure Navbar stays on top */
+.leaflet-container {
+    z-index: 1 !important;
+}
+
+.leaflet-pane,
+.leaflet-tile-pane,
+.leaflet-overlay-pane,
+.leaflet-shadow-pane,
+.leaflet-marker-pane,
+.leaflet-popup-pane,
+.leaflet-map-pane {
+    z-index: 1 !important;
+}
+
+.leaflet-control {
+    z-index: 2 !important;
+}

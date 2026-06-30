@@ -2,7 +2,7 @@
 import Navbar from './Navbar';
 import Footer from './Footer';
 
-export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, currentUser, onLogout }) {
+export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout }) {
     const [scrolled, setScrolled] = useState(false);
     const [activeRegion, setActiveRegion] = useState('Semua Wilayah');
     const font = "'Plus Jakarta Sans', sans-serif";
@@ -70,7 +70,7 @@ export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, o
             region: 'Toraja Utara',
             tag: 'WARISAN LELUHUR',
             desc: 'Desa adat berumur ratusan tahun dengan deretan tongkonan megah dan kuburan tebing bersejarah yang menakjubkan.',
-            image: 'https://lh3.googleusercontent.com/aida/AP1WRLvYeqrFdeRQkI8xbVEV6cMH7JOrbWRCkKLeIokvPZjE3C0Rt_Cpuu3EZPPXZHSP7NsyDJwqYBq3xbfpC8Evsj0zfYM91C0K5nH4gw3ztbX_7uTlLtptZ3KwNsdnihGdbwh05dY1uyPEOcY6ca540N0pzwYFAVw4hUU6ZBGRyeHPPA6Ga7Az_KCbMemzLl4yZmriqjNNRYNroAv0eayLwsKeh64oiv8hBdxp5OKmFkxK-2CAyjsmbB7FEQ',
+            image: 'ketekesu.jpg',
             featured: true
         },
         {
@@ -79,7 +79,7 @@ export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, o
             region: 'Maros',
             tag: 'KEANEKARAGAMAN HAYATI',
             desc: 'Labirin batu kapur purba terindah kedua di dunia dengan aliran sungai yang tenang menyusuri gua-gua prasejarah.',
-            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCc6KtwA3DqtQmGNYT0zf93pd0fulPEMYOz_WmFoXw70YEwqC6MWXhKMarSvYnWjjcRtSH3n1JfH_3yGCFhsKQlCYFz2q-D7rOqZehIqPKRj9Yv3WZyEJj1cXXfhgEKILTc1GheVjUE-aqOLi91YN4kouhd1WrRSQwe3LpV9Z-W7cm2Yiutz83ugleIhCzOHN7hf-nn9awE65vE_D5xafr1VDgMmA8xqKiV0_blNcKvds7DXEDhzJ24fMk3F9qOAs-i94_6l4kdnI8',
+            image: 'karsmaros.jpg',
             featured: false
         },
         {
@@ -88,7 +88,7 @@ export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, o
             region: 'Bulukumba',
             tag: 'PESONA PESISIR',
             desc: 'Hamparan pasir putih selembut tepung dengan gradasi warna air laut biru toska yang memanjakan mata.',
-            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBAChlvmSARo8RJAp3UQjOtUYXO3LwvQFPmO1yjxfzhSuc96U7Qk-H01XARKly92BGXRN_JYh9hrLbhcZ-XKySsBW6eL6f1VTua6Pj2n8l0TjMzQCe9PXBpEADX3zulC6RqA3NctBaTVxu3WYMVT6AVMgJ0jetiZw97rWH9pqDWgUOmk_FP8ueecdRgRMsNmG_Hjy3QnqbykOCi4zWKXUbYnxmzgzOtNjnviDsiwuRXGAzt4nldxDqm8ZKqxdrxOj74LqqHolEvBzc',
+            image: 'tanjungbira.jpg',
             featured: false
         },
         {
@@ -97,7 +97,7 @@ export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, o
             region: 'Bulukumba',
             tag: 'TEBING MAHA DAHSYAT',
             desc: 'Kemegahan dinding tebing batu cadas berpadu birunya air laut lepas Flores yang eksotis dan memicu adrenalin.',
-            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAB428y5rHMi0j0psH-XT3wj3gCWYo5gY68iXAqVfg1rV7nNpurpVPn2l2T-9rKhyF2krAK9SX6earjDU9vWo3WiOiwLWlFgopjKalHYmRW09oy6zJzFn0HodB9pE-Jl-NTmWhsPIwhCdBAlibPTi6voavov-7vyKlhG-I7DYXpnqE8t0xYGlXpmFqEGx3q3-mwktg-6DR5QXxvFjmT1h8RVZqFq1zIi_gnptl9CUMKai43qMFX6ctxDLQ7fGkb6jVSVfZzy47e_Tw',
+            image: 'tebingappalarang.jpg',
             featured: false
         },
         {
@@ -106,7 +106,7 @@ export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, o
             region: 'Maros',
             tag: 'PRASEJARAH',
             desc: 'Situs lukisan telapak tangan gua purba berusia puluhan ribu tahun dari peradaban manusia prasejarah awal di Sulawesi.',
-            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDeyTYN0gGp39FX9kFka9pq_LvmU1fXakF18AX2WQMHB7auwbLlOilicr3EusU8PU9BbjIT2pbz24i0AE6L1CPuOgONhbVSQOXLM6GJIlq2AIkqtksGxc8En3u3eNEsN_jG9tHyi8AWkckJvDQmrRMXNgLQtT_4TSWJXWYSd_-OkM_hcK7Iq3vul4NPlH0eCcdh_SMPJaVgfZWkvCIL2rvdrvOzvQLEhaNn0cByfvLLw1WGqmrzbk64qN3rmRuwH8hkVKYM1vxOO_8',
+            image: 'leangleang.jpg',
             featured: false
         },
         {
@@ -115,7 +115,7 @@ export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, o
             region: 'Bone',
             tag: 'SEJARAH MISTIS',
             desc: 'Gua alam legendaris terluas di Sulawesi Selatan dengan formasi stalaktit dan stalagmit unik menyerupai legenda pemukiman kuno.',
-            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD2tpd489SCZCN7osEY1vPx5f5LQF0gN9GRwcwNfsNvGhpFHBhJ3FT3qBSA6KRK91qtPCi2GPbIw2eJ1DqIges9EBOg0qPttMYeH_KJgeznyFTeuH36Pdab31tHRTqkaIp2Gi81qLeKhrdljbU0RsGCLKqNaBdiqh2zA0gNn3BWCaqm_K6m_aoNGvGj-jQfI1ZsxhYrvMAXrUUHQ6w2gyj8Hkuh2h1F_eEkGcQs5EQsMta0KRvsjHYZo3-UtY1GTsfvfp8WQ2jPbsI',
+            image: 'guamampubone.jpg',
             featured: false
         }
     ];
@@ -343,6 +343,12 @@ export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, o
                 onNavigateExperiences={onNavigateExperiences}
                 onNavigateCulture={onNavigateCulture}
                 onNavigateJournal={onNavigateJournal}
+                onNavigateTravelGuide={onNavigateTravelGuide}
+                onNavigateSustainability={onNavigateSustainability}
+                onNavigateAbout={onNavigateAbout}
+                onNavigatePressKit={onNavigatePressKit}
+                onNavigatePrivacyPolicy={onNavigatePrivacyPolicy}
+                onNavigateTerms={onNavigateTerms}
             />
         </div>
     );

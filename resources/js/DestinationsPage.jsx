@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
-export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateAllDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, currentUser, onLogout }) {
+export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateAllDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout }) {
     const [scrolled, setScrolled] = useState(false);
     const [heroVisible, setHeroVisible] = useState(false);
     const font = "'Plus Jakarta Sans', sans-serif";
@@ -36,7 +36,7 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
             id: 2,
             colSpan: '4',
             height: '600px',
-            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCc6KtwA3DqtQmGNYT0zf93pd0fulPEMYOz_WmFoXw70YEwqC6MWXhKMarSvYnWjjcRtSH3n1JfH_3yGCFhsKQlCYFz2q-D7rOqZehIqPKRj9Yv3WZyEJj1cXXfhgEKILTc1GheVjUE-aqOLi91YN4kouhd1WrRSQwe3LpV9Z-W7cm2Yiutz83ugleIhCzOHN7hf-nn9awE65vE_D5xafr1VDgMmA8xqKiV0_blNcKvds7DXEDhzJ24fMk3F9qOAs-i94_6l4kdnI8',
+            image: 'https://lh3.googleusercontent.com/aida-publAB6AXuCc6KtwA3DqtQmGNYT0zf93pd0fulPEMYOz_WmFoXw70YEwqC6MWXhKMarSvYnWjjcRtSH3n1JfH_3yGCFhsKQlCYFz2q-D7rOqZehIqPKRj9Yv3WZyEJj1cXXfhgEKILTc1GheVjUE-aqOLi91YN4kouhd1WrRSQwe3LpV9Z-W7cm2Yiutz83ugleIhCzOHN7hf-nn9awE65vE_D5xafr1VDgMmA8xqKiV0_blNcKvds7DXEDhzJ24fMk3F9qOAs-i94_6l4kdnI8',
             alt: 'Rammang-Rammang',
             tag: 'KEANEKARAGAMAN HAYATI',
             title: 'Hutan Karst Maros',
@@ -75,8 +75,8 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                 {/* Hero BG */}
                 <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                     <img
-                        alt="Pantai Pasir Putih"
-                        src="/pantai-pasir-putih.jpg"
+                        alt="Malino HighLand"
+                        src="batubatu.jpg"
                         className="w-full h-full object-cover"
                         style={{
                             width: '100%',
@@ -313,7 +313,7 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                     >
                         <img
                             alt="Hutan Karst Maros"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc6KtwA3DqtQmGNYT0zf93pd0fulPEMYOz_WmFoXw70YEwqC6MWXhKMarSvYnWjjcRtSH3n1JfH_3yGCFhsKQlCYFz2q-D7rOqZehIqPKRj9Yv3WZyEJj1cXXfhgEKILTc1GheVjUE-aqOLi91YN4kouhd1WrRSQwe3LpV9Z-W7cm2Yiutz83ugleIhCzOHN7hf-nn9awE65vE_D5xafr1VDgMmA8xqKiV0_blNcKvds7DXEDhzJ24fMk3F9qOAs-i94_6l4kdnI8"
+                            src="rammangrammang.jpg"
                             className="dest-card-img"
                             style={{
                                 width: '100%',
@@ -340,7 +340,7 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                                 fontWeight: 700,
                                 letterSpacing: '0.20em',
                                 textTransform: 'uppercase',
-                                color: '#006b5e',
+                                color: '#ffffffff',
                                 display: 'block',
                                 marginBottom: '4px',
                             }}>KEANEKARAGAMAN HAYATI</span>
@@ -393,7 +393,7 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                     >
                         <img
                             alt="Pasir Putih Tanjung Bira"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAChlvmSARo8RJAp3UQjOtUYXO3LwvQFPmO1yjxfzhSuc96U7Qk-H01XARKly92BGXRN_JYh9hrLbhcZ-XKySsBW6eL6f1VTua6Pj2n8l0TjMzQCe9PXBpEADX3zulC6RqA3NctBaTVxu3WYMVT6AVMgJ0jetiZw97rWH9pqDWgUOmk_FP8ueecdRgRMsNmG_Hjy3QnqbykOCi4zWKXUbYnxmzgzOtNjnviDsiwuRXGAzt4nldxDqm8ZKqxdrxOj74LqqHolEvBzc"
+                            src="pasirputihbulkum.jpg"
                             className="dest-card-img"
                             style={{
                                 width: '100%',
@@ -612,6 +612,12 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                 onNavigateExperiences={onNavigateExperiences}
                 onNavigateCulture={onNavigateCulture}
                 onNavigateJournal={onNavigateJournal}
+                onNavigateTravelGuide={onNavigateTravelGuide}
+                onNavigateSustainability={onNavigateSustainability}
+                onNavigateAbout={onNavigateAbout}
+                onNavigatePressKit={onNavigatePressKit}
+                onNavigatePrivacyPolicy={onNavigatePrivacyPolicy}
+                onNavigateTerms={onNavigateTerms}
             />
         </div>
     );

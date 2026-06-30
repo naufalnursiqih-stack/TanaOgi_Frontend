@@ -9,6 +9,12 @@ export default function Footer({
     onNavigateExperiences,
     onNavigateCulture,
     onNavigateJournal,
+    onNavigateTravelGuide,
+    onNavigateSustainability,
+    onNavigateAbout,
+    onNavigatePressKit,
+    onNavigatePrivacyPolicy,
+    onNavigateTerms,
 }) {
     const font = "'Plus Jakarta Sans', sans-serif";
 
@@ -128,16 +134,21 @@ export default function Footer({
                 {/* Panduan */}
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <span style={colTitleStyle}>PANDUAN</span>
-                    {['Panduan Perjalanan', 'Keberlanjutan', 'Tentang Kami', 'Press Kit'].map(link => (
+                    {[
+                        { label: 'Panduan Perjalanan', action: onNavigateTravelGuide },
+                        { label: 'Keberlanjutan', action: onNavigateSustainability },
+                        { label: 'Tentang Kami', action: onNavigateAbout },
+                        { label: 'Press Kit', action: onNavigatePressKit },
+                    ].map(({ label, action }) => (
                         <a
-                            key={link}
+                            key={label}
                             href="#"
-                            onClick={e => e.preventDefault()}
+                            onClick={e => { e.preventDefault(); if (action) action(); }}
                             style={{ ...footerLinkStyle, marginBottom: '12px' }}
                             onMouseEnter={e => e.currentTarget.style.color = '#00dfc5'}
                             onMouseLeave={e => e.currentTarget.style.color = '#5c4039'}
                         >
-                            {link}
+                            {label}
                         </a>
                     ))}
                 </div>
@@ -145,16 +156,19 @@ export default function Footer({
                 {/* Legal */}
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <span style={colTitleStyle}>LEGAL</span>
-                    {['Kebijakan Privasi', 'Syarat & Ketentuan'].map(link => (
+                    {[
+                        { label: 'Kebijakan Privasi', action: onNavigatePrivacyPolicy },
+                        { label: 'Syarat & Ketentuan', action: onNavigateTerms },
+                    ].map(({ label, action }) => (
                         <a
-                            key={link}
+                            key={label}
                             href="#"
-                            onClick={e => e.preventDefault()}
+                            onClick={e => { e.preventDefault(); if (action) action(); }}
                             style={{ ...footerLinkStyle, marginBottom: '12px' }}
                             onMouseEnter={e => e.currentTarget.style.color = '#00dfc5'}
                             onMouseLeave={e => e.currentTarget.style.color = '#5c4039'}
                         >
-                            {link}
+                            {label}
                         </a>
                     ))}
                 </div>

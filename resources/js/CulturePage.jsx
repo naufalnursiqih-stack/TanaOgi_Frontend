@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
-export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateExperiences, onNavigateAllDestinations, onNavigateJournal, currentUser, onLogout }) {
+export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateExperiences, onNavigateAllDestinations, onNavigateJournal, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout }) {
     const [scrolled, setScrolled] = useState(false);
     const [heroParallax, setHeroParallax] = useState(0);
 
@@ -33,7 +33,7 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
         { icon: 'history_edu', title: '700+ Tahun', sub: 'Tradisi Lisan & Ritual' },
         { icon: 'palette', title: '4 Warna Utama', sub: 'Filosofi Hidup (Sulapa Eppa)' },
         { icon: 'landscape', title: 'Lolai & Bira', sub: 'Pusat Konservasi Budaya' },
-        { icon: 'volunteer_activism', title: 'Kearifan Lokal', sub: "Siri' na Pesse" },
+        { icon: 'volunteer_activism', title: 'Kearifan Lokal', sub: "Siri' na pacce" },
     ];
 
     return (
@@ -65,7 +65,7 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                     <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                         <img
                             alt="Tana Toraja Tongkonan Houses at Dawn"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyoEUY0jkfS909Hwj7GFiU6741juhyMMa5cQvURNkLe3Nw1AF2unKHgCBuNd1dIiPqBZ4ywJ6gI7wUkKGDtfAKd_cH13x8JMO39yHWTmYnkxRm98ixHNvToDdvanGAdN51JCC-uT1wOPupL88rrsO6TvjR149n2-wAudc8lI2U4dyf8c-XG2ff79CR-RmrHTWOHIXTuBKnH6iVk1FI7HxY9-FMdhxxp_tr8Geex_SDriPjHMX0YlghKUzEjGdgupGNZ1JR_pKRPgs"
+                            src="tanatoraja.jpg"
                             style={{
                                 width: '100%',
                                 height: '100%',
@@ -154,7 +154,7 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                             }}>
                                 <img
                                     alt="Phinisi Shipbuilding at Bulukumba"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO86jhwDrtMFqCXxyvIYC07vhTYYL1y2P24IbgX6AdMgHQiMDNzDL6AAqoAkjRF1YqvmDlezmDES_VFlHdu1gfab3z3N6pEaiqzhBYlTw_DGRd_Bb1YwFA_tNb8CeE5fyqkFyhp89KPDPthmXIxpaUSnJEuTc1z8qX6zAGbxpG7UM57byoPSPsCd-1itb-VRuNbMXczqKO68L7w4y9B7p32S_H12Jn2aAapqeqlA2fChbZkKqcUCmQT0rsLkuyBoiLlowVMxp64D4"
+                                    src="kapalphinisi.jpg"
                                     style={{
                                         width: '100%',
                                         height: '100%',
@@ -322,7 +322,7 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                                 <div style={{ width: '66.67%', height: '500px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }}>
                                     <img
                                         alt="Bugis Weaving Artisan"
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3KDoQcl5be55BszxGVTC6e3Dw-pYiiYwdXXQLwtdA7hM9ekCyed62SZYCJy07uNmiiIZh2HQ-9rWvoO76VjFVphv4zTBOU-9y6eSh0l7P9Ei1u8L7JYoVIzxW0lOU_URUEhaPJoQAQ13C-S1R8QC4akhVV6-T4Wmt5TOGrY4s4KMBnKK_6Hum4ZMfLkrsudkmPueR9Xys1XRHxm-glW5qsuoorKMkmOf3mZemRLeVa6bp8cclMkca0vQ51ByyH3cvR8JL2pq0Sn0"
+                                        src="tenunbugis.jpg"
                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                     />
                                 </div>
@@ -411,8 +411,8 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                                 border: '4px solid #ffffff',
                             }}>
                                 <img
-                                    alt="Toraja Traditional Dance Performance"
-                                    src="taripagellu.jpg"
+                                    alt="Pakarena Traditional Dance Performance"
+                                    src="tariPakarena.jpg"
                                     style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.7s ease' }}
                                     onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.03)'}
                                     onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
@@ -440,9 +440,9 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                                     fontWeight: 700,
                                     color: '#ffffff',
                                     marginBottom: '4px',
-                                }}>Harmoni di Atas Awan</h3>
+                                }}>Harmoni dalam Gerak yang Lembut dan Penuh Makna</h3>
                                 <p style={{ fontFamily: font, fontSize: '16px', color: 'rgba(255,255,255,0.8)' }}>
-                                    Penampilan Tari Pagelu di Lolai, Tana Toraja.
+                                    Tari Pakarena adalah tarian khas Sulawesi Selatan yang menampilkan gerakan lembut dan penuh makna, melambangkan kesabaran, kesetiaan, dan keindahan budaya lokal.
                                 </p>
                             </div>
                         </div>
@@ -512,6 +512,12 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                 onNavigateExperiences={onNavigateExperiences}
                 onNavigateCulture={() => {}}
                 onNavigateJournal={onNavigateJournal}
+                onNavigateTravelGuide={onNavigateTravelGuide}
+                onNavigateSustainability={onNavigateSustainability}
+                onNavigateAbout={onNavigateAbout}
+                onNavigatePressKit={onNavigatePressKit}
+                onNavigatePrivacyPolicy={onNavigatePrivacyPolicy}
+                onNavigateTerms={onNavigateTerms}
             />
         </div>
     );

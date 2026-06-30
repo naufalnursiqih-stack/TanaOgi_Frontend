@@ -9,6 +9,8 @@ import CulturePage from './CulturePage';
 import JournalPage from './JournalPage';
 import DestinationDetailPage from './DestinationDetailPage';
 import DriversPage from './DriversPage';
+import SupportPageLayout from './SupportPageLayout';
+import { supportPages } from './supportPages';
 import Preloader from './Preloader';
 import AdminLoginPage from './AdminLoginPage';
 import AdminDashboard from './AdminDashboard';
@@ -601,7 +603,7 @@ function App() {
             destData = null;
         }
 
-        const pagesWithLoader = ['destinations', 'all-destinations', 'destination-detail', 'login', 'register', 'drivers'];
+        const pagesWithLoader = ['destinations', 'all-destinations', 'destination-detail', 'login', 'register', 'drivers', 'travel-guide', 'sustainability', 'about', 'press-kit', 'privacy', 'terms'];
 
         if (pagesWithLoader.includes(page)) {
             setShowLoader(true);
@@ -625,6 +627,15 @@ function App() {
                 setTransitioning(false);
             }, 250);
         }
+    };
+
+    const supportNavProps = {
+        onNavigateTravelGuide: () => navigateTo('travel-guide'),
+        onNavigateSustainability: () => navigateTo('sustainability'),
+        onNavigateAbout: () => navigateTo('about'),
+        onNavigatePressKit: () => navigateTo('press-kit'),
+        onNavigatePrivacyPolicy: () => navigateTo('privacy'),
+        onNavigateTerms: () => navigateTo('terms'),
     };
 
     return (
@@ -677,6 +688,7 @@ function App() {
                         onNavigateCulture={() => navigateTo('culture')}
                         onNavigateJournal={() => navigateTo('journal')}
                         onNavigateDestinationDetail={(dest) => navigateTo('destination-detail', dest)}
+                        {...supportNavProps}
                         currentUser={currentUser}
                         onLogout={handleLogout}
                     />
@@ -691,6 +703,7 @@ function App() {
                         onNavigateCulture={() => navigateTo('culture')}
                         onNavigateJournal={() => navigateTo('journal')}
                         onNavigateDestinationDetail={(dest) => navigateTo('destination-detail', dest)}
+                        {...supportNavProps}
                         currentUser={currentUser}
                         onLogout={handleLogout}
                     />
@@ -703,6 +716,8 @@ function App() {
                         onNavigateDestinations={() => navigateTo('destinations')}
                         onNavigateCulture={() => navigateTo('culture')}
                         onNavigateJournal={() => navigateTo('journal')}
+                        onNavigateDestinationDetail={(dest) => navigateTo('destination-detail', dest)}
+                        {...supportNavProps}
                         currentUser={currentUser}
                         onLogout={handleLogout}
                     />
@@ -716,6 +731,7 @@ function App() {
                         onNavigateAllDestinations={() => navigateTo('all-destinations')}
                         onNavigateExperiences={() => navigateTo('experiences')}
                         onNavigateJournal={() => navigateTo('journal')}
+                        {...supportNavProps}
                         currentUser={currentUser}
                         onLogout={handleLogout}
                     />
@@ -729,6 +745,7 @@ function App() {
                         onNavigateAllDestinations={() => navigateTo('all-destinations')}
                         onNavigateExperiences={() => navigateTo('experiences')}
                         onNavigateCulture={() => navigateTo('culture')}
+                        {...supportNavProps}
                         currentUser={currentUser}
                         onLogout={handleLogout}
                     />
@@ -744,6 +761,7 @@ function App() {
                         onNavigateCulture={() => navigateTo('culture')}
                         onNavigateJournal={() => navigateTo('journal')}
                         onNavigateDrivers={() => navigateTo('drivers')}
+                        {...supportNavProps}
                         destination={selectedDestination || {}}
                         currentUser={currentUser}
                         onLogout={handleLogout}
@@ -758,6 +776,23 @@ function App() {
                         onNavigateExperiences={() => navigateTo('experiences')}
                         onNavigateCulture={() => navigateTo('culture')}
                         onNavigateJournal={() => navigateTo('journal')}
+                        {...supportNavProps}
+                        currentUser={currentUser}
+                        onLogout={handleLogout}
+                    />
+                )}
+                {supportPages[currentPage] && (
+                    <SupportPageLayout
+                        pageKey={currentPage}
+                        content={supportPages[currentPage]}
+                        onNavigateHome={() => navigateTo('home')}
+                        onNavigateLogin={() => navigateTo('login')}
+                        onNavigateRegister={() => navigateTo('register')}
+                        onNavigateDestinations={() => navigateTo('destinations')}
+                        onNavigateExperiences={() => navigateTo('experiences')}
+                        onNavigateCulture={() => navigateTo('culture')}
+                        onNavigateJournal={() => navigateTo('journal')}
+                        {...supportNavProps}
                         currentUser={currentUser}
                         onLogout={handleLogout}
                     />
@@ -768,7 +803,7 @@ function App() {
                         onLogout={() => setCurrentPage('login')} 
                     />
                 )}
-                {!['home', 'register', 'login', 'admin-login', 'destinations', 'all-destinations', 'experiences', 'culture', 'journal', 'destination-detail', 'drivers', 'admin-dashboard'].includes(currentPage) && (
+                {!['home', 'register', 'login', 'admin-login', 'destinations', 'all-destinations', 'experiences', 'culture', 'journal', 'destination-detail', 'drivers', 'travel-guide', 'sustainability', 'about', 'press-kit', 'privacy', 'terms', 'admin-dashboard'].includes(currentPage) && (
                     <ErrorPage
                         errorCode={404}
                         onNavigateHome={() => navigateTo('home')}

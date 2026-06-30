@@ -10,6 +10,12 @@ export default function JournalPage({
     onNavigateAllDestinations,
     onNavigateExperiences,
     onNavigateCulture,
+    onNavigateTravelGuide,
+    onNavigateSustainability,
+    onNavigateAbout,
+    onNavigatePressKit,
+    onNavigatePrivacyPolicy,
+    onNavigateTerms,
     currentUser,
     onLogout,
 }) {
@@ -96,7 +102,7 @@ export default function JournalPage({
                     <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                         <img
                             alt="Landscape Sulawesi - Kabut Pagi di Atas Lembah Karst Maros"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY_vp4nnr2aXZg8bZ3dLj0-vJUblUXkMQnCqFtRF_jsLGgLhY0E_ghpbqygN67oU3X4qjyP4uHEnRG948vsF_8BHjV2VW4A3FOdZR2CLm7PqhChIULK1sWFQhD1qlDygxTxExlhOvVpOmJ6R3WfscFBD0YT2lKBWH460CYzB4nfU1lNK4aBZCXu-HZfjaJoG3XJBIPZnd-ZOKoPidqQaOnu346m5KhmQPtiMOmyLL_K317AD4MR_bmRG8wSdW2Ynq9_YPwuWxBkEw"
+                            src="sulsel.jpg"
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                         <div style={{
@@ -130,7 +136,7 @@ export default function JournalPage({
                                 fontFamily: font, fontSize: '18px', lineHeight: 1.6,
                                 color: 'rgba(255,255,255,0.9)', maxWidth: '560px',
                             }}>
-                                Selami jiwa Sulawesiâ€”dari katedral karst Maros hingga ukiran sakral Toraja yang menyimpan ribuan tahun sejarah.
+                                Selami jiwa Sulawesi dari katedral karst Maros hingga ukiran sakral Toraja yang menyimpan ribuan tahun sejarah.
                             </p>
                         </div>
                     </div>
@@ -424,6 +430,12 @@ export default function JournalPage({
                 onNavigateExperiences={onNavigateExperiences}
                 onNavigateCulture={onNavigateCulture}
                 onNavigateJournal={() => {}}
+                onNavigateTravelGuide={onNavigateTravelGuide}
+                onNavigateSustainability={onNavigateSustainability}
+                onNavigateAbout={onNavigateAbout}
+                onNavigatePressKit={onNavigatePressKit}
+                onNavigatePrivacyPolicy={onNavigatePrivacyPolicy}
+                onNavigateTerms={onNavigateTerms}
             />
         </div>
     );
