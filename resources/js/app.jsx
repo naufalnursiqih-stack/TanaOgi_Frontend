@@ -35,6 +35,7 @@ function Navbar({
     onLogout,
 }) {
     const [scrolled, setScrolled] = useState(false);
+    const isTransparent = isHeroTheme && !scrolled;
     const titles = ["ᨈᨊ ᨕᨚᨁᨗ", "TanaOgi'"];
     const [currentIndex, setCurrentIndex] = useState(0);
     const [fade, setFade] = useState(false);
@@ -70,7 +71,7 @@ function Navbar({
 
     // Menentukan warna teks link menu (Putih bersih jika di awal home page)
     const getDynamicTextColor = (key) => {
-        if (isHeroTheme && !scrolled) return '#ffffff';
+        if (isTransparent) return '#ffffff';
         if (isActive(key)) return '#b32000';
         return 'rgba(19,30,27,0.7)';
     };
@@ -78,10 +79,10 @@ function Navbar({
     const linkStyle = (key) => ({
         fontFamily: font,
         fontSize: '16px',
-        fontWeight: (isHeroTheme && !scrolled) ? 500 : (isActive(key) ? 700 : 500),
+        fontWeight: isTransparent ? 500 : (isActive(key) ? 700 : 500),
         color: getDynamicTextColor(key),
         textDecoration: 'none',
-        borderBottom: (isActive(key) && (!isHeroTheme || scrolled)) ? '2px solid #b32000' : '2px solid transparent',
+        borderBottom: (isActive(key) && !isTransparent) ? '2px solid #b32000' : '2px solid transparent',
         paddingBottom: '4px',
         transition: 'all 0.3s ease',
         cursor: 'pointer',
@@ -89,19 +90,20 @@ function Navbar({
     });
 
     return (
-        <header style={{
-            position: 'fixed',
-            top: 0,
-            width: '100%',
-            zIndex: 50,
-            // Jika di awal home, background dipaksa transparan total tanpa blur
-            backgroundColor: isHeroTheme && !scrolled ? 'transparent' : 'rgba(240,252,247,0.95)',
-            backdropFilter: isHeroTheme && !scrolled ? 'none' : 'blur(20px)',
-            WebkitBackdropFilter: isHeroTheme && !scrolled ? 'none' : 'blur(20px)',
-            borderBottom: isHeroTheme && !scrolled ? 'none' : '1px solid rgba(19,30,27,0.06)',
-            boxShadow: scrolled ? '0 4px 30px rgba(0,0,0,0.05)' : 'none',
-            transition: 'all 0.4s ease',
-        }}>
+        <header 
+            style={{
+                position: 'fixed',
+                top: 0,
+                width: '100%',
+                zIndex: 50,
+                backgroundColor: isTransparent ? 'transparent' : 'rgba(240,252,247,0.95)',
+                backdropFilter: isTransparent ? 'none' : 'blur(20px)',
+                WebkitBackdropFilter: isTransparent ? 'none' : 'blur(20px)',
+                borderBottom: isTransparent ? 'none' : '1px solid rgba(19,30,27,0.06)',
+                boxShadow: scrolled ? '0 4px 30px rgba(0,0,0,0.05)' : 'none',
+                transition: 'all 0.4s ease',
+            }}
+        >
             <nav style={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -137,7 +139,7 @@ function Navbar({
                             fontSize: '24px',
                             fontWeight: 700,
                             letterSpacing: '-0.01em',
-                            color: isHeroTheme && !scrolled ? '#ffffff' : '#b32000',
+                            color: isTransparent ? '#ffffff' : '#b32000',
                             opacity: fade ? 0 : 1,
                             filter: fade ? 'blur(8px)' : 'blur(0px)',
                             transform: fade ? 'scale(0.97)' : 'scale(1)',
@@ -157,7 +159,7 @@ function Navbar({
                             onClick={e => { e.preventDefault(); if (action) action(); }}
                             style={linkStyle(key)}
                             onMouseEnter={e => {
-                                e.currentTarget.style.color = isHeroTheme && !scrolled ? 'rgba(255,255,255,0.7)' : '#b32000';
+                                e.currentTarget.style.color = isTransparent ? 'rgba(255,255,255,0.7)' : '#b32000';
                             }}
                             onMouseLeave={e => {
                                 e.currentTarget.style.color = getDynamicTextColor(key);
@@ -209,7 +211,7 @@ function Navbar({
                                 fontFamily: font,
                                 fontSize: '14px',
                                 fontWeight: 600,
-                                color: isHeroTheme && !scrolled ? '#ffffff' : '#131e1b',
+                                color: isTransparent ? '#ffffff' : '#131e1b',
                                 maxWidth: '120px',
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
@@ -224,7 +226,7 @@ function Navbar({
                                     background: 'none',
                                     border: 'none',
                                     cursor: 'pointer',
-                                    color: isHeroTheme && !scrolled ? 'rgba(255,255,255,0.7)' : 'rgba(19,30,27,0.5)',
+                                    color: isTransparent ? 'rgba(255,255,255,0.7)' : 'rgba(19,30,27,0.5)',
                                     padding: '4px',
                                     borderRadius: '50%',
                                     display: 'flex',
@@ -237,7 +239,7 @@ function Navbar({
                                     e.currentTarget.style.backgroundColor = 'rgba(179,32,0,0.08)';
                                 }}
                                 onMouseLeave={e => {
-                                    e.currentTarget.style.color = isHeroTheme && !scrolled ? 'rgba(255,255,255,0.7)' : 'rgba(19,30,27,0.5)';
+                                    e.currentTarget.style.color = isTransparent ? 'rgba(255,255,255,0.7)' : 'rgba(19,30,27,0.5)';
                                     e.currentTarget.style.backgroundColor = 'transparent';
                                 }}
                                 title="Logout"
@@ -257,20 +259,20 @@ function Navbar({
                                     fontFamily: font,
                                     fontSize: '16px',
                                     fontWeight: 500,
-                                    color: isHeroTheme && !scrolled ? '#ffffff' : 'rgba(19,30,27,0.7)',
+                                    color: isTransparent ? '#ffffff' : 'rgba(19,30,27,0.7)',
                                     padding: 0,
                                     transition: 'color 0.3s',
                                 }}
-                                onMouseEnter={e => e.currentTarget.style.color = isHeroTheme && !scrolled ? 'rgba(255,255,255,0.7)' : '#b32000'}
-                                onMouseLeave={e => e.currentTarget.style.color = isHeroTheme && !scrolled ? '#ffffff' : 'rgba(19,30,27,0.7)'}
+                                onMouseEnter={e => e.currentTarget.style.color = isTransparent ? 'rgba(255,255,255,0.7)' : '#b32000'}
+                                onMouseLeave={e => e.currentTarget.style.color = isTransparent ? '#ffffff' : 'rgba(19,30,27,0.7)'}
                             >
                                 Masuk
                             </button>
                             <button
                                 onClick={onNavigateRegister}
                                 style={{
-                                    border: isHeroTheme && !scrolled ? '1px solid #ffffff' : '1.5px solid #b32000',
-                                    color: isHeroTheme && !scrolled ? '#ffffff' : '#b32000',
+                                    border: isTransparent ? '1px solid #ffffff' : '1.5px solid #b32000',
+                                    color: isTransparent ? '#ffffff' : '#b32000',
                                     padding: '8px 24px',
                                     borderRadius: '9999px',
                                     fontFamily: font,
@@ -281,7 +283,7 @@ function Navbar({
                                     transition: 'all 0.3s ease',
                                 }}
                                 onMouseEnter={e => {
-                                    if (isHeroTheme && !scrolled) {
+                                    if (isTransparent) {
                                         e.currentTarget.style.backgroundColor = '#ffffff';
                                         e.currentTarget.style.color = '#000000';
                                     } else {
@@ -291,7 +293,7 @@ function Navbar({
                                 }}
                                 onMouseLeave={e => {
                                     e.currentTarget.style.backgroundColor = 'transparent';
-                                    e.currentTarget.style.color = isHeroTheme && !scrolled ? '#ffffff' : '#b32000';
+                                    e.currentTarget.style.color = isTransparent ? '#ffffff' : '#b32000';
                                 }}
                             >
                                 Daftar
@@ -306,17 +308,114 @@ function Navbar({
 /**
  * HomePage Component
  */
+const stories = [
+    {
+        title: "Kabut Suci Toraja",
+        poem: "Gagahnya pegunungan Toraja, berselimut kabut menembus cakrawala. Tanah para raja, tempat arwah bermukim di tebing-tebing batu sakral, menjaga warisan leluhur yang tak lekang oleh waktu."
+    },
+    {
+        title: "Labirin Purba Rammang-Rammang",
+        poem: "Menjaga rahasia masa purba di sela-sela hijau sawah dan sunyinya sungai Pute. Labirin batu karst tertua kedua di dunia, tegak berdiri merajut kesunyian alam Celebes."
+    },
+    {
+        title: "Dendang Ombak & Phinisi",
+        poem: "Ombak Bulukumba mencium pasir putih Bira, tempat para pelaut tangguh Bugis-Makassar memahat kapal Phinisi. Perahu legendaris pembelah samudra, simbol keberanian yang tak pernah padam."
+    },
+    {
+        title: "Tebing Appalarang yang Kokoh",
+        poem: "Tebing Appalarang berdiri kokoh menantang deburan ombak membiru. Saksi bisu keindahan pesisir yang tiada duanya, tempat karang dan laut bersatu dalam simfoni abadi."
+    },
+    {
+        title: "Ketenangan Danau Tempe",
+        poem: "Danau Tempe yang berkilau, saksi kehidupan di atas air terapung. Tempat harmoni nelayan berdendang bersama burung-burung migran di bawah lembayung senja yang tenang."
+    }
+];
+
 function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations, onNavigateAllDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, currentUser, onLogout }) {
     const [parallax, setParallax] = useState({ x: 0, y: 0 });
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const [viewportMouse, setViewportMouse] = useState({ x: 0, y: 0 });
+    const [isHovering, setIsHovering] = useState(false);
+    const [isInside, setIsInside] = useState(false);
+
+    // Story states
+    const activeStoryIndexRef = React.useRef(0);
+    const [activeStoryIndex, setActiveStoryIndex] = useState(0);
+    const [storyFade, setStoryFade] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [cardPosition, setCardPosition] = useState({ top: '20%', left: '68%' });
+
+    // Handle random movement and rotation every 3.5 seconds
+    useEffect(() => {
+        if (isExpanded) return;
+
+        const interval = setInterval(() => {
+            setStoryFade(true);
+            setTimeout(() => {
+                const isMobile = window.innerWidth < 1024;
+                let randomTop, randomLeft;
+
+                if (isMobile) {
+                    // Mobile safe range: upper-middle center/left
+                    randomTop = Math.floor(Math.random() * 25) + 15;  // 15% to 40%
+                    randomLeft = Math.floor(Math.random() * 35) + 10; // 10% to 45%
+                } else {
+                    // Desktop safe quadrants: randomly choose one of three quadrants
+                    const quadrants = [
+                        // Quadrant 1: High Left (very high up on the left, well above "Jelajahi")
+                        { minTop: 15, maxTop: 24, minLeft: 10, maxLeft: 28 },
+                        // Quadrant 2: High Center (high center, above the headline text block)
+                        { minTop: 15, maxTop: 28, minLeft: 46, maxLeft: 60 },
+                        // Quadrant 3: Right Side (entire right-middle side column, completely safe)
+                        { minTop: 15, maxTop: 68, minLeft: 64, maxLeft: 78 }
+                    ];
+                    
+                    const q = quadrants[Math.floor(Math.random() * quadrants.length)];
+                    randomTop = Math.floor(Math.random() * (q.maxTop - q.minTop)) + q.minTop;
+                    randomLeft = Math.floor(Math.random() * (q.maxLeft - q.minLeft)) + q.minLeft;
+                }
+                
+                setCardPosition({
+                    top: `${randomTop}%`,
+                    left: `${randomLeft}%`
+                });
+
+                const nextIndex = (activeStoryIndexRef.current + 1) % stories.length;
+                activeStoryIndexRef.current = nextIndex;
+                setActiveStoryIndex(nextIndex);
+                setStoryFade(false);
+            }, 300);
+        }, 3800); // 3.8s total loop (3.5s displaying + 0.3s transitioning)
+
+        return () => clearInterval(interval);
+    }, [isExpanded]);
 
     useEffect(() => {
-        const handleMouseMove = (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 20 * 0.2;
-            const y = (e.clientY / window.innerHeight - 0.5) * 20 * 0.2;
-            setParallax({ x, y });
+        const handleGlobalMouseMove = (e) => {
+            setViewportMouse({ x: e.clientX, y: e.clientY });
+
+            const heroElement = document.getElementById('hero-section');
+            if (heroElement) {
+                const rect = heroElement.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                setMousePos({ x, y });
+
+                if (e.clientX >= rect.left && e.clientX <= rect.right &&
+                    e.clientY >= rect.top && e.clientY <= rect.bottom) {
+                    setIsInside(true);
+                } else {
+                    setIsInside(false);
+                }
+            }
+
+            const px = (e.clientX / window.innerWidth - 0.5) * 20 * 0.2;
+            const py = (e.clientY / window.innerHeight - 0.5) * 20 * 0.2;
+            setParallax({ x: px, y: py });
         };
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
+
+        window.addEventListener('mousemove', handleGlobalMouseMove);
+        return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
     }, []);
 
     const handleExploreClick = (e) => {
@@ -329,10 +428,41 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
         if (onNavigateAllDestinations) onNavigateAllDestinations();
     };
 
+    const handleCardClick = (e) => {
+        if (!isExpanded) {
+            setIsExpanded(true);
+        }
+    };
+
+    const handleCloseCard = (e) => {
+        e.stopPropagation();
+        setIsExpanded(false);
+    };
+
     const font = "'Plus Jakarta Sans', sans-serif";
 
     return (
         <>
+            <style>{`
+                @keyframes modalSlideUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(40px) scale(0.95);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
+                .animate-fade-in {
+                    animation: fadeIn 0.3s ease-out forwards;
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+            `}</style>
+
             {/* Menggunakan Navbar Default baru */}
             <Navbar
                 activePage="home"
@@ -349,7 +479,11 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
             />
 
             {/* Hero Section */}
-            <main className="relative h-screen w-full overflow-hidden flex items-end z-10">
+            <main
+                id="hero-section"
+                className="relative h-screen w-full overflow-hidden flex items-end z-10"
+                style={{ cursor: isInside ? 'none' : 'auto' }}
+            >
                 {/* Background Video */}
                 <div className="absolute inset-0 z-0">
                     <video
@@ -365,6 +499,15 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
                     </video>
                     <div className="absolute inset-0 hero-gradient" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.4) 100%)' }}></div>
                 </div>
+
+                {/* Interactive Spotlight Overlay */}
+                <div
+                    className="absolute inset-0 pointer-events-none z-10 transition-opacity duration-500"
+                    style={{
+                        opacity: isInside ? 1 : 0,
+                        background: `radial-gradient(circle 380px at ${mousePos.x}px ${mousePos.y}px, rgba(35, 247, 219, 0.14) 0%, rgba(245, 64, 27, 0.04) 50%, rgba(0,0,0,0) 100%)`,
+                    }}
+                />
 
                 {/* Hero Content Base */}
                 <div className="relative z-10 w-full px-margin-desktop pb-16 flex justify-between items-end">
@@ -437,6 +580,8 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
                         <div className="flex items-center gap-4 pt-3">
                             <button
                                 onClick={handleExploreClick}
+                                onMouseEnter={() => setIsHovering(true)}
+                                onMouseLeave={() => setIsHovering(false)}
                                 className="transition-all hover:scale-105 active:scale-95"
                                 style={{
                                     backgroundColor: '#F5401B',
@@ -461,6 +606,8 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
                             </button>
                             <button
                                 onClick={handleDestinationsClick}
+                                onMouseEnter={() => setIsHovering(true)}
+                                onMouseLeave={() => setIsHovering(false)}
                                 className="transition-all hover:bg-white/10 active:scale-95"
                                 style={{
                                     border: '1px solid rgba(255,255,255,0.6)',
@@ -482,27 +629,109 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
                         </div>
                     </div>
 
-                    {/* Right Column: Scroll Indicator */}
-                    <div className="hidden md:flex flex-col items-center gap-3 mb-4">
-                        <span
-                            className="select-none"
+                    {/* Floating Story Card */}
+                    <div
+                        onClick={handleCardClick}
+                        onMouseEnter={() => setIsHovering(true)}
+                        onMouseLeave={() => setIsHovering(false)}
+                        className="flex flex-col gap-2 p-5 rounded-2xl border border-white/10 backdrop-blur-md select-none cursor-pointer"
+                        style={{
+                            position: 'absolute',
+                            top: cardPosition.top,
+                            left: cardPosition.left,
+                            zIndex: 30,
+                            width: '290px',
+                            boxSizing: 'border-box',
+                            backgroundColor: 'rgba(0, 0, 0, 0.45)',
+                            boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+                            transform: `translate(${parallax.x * -0.3}px, ${parallax.y * -0.3}px)`,
+                            transition: 'left 0.8s cubic-bezier(0.25, 1, 0.5, 1), top 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)',
+                        }}
+                    >
+                        <div 
                             style={{
-                                writingMode: 'vertical-lr',
-                                fontFamily: font,
-                                fontSize: '11px',
-                                fontWeight: 700,
-                                letterSpacing: '0.2em',
-                                textTransform: 'uppercase',
-                                color: 'rgba(255,255,255,0.5)'
+                                opacity: storyFade ? 0 : 1,
+                                transition: 'opacity 0.25s ease-in-out'
                             }}
-                        >Scroll</span>
-                        <div className="relative w-[1px] h-20 overflow-hidden" style={{ background: 'linear-gradient(to bottom, rgba(255,255,255,0.3), transparent)' }}>
-                            <div className="absolute top-0 left-0 w-full h-1/2 animate-scroll" style={{ backgroundColor: '#23F7DB' }}></div>
+                        >
+                            <div className="flex items-center gap-2 mb-2">
+                                <span className="animate-ping rounded-full w-2 h-2 bg-[#23F7DB]"></span>
+                                <span style={{
+                                    fontFamily: font,
+                                    fontSize: '10px',
+                                    fontWeight: 700,
+                                    letterSpacing: '0.15em',
+                                    color: '#23F7DB',
+                                    textTransform: 'uppercase'
+                                }}>Senandung Celebes</span>
+                            </div>
+                            
+                            <h3 style={{
+                                fontFamily: font,
+                                fontSize: '16px',
+                                fontWeight: 700,
+                                color: '#ffffff',
+                                lineHeight: 1.3
+                            }}>
+                                {stories[activeStoryIndex].title}
+                            </h3>
+                            
+                            {!isExpanded ? (
+                                <p style={{
+                                    fontFamily: font,
+                                    fontSize: '11px',
+                                    color: 'rgba(255,255,255,0.7)',
+                                    lineHeight: 1.4,
+                                    marginTop: '6px'
+                                }}>
+                                    Klik untuk meraba kisah alam...
+                                </p>
+                            ) : (
+                                <>
+                                    <p style={{
+                                        fontFamily: font,
+                                        fontSize: '13px',
+                                        color: 'rgba(255,255,255,0.9)',
+                                        lineHeight: 1.6,
+                                        marginTop: '10px',
+                                        fontStyle: 'italic'
+                                    }}>
+                                        "{stories[activeStoryIndex].poem}"
+                                    </p>
+                                    <button 
+                                        onClick={handleCloseCard}
+                                        onMouseEnter={() => setIsHovering(true)}
+                                        onMouseLeave={() => setIsHovering(false)}
+                                        className="text-[#23F7DB] hover:underline text-xs mt-3 font-bold text-left block border-none bg-transparent p-0 cursor-pointer"
+                                    >
+                                        Tutup Kisah
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
 
+
                 </div>
             </main>
+
+            {/* Custom Cursor Follower */}
+            {isInside && (
+                <div
+                    className="hidden md:block pointer-events-none fixed z-[9999] rounded-full"
+                    style={{
+                        left: 0,
+                        top: 0,
+                        width: isHovering ? '60px' : '24px',
+                        height: isHovering ? '60px' : '24px',
+                        border: isHovering ? '2px solid #F5401B' : '2px solid #23F7DB',
+                        boxShadow: isHovering ? '0 0 20px rgba(245, 64, 19, 0.6)' : '0 0 15px rgba(35, 247, 219, 0.4)',
+                        backgroundColor: isHovering ? 'rgba(245, 64, 19, 0.08)' : 'rgba(35, 247, 219, 0.05)',
+                        transform: `translate3d(calc(${viewportMouse.x}px - 50%), calc(${viewportMouse.y}px - 50%), 0)`,
+                        transition: 'width 0.25s cubic-bezier(0.25, 1, 0.5, 1), height 0.25s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.25s, background-color 0.25s, box-shadow 0.25s, transform 0.08s ease-out',
+                    }}
+                />
+            )}
         </>
     );
 }

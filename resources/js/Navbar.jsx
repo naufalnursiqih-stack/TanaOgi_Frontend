@@ -18,6 +18,8 @@ export default function Navbar({
     onLogout,
 }) {
     const [scrolled, setScrolled] = useState(false);
+    const [isNavbarHovered, setIsNavbarHovered] = useState(false);
+    const isTransparent = !scrolled && !isNavbarHovered;
     const titles = ["ᨈᨊ ᨕᨚᨁᨗ", "TanaOgi'"];
     const [currentIndex, setCurrentIndex] = useState(0);
     const [fade, setFade] = useState(false);
@@ -62,7 +64,7 @@ export default function Navbar({
 
     // Menentukan warna teks link menu (Putih bersih jika di awal home page)
     const getDynamicTextColor = (key) => {
-        if (isHeroTheme && !scrolled) return '#ffffff';
+        if (isTransparent) return '#ffffff';
         if (isActive(key)) return '#b32000';
         return 'rgba(19,30,27,0.7)';
     };
@@ -70,10 +72,11 @@ export default function Navbar({
     const linkStyle = (key) => ({
         fontFamily: font,
         fontSize: '16px',
-        fontWeight: (isHeroTheme && !scrolled) ? 500 : (isActive(key) ? 700 : 500),
+        fontWeight: isTransparent ? 500 : (isActive(key) ? 700 : 500),
         color: getDynamicTextColor(key),
+        textShadow: isTransparent ? '0 1px 4px rgba(0,0,0,0.6)' : 'none',
         textDecoration: 'none',
-        borderBottom: (isActive(key) && (!isHeroTheme || scrolled)) ? '2px solid #b32000' : '2px solid transparent',
+        borderBottom: (isActive(key) && !isTransparent) ? '2px solid #b32000' : '2px solid transparent',
         paddingBottom: '4px',
         transition: 'all 0.3s ease',
         cursor: 'pointer',
@@ -127,19 +130,22 @@ export default function Navbar({
     };
 
     return (
-        <header style={{
-            position: 'fixed',
-            top: 0,
-            width: '100%',
-            zIndex: 50,
-            // Jika di awal home, background dipaksa transparan total tanpa blur
-            backgroundColor: isHeroTheme && !scrolled ? 'transparent' : 'rgba(240,252,247,0.95)',
-            backdropFilter: isHeroTheme && !scrolled ? 'none' : 'blur(20px)',
-            WebkitBackdropFilter: isHeroTheme && !scrolled ? 'none' : 'blur(20px)',
-            borderBottom: isHeroTheme && !scrolled ? 'none' : '1px solid rgba(19,30,27,0.06)',
-            boxShadow: scrolled ? '0 4px 30px rgba(0,0,0,0.05)' : 'none',
-            transition: 'all 0.4s ease',
-        }}>
+        <header 
+            onMouseEnter={() => setIsNavbarHovered(true)}
+            onMouseLeave={() => setIsNavbarHovered(false)}
+            style={{
+                position: 'fixed',
+                top: 0,
+                width: '100%',
+                zIndex: 50,
+                backgroundColor: isTransparent ? 'transparent' : 'rgba(255,255,255,0.95)',
+                backdropFilter: isTransparent ? 'none' : 'blur(20px)',
+                WebkitBackdropFilter: isTransparent ? 'none' : 'blur(20px)',
+                borderBottom: isTransparent ? 'none' : '1px solid rgba(19,30,27,0.06)',
+                boxShadow: scrolled || isNavbarHovered ? '0 4px 30px rgba(0,0,0,0.05)' : 'none',
+                transition: 'all 0.4s ease',
+            }}
+        >
             <nav style={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -175,11 +181,12 @@ export default function Navbar({
                             fontSize: '24px',
                             fontWeight: 700,
                             letterSpacing: '-0.01em',
-                            color: isHeroTheme && !scrolled ? '#ffffff' : '#b32000',
+                            color: isTransparent ? '#ffffff' : '#b32000',
+                            textShadow: isTransparent ? '0 1px 4px rgba(0,0,0,0.5)' : 'none',
                             opacity: fade ? 0 : 1,
                             filter: fade ? 'blur(8px)' : 'blur(0px)',
                             transform: fade ? 'scale(0.97)' : 'scale(1)',
-                            transition: 'color 0.4s, opacity 0.4s, filter 0.4s, transform 0.4s',
+                            transition: 'color 0.4s, opacity 0.4s, filter 0.4s, transform 0.4s, text-shadow 0.4s',
                         }}
                     >
                         {titles[currentIndex]}
@@ -342,20 +349,27 @@ export default function Navbar({
                                     fontFamily: font,
                                     fontSize: '16px',
                                     fontWeight: 500,
-                                    color: isHeroTheme && !scrolled ? '#ffffff' : 'rgba(19,30,27,0.7)',
+                                    color: isTransparent ? '#ffffff' : 'rgba(19,30,27,0.7)',
+                                    textShadow: isTransparent ? '0 1px 4px rgba(0,0,0,0.5)' : 'none',
                                     padding: 0,
-                                    transition: 'color 0.3s',
+                                    transition: 'color 0.3s, text-shadow 0.3s',
                                 }}
-                                onMouseEnter={e => e.currentTarget.style.color = isHeroTheme && !scrolled ? 'rgba(255,255,255,0.7)' : '#b32000'}
-                                onMouseLeave={e => e.currentTarget.style.color = isHeroTheme && !scrolled ? '#ffffff' : 'rgba(19,30,27,0.7)'}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.color = isTransparent ? 'rgba(255,255,255,0.7)' : '#b32000';
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.color = isTransparent ? '#ffffff' : 'rgba(19,30,27,0.7)';
+                                }}
                             >
                                 Masuk
                             </button>
                             <button
                                 onClick={onNavigateRegister}
                                 style={{
-                                    border: isHeroTheme && !scrolled ? '1px solid #ffffff' : '1.5px solid #b32000',
-                                    color: isHeroTheme && !scrolled ? '#ffffff' : '#b32000',
+                                    border: isTransparent ? '1px solid #ffffff' : '1.5px solid #b32000',
+                                    color: isTransparent ? '#ffffff' : '#b32000',
+                                    textShadow: isTransparent ? '0 1px 4px rgba(0,0,0,0.5)' : 'none',
+                                    boxShadow: isTransparent ? '0 1px 3px rgba(0,0,0,0.3)' : 'none',
                                     padding: '8px 24px',
                                     borderRadius: '9999px',
                                     fontFamily: font,
@@ -366,9 +380,11 @@ export default function Navbar({
                                     transition: 'all 0.3s ease',
                                 }}
                                 onMouseEnter={e => {
-                                    if (isHeroTheme && !scrolled) {
+                                    if (isTransparent) {
                                         e.currentTarget.style.backgroundColor = '#ffffff';
                                         e.currentTarget.style.color = '#000000';
+                                        e.currentTarget.style.textShadow = 'none';
+                                        e.currentTarget.style.boxShadow = 'none';
                                     } else {
                                         e.currentTarget.style.backgroundColor = '#b32000';
                                         e.currentTarget.style.color = '#ffffff';
@@ -376,7 +392,9 @@ export default function Navbar({
                                 }}
                                 onMouseLeave={e => {
                                     e.currentTarget.style.backgroundColor = 'transparent';
-                                    e.currentTarget.style.color = isHeroTheme && !scrolled ? '#ffffff' : '#b32000';
+                                    e.currentTarget.style.color = isTransparent ? '#ffffff' : '#b32000';
+                                    e.currentTarget.style.textShadow = isTransparent ? '0 1px 4px rgba(0,0,0,0.5)' : 'none';
+                                    e.currentTarget.style.boxShadow = isTransparent ? '0 1px 3px rgba(0,0,0,0.3)' : 'none';
                                 }}
                             >
                                 Daftar

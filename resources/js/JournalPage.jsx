@@ -90,24 +90,24 @@ export default function JournalPage({
                 onNavigateDestinations={onNavigateDestinations}
                 onNavigateExperiences={onNavigateExperiences}
                 onNavigateCulture={onNavigateCulture}
-                onNavigateJournal={() => {}}
+                onNavigateJournal={() => { }}
                 currentUser={currentUser}
                 onLogout={onLogout}
             />
 
-            <main style={{ paddingTop: '88px' }}>
+            <main>
 
                 {/* â”€â”€ Hero Section â”€â”€ */}
                 <section style={{ position: 'relative', height: '80vh', width: '100%', overflow: 'hidden' }}>
                     <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                         <img
                             alt="Landscape Sulawesi - Kabut Pagi di Atas Lembah Karst Maros"
-                            src="sulsel.jpg"
+                            src="/sulawesi.jpg"
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                         <div style={{
                             position: 'absolute', inset: 0,
-                            background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 40%, rgba(19,30,27,0.8) 100%)',
+                            background: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 50%, rgba(19,30,27,0.8) 100%)',
                         }} />
                     </div>
 
@@ -429,7 +429,7 @@ export default function JournalPage({
                 onNavigateDestinations={onNavigateDestinations}
                 onNavigateExperiences={onNavigateExperiences}
                 onNavigateCulture={onNavigateCulture}
-                onNavigateJournal={() => {}}
+                onNavigateJournal={() => { }}
                 onNavigateTravelGuide={onNavigateTravelGuide}
                 onNavigateSustainability={onNavigateSustainability}
                 onNavigateAbout={onNavigateAbout}

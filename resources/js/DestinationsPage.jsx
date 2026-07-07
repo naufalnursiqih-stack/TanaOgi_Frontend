@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import SulawesiMapSection from './SulawesiMapSection';
 
 export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateAllDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout }) {
     const [scrolled, setScrolled] = useState(false);
@@ -89,7 +90,7 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                     <div style={{
                         position: 'absolute',
                         inset: 0,
-                        background: 'linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.55) 100%)',
+                        background: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.55) 100%)',
                     }} />
                 </div>
 
@@ -159,7 +160,10 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                 </div>
             </section>
 
-            {/* â”€â”€ Featured Collection â”€â”€ */}
+            {/* ── Sulawesi Map Section ── */}
+            <SulawesiMapSection />
+
+            {/* ── Featured Collection ── */}
             <section style={{
                 padding: '80px 64px',
                 maxWidth: '1440px',

@@ -34,6 +34,75 @@ export default function SupportPageLayout({
 
   return (
     <div style={{ fontFamily: font, backgroundColor: '#f0fcf7', color: '#131e1b', minHeight: '100vh' }}>
+      <style>{`
+        .support-card {
+          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+        .support-card:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 30px 60px rgba(19,30,27,0.08) !important;
+          border-color: rgba(0, 107, 94, 0.2) !important;
+        }
+        .sidebar-link {
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .sidebar-link:hover {
+          background-color: rgba(0, 107, 94, 0.08) !important;
+          color: #006b5e !important;
+          transform: translateX(6px);
+          box-shadow: 0 4px 12px rgba(0, 107, 94, 0.05);
+        }
+        .sidebar-link.active-link {
+          background-color: rgba(0, 107, 94, 0.12) !important;
+          color: #006b5e !important;
+          border-left: 3px solid #006b5e !important;
+          padding-left: 13px !important;
+        }
+        .sidebar-link.active-link:hover {
+          background-color: rgba(0, 107, 94, 0.18) !important;
+          transform: none;
+        }
+        .header-gradient-box {
+          animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @media (max-width: 968px) {
+          .support-grid {
+            grid-template-columns: 1fr !important;
+            gap: 24px !important;
+          }
+          .support-aside {
+            position: static !important;
+            order: -1; 
+            margin-bottom: 8px;
+          }
+          .responsive-padding-top {
+            padding-top: 100px !important;
+          }
+          .responsive-section-padding {
+            padding: 0 24px 32px 24px !important;
+          }
+          .responsive-header-padding {
+            padding: 40px 24px !important;
+            border-radius: 24px !important;
+          }
+          .responsive-title {
+            font-size: 32px !important;
+          }
+          .responsive-subtitle {
+            font-size: 15px !important;
+          }
+        }
+      `}</style>
       <Navbar
         activePage=""
         onNavigateHome={onNavigateHome}
@@ -47,9 +116,10 @@ export default function SupportPageLayout({
         onLogout={onLogout}
       />
 
-      <main style={{ paddingTop: '120px' }}>
-        <section style={{ padding: '0 64px 48px 64px', maxWidth: '1440px', margin: '0 auto', boxSizing: 'border-box' }}>
+      <main className="responsive-padding-top" style={{ paddingTop: '120px' }}>
+        <section className="responsive-section-padding" style={{ padding: '0 64px 48px 64px', maxWidth: '1440px', margin: '0 auto', boxSizing: 'border-box' }}>
           <div
+            className="header-gradient-box responsive-header-padding"
             style={{
               background: 'linear-gradient(135deg, rgba(0,107,94,0.08) 0%, rgba(179,32,0,0.06) 100%)',
               borderRadius: '32px',
@@ -72,6 +142,7 @@ export default function SupportPageLayout({
               {content.eyebrow}
             </span>
             <h1
+              className="responsive-title"
               style={{
                 margin: '0 0 20px 0',
                 fontSize: '56px',
@@ -84,6 +155,7 @@ export default function SupportPageLayout({
               {content.title}
             </h1>
             <p
+              className="responsive-subtitle"
               style={{
                 margin: 0,
                 maxWidth: '760px',
@@ -109,12 +181,13 @@ export default function SupportPageLayout({
           </div>
         </section>
 
-        <section style={{ padding: '0 64px 80px 64px', maxWidth: '1440px', margin: '0 auto', boxSizing: 'border-box' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.7fr) minmax(280px, 0.9fr)', gap: '32px', alignItems: 'start' }}>
+        <section className="responsive-section-padding" style={{ padding: '0 64px 80px 64px', maxWidth: '1440px', margin: '0 auto', boxSizing: 'border-box' }}>
+          <div className="support-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.7fr) minmax(280px, 0.9fr)', gap: '32px', alignItems: 'start' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               {content.sections.map((section) => (
                 <article
                   key={section.heading}
+                  className="support-card"
                   style={{
                     backgroundColor: '#ffffff',
                     borderRadius: '24px',
@@ -152,6 +225,7 @@ export default function SupportPageLayout({
             </div>
 
             <aside
+              className="support-aside"
               style={{
                 backgroundColor: '#ffffff',
                 borderRadius: '24px',
@@ -180,13 +254,14 @@ export default function SupportPageLayout({
                     key={link.key}
                     type="button"
                     onClick={() => link.action && link.action()}
+                    className={`sidebar-link ${pageKey === link.key ? 'active-link' : ''}`}
                     style={{
                       textAlign: 'left',
                       border: 'none',
                       borderRadius: '14px',
                       padding: '14px 16px',
-                      backgroundColor: pageKey === link.key ? 'rgba(0,107,94,0.1)' : '#f8fbfa',
-                      color: pageKey === link.key ? '#006b5e' : '#5c4039',
+                      backgroundColor: '#f8fbfa',
+                      color: '#5c4039',
                       fontSize: '15px',
                       fontWeight: pageKey === link.key ? 700 : 500,
                       cursor: 'pointer',

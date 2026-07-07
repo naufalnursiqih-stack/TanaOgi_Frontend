@@ -274,7 +274,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                     <div style={{
                         position: 'absolute',
                         inset: 0,
-                        background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 60%, #f0fcf7 100%)'
+                        background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 60%, #f0fcf7 100%)'
                     }} />
                 </div>
                 
