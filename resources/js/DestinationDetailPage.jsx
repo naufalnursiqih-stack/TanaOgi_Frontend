@@ -423,46 +423,7 @@ export default function DestinationDetailPage({
                             </div>
                         </section>
 
-                        {/* Section 1.5: Peta Destinasi */}
-                        <section style={{ backgroundColor: '#ffffff', padding: '24px', borderRadius: '24px', boxShadow: '0 16px 40px rgba(0,0,0,0.05)' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginBottom: '20px' }}>
-                                <div>
-                                    <span className="text-sunset" style={{ display: 'block', fontSize: '12px', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '8px' }}>
-                                        Peta Lokasi
-                                    </span>
-                                    <h3 className="text-forest" style={{ fontSize: '24px', fontWeight: 700, margin: 0 }}>
-                                        {destData.title} di Peta
-                                    </h3>
-                                </div>
-                                <button
-                                    onClick={handleOpenMapsNavigation}
-                                    style={{
-                                        backgroundColor: '#F5401B',
-                                        color: '#ffffff',
-                                        padding: '12px 20px',
-                                        borderRadius: '9999px',
-                                        border: 'none',
-                                        fontWeight: 700,
-                                        cursor: 'pointer',
-                                        boxShadow: '0 8px 20px rgba(245, 64, 27, 0.18)'
-                                    }}
-                                >
-                                    Buka di Google Maps
-                                </button>
-                            </div>
-                            <div style={{ width: '100%', minHeight: '320px', borderRadius: '20px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.06)' }}>
-                                <iframe
-                                    title="Peta Destinasi"
-                                    src={mapEmbedUrl}
-                                    style={{ width: '100%', height: '100%', minHeight: '320px', border: '0' }}
-                                    loading="lazy"
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                />
-                            </div>
-                            <p style={{ marginTop: '16px', fontSize: '14px', color: '#5c4039' }}>
-                                Koordinat: {destCoords.lat.toFixed(5)}, {destCoords.lng.toFixed(5)}
-                            </p>
-                        </section>
+
 
                         {/* Section 2: Narrative Subsections */}
                         <section style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
@@ -1086,32 +1047,30 @@ export default function DestinationDetailPage({
                                     </div>
                                 </div>
                                 
+                                {/* Peta Lokasi - Map Embed */}
+                                <div style={{ marginTop: '40px' }}>
+                                    <span className="text-sunset" style={{ display: 'block', fontSize: '12px', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '8px' }}>
+                                        Peta Lokasi
+                                    </span>
+                                    <h4 className="text-forest" style={{ fontSize: '18px', fontWeight: 700, margin: '0 0 12px 0' }}>
+                                        {destData.title} di Peta
+                                    </h4>
+                                    <div style={{ width: '100%', minHeight: '220px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.06)' }}>
+                                        <iframe
+                                            title="Peta Destinasi"
+                                            src={mapEmbedUrl}
+                                            style={{ width: '100%', height: '100%', minHeight: '220px', border: '0' }}
+                                            loading="lazy"
+                                            referrerPolicy="no-referrer-when-downgrade"
+                                        />
+                                    </div>
+                                    <p style={{ marginTop: '10px', fontSize: '12px', color: '#5c4039', margin: '10px 0 0 0' }}>
+                                        Koordinat: {destCoords.lat.toFixed(5)}, {destCoords.lng.toFixed(5)}
+                                    </p>
+                                </div>
+
                                 {/* Quick Action Buttons */}
-                                <div style={{ marginTop: '40px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                    <button 
-                                        id="btn-buka-maps"
-                                        className="btn-pulse"
-                                        onClick={handleOpenMapsNavigation}
-                                        style={{
-                                            width: '100%',
-                                            backgroundColor: '#F5401B',
-                                            color: '#ffffff',
-                                            padding: '16px',
-                                            borderRadius: '9999px',
-                                            fontWeight: 700,
-                                            border: 'none',
-                                            cursor: 'pointer',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            gap: '12px',
-                                            boxShadow: '0 8px 20px rgba(245, 64, 27, 0.2)'
-                                        }}
-                                    >
-                                        <span className="material-symbols-outlined">navigation</span>
-                                        {userLocation ? 'Navigasi ke Destinasi' : 'Buka Google Maps'}
-                                    </button>
-                                    
+                                <div style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                     <button 
                                         style={{
                                             width: '100%',
