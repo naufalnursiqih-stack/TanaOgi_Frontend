@@ -30,7 +30,6 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
     
     // Review form state
     const [newReviewRating, setNewReviewRating] = useState(0);
-    const [newReviewName, setNewReviewName] = useState('');
     const [newReviewText, setNewReviewText] = useState('');
     const [showReviewForm, setShowReviewForm] = useState(false);
     const [mapLoaded, setMapLoaded] = useState(false);
@@ -96,8 +95,8 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
     // Fungsi submit review
     const handleSubmitReview = (e) => {
         e.preventDefault();
-        if (!newReviewName.trim() || !newReviewText.trim() || newReviewRating === 0) {
-            alert('Mohon isi nama, rating, dan ulasan Anda!');
+        if (!newReviewText.trim() || newReviewRating === 0) {
+            alert('Mohon isi rating dan ulasan Anda!');
             return;
         }
         
@@ -111,7 +110,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
         
         const newReview = {
             id: Date.now(),
-            name: newReviewName,
+            name: currentUser?.name || 'Pengguna Anonim',
             avatar: randomColor,
             rating: newReviewRating,
             text: newReviewText,
@@ -121,7 +120,6 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
         setReviews([newReview, ...reviews]);
         
         // Reset form
-        setNewReviewName('');
         setNewReviewText('');
         setNewReviewRating(0);
         setShowReviewForm(false);
@@ -652,24 +650,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                                             interactive={true} 
                                         />
                                     </div>
-                                    <div>
-                                        <label style={{ fontSize: '14px', fontWeight: 700, color: '#131e1b', marginBottom: '8px', display: 'block' }}>Nama Anda</label>
-                                        <input 
-                                            type="text" 
-                                            value={newReviewName}
-                                            onChange={(e) => setNewReviewName(e.target.value)}
-                                            placeholder="Masukkan nama Anda"
-                                            style={{
-                                                width: '100%',
-                                                padding: '12px 16px',
-                                                borderRadius: '8px',
-                                                border: '1px solid rgba(0,107,94,0.2)',
-                                                fontSize: '14px',
-                                                fontFamily: font,
-                                                outline: 'none'
-                                            }}
-                                        />
-                                    </div>
+
                                     <div>
                                         <label style={{ fontSize: '14px', fontWeight: 700, color: '#131e1b', marginBottom: '8px', display: 'block' }}>Ulasan Anda</label>
                                         <textarea 

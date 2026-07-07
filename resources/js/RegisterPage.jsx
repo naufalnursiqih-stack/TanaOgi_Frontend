@@ -21,6 +21,15 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin, onRegist
 
     const heroImgRef = useRef(null);
 
+    // --- STATE FOTO PROFIL ---
+    const [profileImgUrl, setProfileImgUrl] = useState(null);
+    const [showProfileMenu, setShowProfileMenu] = useState(false);
+    const [showCameraModal, setShowCameraModal] = useState(false);
+    const fileInputRef = useRef(null);
+    const videoRef = useRef(null);
+    const canvasRef = useRef(null);
+    const streamRef = useRef(null);
+
     // --- SAKLAR PARALLAX (SUDAH FIX) ---
     useEffect(() => {
         const handleMouseMove = (e) => {
@@ -158,6 +167,52 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin, onRegist
 
     const font = "'Plus Jakarta Sans', sans-serif";
 
+    // --- HANDLERS FOTO PROFIL ---
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const url = URL.createObjectURL(file);
+            setProfileImgUrl(url);
+            setShowProfileMenu(false);
+        }
+    };
+
+    const startCamera = async () => {
+        setShowProfileMenu(false);
+        setShowCameraModal(true);
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            streamRef.current = stream;
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
+            }
+        } catch (err) {
+            console.error("Error accessing camera:", err);
+            alert("Tidak dapat mengakses kamera. Pastikan Anda memberikan izin akses kamera.");
+            setShowCameraModal(false);
+        }
+    };
+
+    const stopCamera = () => {
+        if (streamRef.current) {
+            streamRef.current.getTracks().forEach(track => track.stop());
+            streamRef.current = null;
+        }
+        setShowCameraModal(false);
+    };
+
+    const capturePhoto = () => {
+        if (videoRef.current && canvasRef.current) {
+            const context = canvasRef.current.getContext('2d');
+            canvasRef.current.width = videoRef.current.videoWidth;
+            canvasRef.current.height = videoRef.current.videoHeight;
+            context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+            const dataUrl = canvasRef.current.toDataURL('image/png');
+            setProfileImgUrl(dataUrl);
+            stopCamera();
+        }
+    };
+
     const labelStyle = {
         fontFamily: font,
         fontSize: '12px',
@@ -198,6 +253,7 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin, onRegist
     };
 
     return (
+        <>
         <main style={{ display: 'flex', height: '100vh', width: '100%', fontFamily: font, overflow: 'hidden' }}>
             {/* Left Section: Cinematic Hero */}
             <section style={{
@@ -385,23 +441,30 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin, onRegist
                     </header>
 
                     {/* Profile Picture Uploader */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '24px', marginBottom: '48px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '24px', marginBottom: '48px', position: 'relative' }}>
                         <div style={{ position: 'relative' }}>
-                            <div style={{
+                            <div 
+                                onClick={() => setShowProfileMenu(!showProfileMenu)}
+                                style={{
                                 width: '96px',
                                 height: '96px',
                                 borderRadius: '50%',
-                                backgroundColor: '#deebe6',
-                                border: '2px dashed #e6bdb5',
+                                backgroundColor: profileImgUrl ? 'transparent' : '#deebe6',
+                                backgroundImage: profileImgUrl ? `url(${profileImgUrl})` : 'none',
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                border: profileImgUrl ? '2px solid #b32000' : '2px dashed #e6bdb5',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                overflow: 'hidden',
-                                transition: 'border-color 0.3s'
+                                cursor: 'pointer',
+                                transition: 'all 0.3s'
                             }}>
-                                <span className="material-symbols-outlined" style={{ fontSize: '36px', color: '#916f68' }}>person</span>
+                                {!profileImgUrl && <span className="material-symbols-outlined" style={{ fontSize: '36px', color: '#916f68' }}>person</span>}
                             </div>
-                            <button style={{
+                            <button 
+                                onClick={() => setShowProfileMenu(!showProfileMenu)}
+                                style={{
                                 position: 'absolute',
                                 bottom: 0,
                                 right: 0,
@@ -418,12 +481,70 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin, onRegist
                                 boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                                 transition: 'transform 0.2s'
                             }}
-                                onMouseEnter={e => e.target.style.transform = 'scale(1.1)'}
-                                onMouseLeave={e => e.target.style.transform = 'scale(1)'}
+                                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+                                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
                             >
                                 <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>edit</span>
                             </button>
                         </div>
+                        
+                        {showProfileMenu && (
+                            <div style={{
+                                position: 'absolute',
+                                top: '100px',
+                                left: '0',
+                                background: '#ffffff',
+                                borderRadius: '16px',
+                                boxShadow: '0 12px 32px rgba(0,0,0,0.12)',
+                                padding: '8px 0',
+                                minWidth: '220px',
+                                zIndex: 100,
+                                fontFamily: font,
+                                overflow: 'hidden',
+                                border: '1px solid rgba(230,189,181,0.3)'
+                            }}>
+                                <div style={{ padding: '12px 16px', fontSize: '12px', fontWeight: 700, color: '#5c4039', borderBottom: '1px solid rgba(230,189,181,0.3)', marginBottom: '4px', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                                    Ubah Foto Profil
+                                </div>
+                                <button 
+                                    type="button"
+                                    onClick={() => fileInputRef.current.click()}
+                                    style={{ width: '100%', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '10px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', color: '#131e1b', textAlign: 'left', fontWeight: 500, transition: 'background-color 0.2s' }}
+                                    onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0fcf7'}
+                                    onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+                                >
+                                    <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#23F7DB' }}>folder_open</span> Pilih dari Komputer
+                                </button>
+                                <button 
+                                    type="button"
+                                    onClick={startCamera}
+                                    style={{ width: '100%', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '10px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', color: '#131e1b', textAlign: 'left', fontWeight: 500, transition: 'background-color 0.2s' }}
+                                    onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0fcf7'}
+                                    onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+                                >
+                                    <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#23F7DB' }}>photo_camera</span> Gunakan Kamera
+                                </button>
+                                {profileImgUrl && (
+                                    <button 
+                                        type="button"
+                                        onClick={() => { setProfileImgUrl(null); setShowProfileMenu(false); }}
+                                        style={{ width: '100%', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '10px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', color: '#b32000', textAlign: 'left', fontWeight: 500, transition: 'background-color 0.2s' }}
+                                        onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(179,32,0,0.06)'}
+                                        onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+                                    >
+                                        <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>delete</span> Hapus Profil
+                                    </button>
+                                )}
+                                <input 
+                                    type="file" 
+                                    accept="image/*" 
+                                    ref={fileInputRef} 
+                                    onChange={handleFileChange} 
+                                    style={{ display: 'none' }} 
+                                />
+                            </div>
+                        )}
+
                         <div>
                             <span style={{ ...labelStyle, display: 'block', marginBottom: '4px' }}>PROFILE PHOTO</span>
                             <p style={{ fontFamily: font, fontSize: '12px', color: 'rgba(92,64,57,0.7)' }}>Recommended: Square image, max 2MB.</p>
@@ -681,5 +802,91 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin, onRegist
                 </div>
             </section>
         </main>
+            
+            {/* Camera Modal */}
+            {showCameraModal && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100vw',
+                    height: '100vh',
+                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 9999,
+                    backdropFilter: 'blur(4px)'
+                }}>
+                    <div style={{
+                        background: '#fff',
+                        padding: '24px',
+                        borderRadius: '16px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '16px',
+                        boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+                        maxWidth: '90vw'
+                    }}>
+                        <h3 style={{ margin: 0, fontFamily: font, fontSize: '18px', fontWeight: 700, color: '#131e1b' }}>Gunakan Kamera</h3>
+                        
+                        <div style={{ width: '100%', maxWidth: '400px', aspectRatio: '4/3', backgroundColor: '#000', borderRadius: '12px', overflow: 'hidden', position: 'relative' }}>
+                            <video 
+                                ref={videoRef} 
+                                autoPlay 
+                                playsInline 
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            ></video>
+                        </div>
+                        
+                        <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
+
+                        <div style={{ display: 'flex', gap: '12px', width: '100%' }}>
+                            <button 
+                                type="button"
+                                onClick={stopCamera}
+                                style={{
+                                    flex: 1,
+                                    padding: '12px',
+                                    borderRadius: '9999px',
+                                    border: '1px solid #e0e0e0',
+                                    background: '#fff',
+                                    color: '#131e1b',
+                                    fontFamily: font,
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s'
+                                }}
+                                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f5f5f5'}
+                                onMouseLeave={e => e.currentTarget.style.backgroundColor = '#fff'}
+                            >
+                                Batal
+                            </button>
+                            <button 
+                                type="button"
+                                onClick={capturePhoto}
+                                style={{
+                                    flex: 1,
+                                    padding: '12px',
+                                    borderRadius: '9999px',
+                                    border: 'none',
+                                    background: '#b32000',
+                                    color: '#fff',
+                                    fontFamily: font,
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s'
+                                }}
+                                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#8a1800'}
+                                onMouseLeave={e => e.currentTarget.style.backgroundColor = '#b32000'}
+                            >
+                                Ambil Foto
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
     );
 }
