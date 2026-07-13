@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import DestinationMapCard from './DestinationMapCard';
+import ScrollReveal from './ScrollReveal';
 
 export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout }) {
     const [scrolled, setScrolled] = useState(false);
@@ -279,43 +280,63 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                 </div>
                 
                 <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '0 20px', maxWidth: '800px' }}>
-                    <h1 style={{
-                        fontFamily: font,
-                        fontSize: '64px',
-                        fontWeight: 800,
-                        lineHeight: 1.1,
-                        letterSpacing: '-0.04em',
-                        color: '#ffffff',
-                        marginBottom: '24px',
-                        textShadow: '0 4px 12px rgba(0,0,0,0.3)'
-                    }} className="text-display-lg-mobile md:text-display-lg">
+                    <h1 
+                        className="hover-aesthetic text-display-lg-mobile md:text-display-lg"
+                        style={{
+                            fontFamily: font,
+                            fontSize: '64px',
+                            fontWeight: 800,
+                            lineHeight: 1.1,
+                            letterSpacing: '-0.04em',
+                            color: '#ffffff',
+                            marginBottom: '24px',
+                            textShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                            transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.5s ease, color 0.5s ease',
+                        }}
+                    >
                         Pengalaman Tak Terlupakan di Tanjung Bira
                     </h1>
-                    <p style={{
-                        fontFamily: font,
-                        fontSize: '18px',
-                        color: 'rgba(255, 255, 255, 0.95)',
-                        lineHeight: 1.6,
-                        margin: 0,
-                        textShadow: '0 2px 8px rgba(0,0,0,0.3)'
-                    }}>
+                    <p 
+                        className="hover-aesthetic"
+                        style={{
+                            fontFamily: font,
+                            fontSize: '18px',
+                            color: 'rgba(255, 255, 255, 0.95)',
+                            lineHeight: 1.6,
+                            margin: 0,
+                            textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                            transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.5s ease, color 0.5s ease',
+                        }}
+                    >
                         Jangan hanya berkunjung. Rasakan budayanya, nikmati petualangannya, dan ciptakan kenangan.
                     </p>
                 </div>
             </header>
 
-            {/* â”€â”€ Filter Bar Section â”€â”€ */}
-            <section style={{ position: 'relative', zIndex: 20, marginTop: '-48px', padding: '0 64px' }}>
-                <div className="glass-card-opaque rounded-full cinematic-shadow" style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '24px',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '24px 48px',
-                    maxWidth: '1000px',
-                    margin: '0 auto'
-                }}>
+            {/* ── Filter Bar Section ── */}
+            <section style={{ position: 'relative', zIndex: 20, marginTop: '-160px', padding: '0 64px' }}>
+                <div 
+                    className="glass-card-opaque rounded-full cinematic-shadow" 
+                    style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: '24px',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '24px 48px',
+                        maxWidth: '1000px',
+                        margin: '0 auto',
+                        transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease',
+                    }}
+                    onMouseEnter={e => {
+                        e.currentTarget.style.transform = 'translateY(-4px)';
+                        e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(0, 107, 94, 0.18)';
+                    }}
+                    onMouseLeave={e => {
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = '';
+                    }}
+                >
                     {/* Category Buttons */}
                     <div className="no-scrollbar" style={{
                         display: 'flex',
@@ -393,7 +414,8 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                 </div>
             </section>
 
-            {/* â”€â”€ Experience Catalog Grid â”€â”€ */}
+            {/* ── Experience Catalog Grid ── */}
+            <ScrollReveal>
             <main style={{ padding: '80px 64px', maxWidth: '1440px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
                 <div style={{
                     display: 'grid',
@@ -529,10 +551,10 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                     )}
                 </div>
             </main>
+            </ScrollReveal>
 
-
-
-            {/* â”€â”€ Preparing for Adventure â”€â”€ */}
+            {/* ── Preparing for Adventure ── */}
+            <ScrollReveal>
             <section style={{ backgroundColor: '#e4f1eb', padding: '80px 0' }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 64px', boxSizing: 'border-box' }}>
                     <h2 style={{
@@ -598,8 +620,10 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                     </div>
                 </div>
             </section>
+            </ScrollReveal>
 
-            {/* â”€â”€ Map & Social Proof Section â”€â”€ */}
+            {/* ── Map & Social Proof Section ── */}
+            <ScrollReveal>
             <section style={{ padding: '80px 64px', maxWidth: '1440px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '64px' }}>
                     
@@ -768,8 +792,9 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                     </div>
                 </div>
             </section>
+            </ScrollReveal>
 
-            {/* â”€â”€ Footer â”€â”€ */}
+            {/* ── Footer ── */}
             <Footer
                 onNavigateHome={onNavigateHome}
                 onNavigateDestinations={onNavigateDestinations}

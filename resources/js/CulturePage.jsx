@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import ScrollReveal from './ScrollReveal';
 
 export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateExperiences, onNavigateAllDestinations, onNavigateJournal, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout }) {
     const [scrolled, setScrolled] = useState(false);
@@ -87,51 +88,64 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                         padding: '0 64px',
                         maxWidth: '1000px',
                     }}>
-                        <span style={{
-                            fontFamily: font,
-                            fontSize: '12px',
-                            fontWeight: 700,
-                            letterSpacing: '0.20em',
-                            textTransform: 'uppercase',
-                            color: '#31fde1',
-                            backgroundColor: 'rgba(0,107,94,0.2)',
-                            backdropFilter: 'blur(12px)',
-                            padding: '8px 16px',
-                            borderRadius: '9999px',
-                            display: 'inline-block',
-                            marginBottom: '24px',
-                        }}>EKSPLORASI BUDAYA</span>
+                        <span 
+                            className="hover-aesthetic"
+                            style={{
+                                fontFamily: font,
+                                fontSize: '12px',
+                                fontWeight: 700,
+                                letterSpacing: '0.20em',
+                                textTransform: 'uppercase',
+                                color: '#31fde1',
+                                backgroundColor: 'rgba(0,107,94,0.2)',
+                                backdropFilter: 'blur(12px)',
+                                padding: '8px 16px',
+                                borderRadius: '9999px',
+                                display: 'inline-block',
+                                marginBottom: '24px',
+                                transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.5s ease, color 0.5s ease',
+                            }}
+                        >EKSPLORASI BUDAYA</span>
 
-                        <h1 style={{
-                            fontFamily: font,
-                            fontSize: 'clamp(40px, 7vw, 64px)',
-                            fontWeight: 800,
-                            lineHeight: 1.1,
-                            letterSpacing: '-0.04em',
-                            color: '#ffffff',
-                            marginBottom: '24px',
-                            textShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                        }}>
+                        <h1 
+                            className="hover-aesthetic"
+                            style={{
+                                fontFamily: font,
+                                fontSize: 'clamp(40px, 7vw, 64px)',
+                                fontWeight: 800,
+                                lineHeight: 1.1,
+                                letterSpacing: '-0.04em',
+                                color: '#ffffff',
+                                marginBottom: '24px',
+                                textShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                                transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.5s ease, color 0.5s ease',
+                            }}
+                        >
                             Warisan Leluhur
                         </h1>
 
-                        <p style={{
-                            fontFamily: font,
-                            fontSize: '18px',
-                            lineHeight: 1.6,
-                            color: 'rgba(255,255,255,0.9)',
-                            maxWidth: '640px',
-                            fontStyle: 'italic',
-                            borderLeft: '4px solid #b32000',
-                            paddingLeft: '24px',
-                            margin: 0,
-                        }}>
+                        <p 
+                            className="hover-aesthetic"
+                            style={{
+                                fontFamily: font,
+                                fontSize: '18px',
+                                lineHeight: 1.6,
+                                color: 'rgba(255,255,255,0.9)',
+                                maxWidth: '640px',
+                                fontStyle: 'italic',
+                                borderLeft: '4px solid #b32000',
+                                paddingLeft: '24px',
+                                margin: 0,
+                                transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.5s ease, color 0.5s ease',
+                            }}
+                        >
                             "Di tanah di mana langit dan bumi berpadu, setiap ukiran kayu dan helaian kain menceritakan kisah tentang kehormatan, harmoni, dan abadi nya jiwa Sulawesi."
                         </p>
                     </div>
                 </section>
 
-                {/* â”€â”€ Section 1: The Master Shipbuilders â”€â”€ */}
+                {/* ── Section 1: The Master Shipbuilders ── */}
+                <ScrollReveal>
                 <section style={{ padding: '80px 64px' }}>
                     <div style={{
                         display: 'grid',
@@ -236,8 +250,10 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                         </div>
                     </div>
                 </section>
+                </ScrollReveal>
 
-                {/* â”€â”€ Section 2: Threads of Tradition â”€â”€ */}
+                {/* ── Section 2: Threads of Tradition ── */}
+                <ScrollReveal>
                 <section style={{ padding: '80px 0', backgroundColor: '#eaf6f1', overflow: 'hidden' }}>
                     <div style={{ padding: '0 64px', maxWidth: '1440px', margin: '0 auto' }}>
                         <div style={{
@@ -360,8 +376,10 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                         </div>
                     </div>
                 </section>
+                </ScrollReveal>
 
-                {/* â”€â”€ Section 3: Sacred Movements â”€â”€ */}
+                {/* ── Section 3: Sacred Movements ── */}
+                <ScrollReveal>
                 <section style={{ padding: '80px 64px' }}>
                     <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
                         {/* Section header */}
@@ -503,6 +521,7 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                         </div>
                     </div>
                 </section>
+                </ScrollReveal>
             </main>
 
             {/* â”€â”€ Footer â”€â”€ */}

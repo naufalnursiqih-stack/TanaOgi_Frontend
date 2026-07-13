@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import SulawesiMapSection from './SulawesiMapSection';
+import ScrollReveal from './ScrollReveal';
 
 export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateAllDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout }) {
     const [scrolled, setScrolled] = useState(false);
@@ -101,48 +102,57 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                     textAlign: 'center',
                     padding: '0 64px',
                 }}>
-                    <span style={{
-                        fontFamily: font,
-                        fontSize: '12px',
-                        fontWeight: 700,
-                        letterSpacing: '0.20em',
-                        textTransform: 'uppercase',
-                        color: '#b32000',
-                        display: 'block',
-                        marginBottom: '24px',
-                        opacity: heroVisible ? 1 : 0,
-                        transform: heroVisible ? 'translateY(0)' : 'translateY(16px)',
-                        transition: 'opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s',
-                    }}>SULAWESI SELATAN</span>
+                    <span 
+                        className="hover-aesthetic"
+                        style={{
+                            fontFamily: font,
+                            fontSize: '12px',
+                            fontWeight: 700,
+                            letterSpacing: '0.20em',
+                            textTransform: 'uppercase',
+                            color: '#b32000',
+                            display: 'block',
+                            marginBottom: '24px',
+                            opacity: heroVisible ? 1 : 0,
+                            transform: heroVisible ? 'translateY(0)' : 'translateY(16px)',
+                            transition: 'opacity 0.7s ease 0.1s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.5s ease',
+                        }}
+                    >SULAWESI SELATAN</span>
 
-                    <h1 style={{
-                        fontFamily: font,
-                        fontSize: '64px',
-                        fontWeight: 800,
-                        lineHeight: 1.1,
-                        letterSpacing: '-0.04em',
-                        color: '#131e1b',
-                        maxWidth: '900px',
-                        margin: '0 auto 48px',
-                        opacity: heroVisible ? 1 : 0,
-                        transform: heroVisible ? 'translateY(0)' : 'translateY(32px)',
-                        transition: 'opacity 1s ease 0.3s, transform 1s ease 0.3s',
-                    }}>
+                    <h1 
+                        className="hover-aesthetic"
+                        style={{
+                            fontFamily: font,
+                            fontSize: '64px',
+                            fontWeight: 800,
+                            lineHeight: 1.1,
+                            letterSpacing: '-0.04em',
+                            color: '#131e1b',
+                            maxWidth: '900px',
+                            margin: '0 auto 48px',
+                            opacity: heroVisible ? 1 : 0,
+                            transform: heroVisible ? 'translateY(0)' : 'translateY(32px)',
+                            transition: 'opacity 1s ease 0.3s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.5s ease',
+                        }}
+                    >
                         Mahakarya Alam &amp; Budaya
                     </h1>
 
-                    <p style={{
-                        fontFamily: font,
-                        fontSize: '18px',
-                        fontWeight: 400,
-                        lineHeight: 1.6,
-                        color: '#5c4039',
-                        maxWidth: '560px',
-                        margin: '0 auto 80px',
-                        opacity: heroVisible ? 1 : 0,
-                        transform: heroVisible ? 'translateY(0)' : 'translateY(16px)',
-                        transition: 'opacity 0.7s ease 0.5s, transform 0.7s ease 0.5s',
-                    }}>
+                    <p 
+                        className="hover-aesthetic"
+                        style={{
+                            fontFamily: font,
+                            fontSize: '18px',
+                            fontWeight: 400,
+                            lineHeight: 1.6,
+                            color: '#5c4039',
+                            maxWidth: '560px',
+                            margin: '0 auto 80px',
+                            opacity: heroVisible ? 1 : 0,
+                            transform: heroVisible ? 'translateY(0)' : 'translateY(16px)',
+                            transition: 'opacity 0.7s ease 0.5s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.5s ease',
+                        }}
+                    >
                         Temukan harmoni antara puncak karst yang megah dan tradisi leluhur yang tak lekang oleh waktu di jantung Celebes.
                     </p>
                 </div>
@@ -161,14 +171,15 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
             </section>
 
             {/* ── Sulawesi Map Section ── */}
-            <SulawesiMapSection />
+            <SulawesiMapSection onNavigateDestinationDetail={onNavigateDestinationDetail} />
 
             {/* ── Featured Collection ── */}
-            <section style={{
-                padding: '80px 64px',
-                maxWidth: '1440px',
-                margin: '0 auto',
-            }}>
+            <ScrollReveal>
+                <section style={{
+                    padding: '80px 64px',
+                    maxWidth: '1440px',
+                    margin: '0 auto',
+                }}>
                 {/* Section Header */}
                 <div style={{
                     display: 'flex',
@@ -498,8 +509,10 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                     </button>
                 </div>
             </section>
+            </ScrollReveal>
 
-            {/* â”€â”€ Editorial / Newsletter Section â”€â”€ */}
+            {/* ── Editorial / Newsletter Section ── */}
+            <ScrollReveal>
             <section style={{
                 padding: '80px 0',
                 backgroundColor: '#eaf6f1',
@@ -609,6 +622,7 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                     </div>
                 </div>
             </section>
+            </ScrollReveal>
 
             <Footer
                 onNavigateHome={onNavigateHome}

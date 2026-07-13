@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import ScrollReveal from './ScrollReveal';
 
 export default function JournalPage({
     onNavigateHome,
@@ -119,30 +120,43 @@ export default function JournalPage({
                         maxWidth: '1440px', margin: '0 auto',
                     }}>
                         <div style={{ maxWidth: '720px' }}>
-                            <span style={{
-                                fontFamily: font, fontSize: '12px', fontWeight: 700,
-                                letterSpacing: '0.20em', textTransform: 'uppercase',
-                                color: '#00dfc5', display: 'block', marginBottom: '8px',
-                            }}>EDITORIAL FEATURE</span>
-                            <h1 style={{
-                                fontFamily: font, fontSize: 'clamp(40px, 6vw, 64px)',
-                                fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.04em',
-                                color: '#ffffff', marginBottom: '24px',
-                                textShadow: '0 4px 24px rgba(0,0,0,0.4)',
-                            }}>
+                            <span 
+                                className="hover-aesthetic"
+                                style={{
+                                    fontFamily: font, fontSize: '12px', fontWeight: 700,
+                                    letterSpacing: '0.20em', textTransform: 'uppercase',
+                                    color: '#00dfc5', display: 'block', marginBottom: '8px',
+                                    transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.5s ease, color 0.5s ease',
+                                }}
+                            >EDITORIAL FEATURE</span>
+                            <h1 
+                                className="hover-aesthetic"
+                                style={{
+                                    fontFamily: font, fontSize: 'clamp(40px, 6vw, 64px)',
+                                    fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.04em',
+                                    color: '#ffffff', marginBottom: '24px',
+                                    textShadow: '0 4px 24px rgba(0,0,0,0.4)',
+                                    transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.5s ease, color 0.5s ease',
+                                }}
+                            >
                                 Jurnal: Kisah-Kisah dari Tanah Leluhur
                             </h1>
-                            <p style={{
-                                fontFamily: font, fontSize: '18px', lineHeight: 1.6,
-                                color: 'rgba(255,255,255,0.9)', maxWidth: '560px',
-                            }}>
+                            <p 
+                                className="hover-aesthetic"
+                                style={{
+                                    fontFamily: font, fontSize: '18px', lineHeight: 1.6,
+                                    color: 'rgba(255,255,255,0.9)', maxWidth: '560px',
+                                    transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.5s ease, color 0.5s ease',
+                                }}
+                            >
                                 Selami jiwa Sulawesi dari katedral karst Maros hingga ukiran sakral Toraja yang menyimpan ribuan tahun sejarah.
                             </p>
                         </div>
                     </div>
                 </section>
 
-                {/* â”€â”€ Featured Article â”€â”€ */}
+                {/* ── Featured Article ── */}
+                <ScrollReveal>
                 <section style={{ padding: '80px 64px', maxWidth: '1440px', margin: '0 auto' }}>
                     <div style={{
                         display: 'grid',
@@ -211,8 +225,10 @@ export default function JournalPage({
                         </div>
                     </div>
                 </section>
+                </ScrollReveal>
 
-                {/* â”€â”€ Cultural Chronicles Grid â”€â”€ */}
+                {/* ── Cultural Chronicles Grid ── */}
+                <ScrollReveal>
                 <section style={{ padding: '80px 64px', backgroundColor: '#eaf6f1' }}>
                     <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
                         {/* Section header */}
@@ -318,80 +334,149 @@ export default function JournalPage({
                         </div>
                     </div>
                 </section>
+                </ScrollReveal>
 
-                {/* â”€â”€ Newsletter / Join the Journal Section â”€â”€ */}
+                {/* ── Newsletter / Join the Journal Section ── */}
+                <ScrollReveal>
                 <section style={{ padding: '80px 64px', maxWidth: '1440px', margin: '0 auto' }}>
                     <div style={{
                         position: 'relative',
-                        borderRadius: '24px',
-                        padding: '80px',
+                        borderRadius: '32px',
+                        padding: '60px 80px',
                         overflow: 'hidden',
-                        display: 'flex',
-                        flexWrap: 'wrap',
+                        display: 'grid',
+                        gridTemplateColumns: '1.2fr 1fr',
                         alignItems: 'center',
-                        justifyContent: 'space-between',
-                        gap: '48px',
-                        /* Orange-aqua gradient with dark overlay */
-                        background: 'linear-gradient(135deg, rgba(245,64,27,0.85) 0%, rgba(35,247,219,0.75) 100%), linear-gradient(180deg, rgba(30,45,40,0.55) 0%, rgba(30,45,40,0.45) 100%)',
-                        backgroundColor: '#1e2d28',
+                        gap: '64px',
+                        backgroundColor: '#150d0c', // Deep luxurious dark-teak charcoal
+                        border: '1px solid rgba(230, 189, 181, 0.08)',
+                        boxShadow: '0 35px 70px -15px rgba(21, 13, 12, 0.5)',
                     }}>
-                        {/* Decorative glow blobs */}
+                        {/* Glowing backdrop auroras */}
                         <div style={{
-                            position: 'absolute', top: '-60px', right: '-60px',
-                            width: '280px', height: '280px',
-                            background: 'rgba(245,64,27,0.2)',
-                            borderRadius: '50%', filter: 'blur(80px)',
+                            position: 'absolute', top: '-100px', left: '-100px',
+                            width: '450px', height: '450px',
+                            background: 'radial-gradient(circle, rgba(179,32,0,0.18) 0%, transparent 70%)',
+                            pointerEvents: 'none',
                         }} />
                         <div style={{
-                            position: 'absolute', bottom: '-40px', left: '20%',
-                            width: '200px', height: '200px',
-                            background: 'rgba(35,247,219,0.15)',
-                            borderRadius: '50%', filter: 'blur(60px)',
+                            position: 'absolute', bottom: '-150px', right: '-100px',
+                            width: '450px', height: '450px',
+                            background: 'radial-gradient(circle, rgba(230,189,181,0.12) 0%, transparent 75%)',
+                            pointerEvents: 'none',
                         }} />
 
-                        {/* Text */}
-                        <div style={{ position: 'relative', zIndex: 10, maxWidth: '520px' }}>
+                        {/* Background Ornament 1: Phinisi Ship (Bottom Left) */}
+                        <div style={{
+                            position: 'absolute',
+                            bottom: '-20px',
+                            left: '10px',
+                            width: '240px',
+                            height: '240px',
+                            color: 'rgba(230, 189, 181, 0.04)',
+                            pointerEvents: 'none',
+                            zIndex: 1,
+                        }}>
+                            <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.2" style={{ width: '100%', height: '100%' }}>
+                                <path d="M10 70 C 30 73, 70 73, 90 70 L 85 78 L 15 78 Z" />
+                                <line x1="35" y1="70" x2="35" y2="25" />
+                                <line x1="65" y1="70" x2="65" y2="20" />
+                                <path d="M35 28 L 15 50 L 35 55 Z" />
+                                <path d="M35 32 L 20 60 L 35 62 Z" />
+                                <path d="M65 23 L 45 45 L 65 50 Z" />
+                                <path d="M65 27 L 50 55 L 65 57 Z" />
+                                <path d="M65 20 L 85 45 L 65 48 Z" />
+                            </svg>
+                        </div>
+
+                        {/* Background Ornament 2: Toraja Sun Carving - Pa'barre Allo (Top Right/Center) */}
+                        <div style={{
+                            position: 'absolute',
+                            top: '-40px',
+                            right: '30%',
+                            width: '180px',
+                            height: '180px',
+                            color: 'rgba(230, 189, 181, 0.04)',
+                            pointerEvents: 'none',
+                            zIndex: 1,
+                        }}>
+                            <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.2" style={{ width: '100%', height: '100%' }}>
+                                <circle cx="50" cy="50" r="40" />
+                                <circle cx="50" cy="50" r="30" />
+                                <circle cx="50" cy="50" r="10" />
+                                <line x1="50" y1="10" x2="50" y2="20" />
+                                <line x1="50" y1="80" x2="50" y2="90" />
+                                <line x1="10" y1="50" x2="20" y2="50" />
+                                <line x1="80" y1="50" x2="90" y2="50" />
+                                <line x1="22" y1="22" x2="29" y2="29" />
+                                <line x1="71" y1="71" x2="78" y2="78" />
+                                <line x1="71" y1="29" x2="78" y2="22" />
+                                <line x1="22" y1="78" x2="29" y2="71" />
+                                <circle cx="50" cy="50" r="4" fill="currentColor" />
+                            </svg>
+                        </div>
+
+                        {/* Left Content */}
+                        <div style={{ position: 'relative', zIndex: 10 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                                <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#e6bdb5' }}>explore</span>
+                                <span style={{
+                                    fontFamily: font, fontSize: '11px', fontWeight: 700,
+                                    letterSpacing: '.25em', textTransform: 'uppercase', color: '#e6bdb5',
+                                }}>Eksplorasi Budaya & Sejarah</span>
+                            </div>
+
                             <h2 style={{
-                                fontFamily: font, fontSize: 'clamp(32px, 4vw, 40px)',
-                                fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.03em',
-                                color: '#ffffff', marginBottom: '24px',
-                                textShadow: '0 2px 12px rgba(0,0,0,0.3)',
+                                fontFamily: font, fontSize: 'clamp(28px, 4vw, 36px)',
+                                fontWeight: 800, lineHeight: 1.15, letterSpacing: '-0.03em',
+                                color: '#ffffff', marginBottom: '16px',
                             }}>Bergabunglah dalam Perjalanan</h2>
+                            
                             <p style={{
-                                fontFamily: font, fontSize: '18px', lineHeight: 1.6,
-                                color: 'rgba(255,255,255,0.88)',
+                                fontFamily: font, fontSize: '15px', lineHeight: 1.6,
+                                color: 'rgba(240, 252, 247, 0.75)', margin: 0,
                             }}>
                                 Berlangganan untuk mendapatkan cerita budaya bulanan, panduan destinasi tersembunyi di Nusantara, dan perspektif perjalanan eksklusif dari jantung Sulawesi.
                             </p>
                         </div>
 
-                        {/* Form */}
-                        <div style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '440px' }}>
-                            <form onSubmit={handleSubscribe} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                                <div style={{ position: 'relative' }}>
+                        {/* Right Form */}
+                        <div style={{ position: 'relative', zIndex: 10 }}>
+                            <form onSubmit={handleSubscribe} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                                    <span className="material-symbols-outlined" style={{
+                                        position: 'absolute', left: '16px', color: 'rgba(230, 189, 181, 0.4)', fontSize: '20px'
+                                    }}>alternate_email</span>
                                     <input
                                         type="email"
                                         value={email}
                                         onChange={e => setEmail(e.target.value)}
-                                        placeholder="ALAMAT EMAIL ANDA"
+                                        placeholder="Alamat email Anda..."
                                         required
                                         style={{
                                             width: '100%',
-                                            backgroundColor: 'transparent',
-                                            border: 'none',
-                                            borderBottom: '1px solid rgba(255,255,255,0.4)',
+                                            backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                                            border: '1px solid rgba(230, 189, 181, 0.15)',
+                                            borderRadius: '16px',
                                             color: '#ffffff',
-                                            padding: '16px 0',
+                                            padding: '18px 16px 18px 48px',
                                             fontFamily: font,
-                                            fontSize: '12px',
-                                            fontWeight: 700,
-                                            letterSpacing: '0.20em',
+                                            fontSize: '14px',
+                                            fontWeight: 500,
                                             outline: 'none',
-                                            transition: 'border-color 0.3s',
+                                            transition: 'all 0.3s ease',
                                             boxSizing: 'border-box',
                                         }}
-                                        onFocus={e => e.currentTarget.style.borderBottomColor = '#b32000'}
-                                        onBlur={e => e.currentTarget.style.borderBottomColor = 'rgba(255,255,255,0.4)'}
+                                        onFocus={e => {
+                                            e.currentTarget.style.borderColor = '#e6bdb5';
+                                            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.06)';
+                                            e.currentTarget.style.boxShadow = '0 0 15px rgba(230, 189, 181, 0.15)';
+                                        }}
+                                        onBlur={e => {
+                                            e.currentTarget.style.borderColor = 'rgba(230, 189, 181, 0.15)';
+                                            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.04)';
+                                            e.currentTarget.style.boxShadow = 'none';
+                                        }}
                                     />
                                 </div>
                                 <button
@@ -399,31 +484,57 @@ export default function JournalPage({
                                     style={{
                                         backgroundColor: subscribed ? '#006b5e' : '#b32000',
                                         color: '#ffffff',
-                                        padding: '16px 32px',
-                                        borderRadius: '9999px',
+                                        padding: '18px',
+                                        borderRadius: '16px',
                                         fontFamily: font,
-                                        fontSize: '14px',
+                                        fontSize: '13px',
                                         fontWeight: 700,
-                                        letterSpacing: '0.10em',
+                                        letterSpacing: '0.15em',
                                         textTransform: 'uppercase',
                                         border: 'none',
                                         cursor: 'pointer',
-                                        textAlign: 'center',
+                                        boxShadow: subscribed ? 'none' : '0 10px 24px -5px rgba(179,32,0,0.35)',
                                         transition: 'all 0.3s ease',
-                                        boxShadow: '0 8px 20px rgba(0,0,0,0.2)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '8px',
                                     }}
-                                    onMouseEnter={e => { if (!subscribed) e.currentTarget.style.backgroundColor = '#de2f08'; }}
-                                    onMouseLeave={e => { if (!subscribed) e.currentTarget.style.backgroundColor = '#b32000'; }}
+                                    onMouseEnter={e => {
+                                        if (!subscribed) {
+                                            e.currentTarget.style.backgroundColor = '#d82806';
+                                            e.currentTarget.style.transform = 'translateY(-2px)';
+                                            e.currentTarget.style.boxShadow = '0 12px 28px -4px rgba(179,32,0,0.45)';
+                                        }
+                                    }}
+                                    onMouseLeave={e => {
+                                        if (!subscribed) {
+                                            e.currentTarget.style.backgroundColor = '#b32000';
+                                            e.currentTarget.style.transform = 'translateY(0)';
+                                            e.currentTarget.style.boxShadow = '0 10px 24px -5px rgba(179,32,0,0.35)';
+                                        }
+                                    }}
                                 >
-                                    {subscribed ? 'âœ“ SELAMAT DATANG DI JURNAL' : 'LANGGANAN JURNAL INI'}
+                                    {subscribed ? (
+                                        <>
+                                            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>check_circle</span>
+                                            Berhasil Berlangganan
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>send</span>
+                                            Langganan Jurnal
+                                        </>
+                                    )}
                                 </button>
                             </form>
                         </div>
                     </div>
                 </section>
+                </ScrollReveal>
             </main>
 
-            {/* â”€â”€ Footer â”€â”€ */}
+            {/* ── Footer ── */}
             <Footer
                 onNavigateHome={onNavigateHome}
                 onNavigateDestinations={onNavigateDestinations}

@@ -832,7 +832,7 @@ function App() {
             destData = null;
         }
 
-        const pagesWithLoader = ['destinations', 'all-destinations', 'destination-detail', 'login', 'register', 'drivers', 'travel-guide', 'sustainability', 'about', 'press-kit', 'privacy', 'terms'];
+        const pagesWithLoader = ['home', 'experiences', 'culture', 'journal', 'destinations', 'all-destinations', 'destination-detail', 'login', 'register', 'drivers', 'travel-guide', 'sustainability', 'about', 'press-kit', 'privacy', 'terms'];
 
         if (pagesWithLoader.includes(page)) {
             setShowLoader(true);
