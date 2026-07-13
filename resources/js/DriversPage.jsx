@@ -11,7 +11,9 @@ export default function DriversPage({
     onNavigateCulture,
     onNavigateJournal,
     currentUser,
-    onLogout
+    onLogout,
+    wishlistCount,
+    onWishlistToggle
 }) {
     const [scrolled, setScrolled] = useState(false);
     const optionsRef = useRef(null);
@@ -83,6 +85,8 @@ export default function DriversPage({
                 onNavigateJournal={onNavigateJournal}
                 currentUser={currentUser}
                 onLogout={onLogout}
+                wishlistCount={wishlistCount}
+                onWishlistToggle={onWishlistToggle}
             />
 
             <main style={{ paddingTop: 0 }}>

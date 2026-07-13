@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import RegisterPage from './RegisterPage';
 import LoginPage from './LoginPage';
+import ScrollToTop from './ScrollToTop';
 import DestinationsPage from './DestinationsPage';
 import AllDestinationsPage from './AllDestinationsPage';
 import ExperiencesPage from './ExperiencesPage';
@@ -15,6 +16,7 @@ import Preloader from './Preloader';
 import AdminLoginPage from './AdminLoginPage';
 import AdminDashboard from './AdminDashboard';
 import ErrorPage from './ErrorPage';
+import WishlistSidebar from './WishlistSidebar';
 
 
 /**
@@ -331,7 +333,7 @@ const stories = [
     }
 ];
 
-function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations, onNavigateAllDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, currentUser, onLogout }) {
+function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations, onNavigateAllDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, currentUser, onLogout, wishlistCount, onWishlistToggle }) {
     const [parallax, setParallax] = useState({ x: 0, y: 0 });
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [viewportMouse, setViewportMouse] = useState({ x: 0, y: 0 });
@@ -476,6 +478,8 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
                 onNavigateJournal={onNavigateJournal}
                 currentUser={currentUser}
                 onLogout={onLogout}
+                wishlistCount={wishlistCount}
+                onWishlistToggle={onWishlistToggle}
             />
 
             {/* Hero Section */}
@@ -485,14 +489,20 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
                 style={{ cursor: isInside ? 'none' : 'auto' }}
             >
                 {/* Background Video */}
-                <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 z-0" style={{ overflow: 'hidden' }}>
                     <video
                         autoPlay
                         muted
                         loop
                         playsInline
                         className="w-full h-full object-cover"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        style={{ 
+                            width: '100%', 
+                            height: '100%', 
+                            objectFit: 'cover',
+                            transform: `translate3d(${parallax.x * 12}px, ${parallax.y * 12}px, 0) scale(1.08)`,
+                            transition: 'transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)',
+                        }}
                     >
                         <source src="/final-web2.mp4" type="video/mp4" />
                         Your browser does not support the video tag.
@@ -743,6 +753,56 @@ function App() {
     const [currentPage, setCurrentPage] = useState('home');
     const [transitioning, setTransitioning] = useState(false);
     const [selectedDestination, setSelectedDestination] = useState(null);
+
+    // Wishlist State & LocalStorage Persistence
+    const [wishlist, setWishlist] = useState(() => {
+        try {
+            const saved = localStorage.getItem('tanaogi_wishlist');
+            return saved ? JSON.parse(saved) : [];
+        } catch (e) {
+            return [];
+        }
+    });
+    const [wishlistOpen, setWishlistOpen] = useState(false);
+
+    useEffect(() => {
+        try {
+            localStorage.setItem('tanaogi_wishlist', JSON.stringify(wishlist));
+        } catch (e) {
+            console.error("Failed to save wishlist:", e);
+        }
+    }, [wishlist]);
+
+    const toggleWishlist = (dest) => {
+        setWishlist(prev => {
+            const exists = prev.find(x => x.id === dest.id);
+            if (exists) {
+                return prev.filter(x => x.id !== dest.id);
+            } else {
+                return [...prev, { 
+                    id: dest.id, 
+                    title: dest.title || dest.name, 
+                    region: dest.region, 
+                    image: dest.image || dest.heroImage, 
+                    note: '' 
+                }];
+            }
+        });
+    };
+
+    const updateWishlistNote = (id, note) => {
+        setWishlist(prev => prev.map(x => x.id === id ? { ...x, note } : x));
+    };
+
+    const isInWishlist = (id) => wishlist.some(x => x.id === id);
+    const removeWishlistItem = (id) => setWishlist(prev => prev.filter(x => x.id !== id));
+
+    const wishlistProps = {
+        wishlistCount: wishlist.length,
+        onWishlistToggle: () => setWishlistOpen(true),
+        onToggleWishlist: toggleWishlist,
+        isInWishlist: isInWishlist
+    };
     const [showLoader, setShowLoader] = useState(true);
 
     // Auth State
@@ -870,6 +930,15 @@ function App() {
     return (
         <>
             <Preloader active={showLoader} />
+            <ScrollToTop />
+            <WishlistSidebar
+                isOpen={wishlistOpen}
+                onClose={() => setWishlistOpen(false)}
+                wishlist={wishlist}
+                onRemoveItem={removeWishlistItem}
+                onUpdateNote={updateWishlistNote}
+                onExploreItem={(item) => navigateTo('destination-detail', item)}
+            />
             <div style={{
                 opacity: transitioning ? 0 : 1,
                 transition: 'opacity 0.25s ease',
@@ -885,6 +954,8 @@ function App() {
                         onNavigateJournal={() => navigateTo('journal')}
                         currentUser={currentUser}
                         onLogout={handleLogout}
+                        wishlistCount={wishlist.length}
+                        onWishlistToggle={() => setWishlistOpen(true)}
                     />
                 )}
                 {currentPage === 'register' && (
@@ -920,6 +991,7 @@ function App() {
                         {...supportNavProps}
                         currentUser={currentUser}
                         onLogout={handleLogout}
+                        {...wishlistProps}
                     />
                 )}
                 {currentPage === 'all-destinations' && (
@@ -935,6 +1007,7 @@ function App() {
                         {...supportNavProps}
                         currentUser={currentUser}
                         onLogout={handleLogout}
+                        {...wishlistProps}
                     />
                 )}
                 {currentPage === 'experiences' && (
@@ -949,6 +1022,8 @@ function App() {
                         {...supportNavProps}
                         currentUser={currentUser}
                         onLogout={handleLogout}
+                        wishlistCount={wishlist.length}
+                        onWishlistToggle={() => setWishlistOpen(true)}
                     />
                 )}
                 {currentPage === 'culture' && (
@@ -963,6 +1038,8 @@ function App() {
                         {...supportNavProps}
                         currentUser={currentUser}
                         onLogout={handleLogout}
+                        wishlistCount={wishlist.length}
+                        onWishlistToggle={() => setWishlistOpen(true)}
                     />
                 )}
                 {currentPage === 'journal' && (
@@ -977,6 +1054,8 @@ function App() {
                         {...supportNavProps}
                         currentUser={currentUser}
                         onLogout={handleLogout}
+                        wishlistCount={wishlist.length}
+                        onWishlistToggle={() => setWishlistOpen(true)}
                     />
                 )}
                 {currentPage === 'destination-detail' && (
@@ -994,6 +1073,8 @@ function App() {
                         destination={selectedDestination || {}}
                         currentUser={currentUser}
                         onLogout={handleLogout}
+                        wishlistCount={wishlist.length}
+                        onWishlistToggle={() => setWishlistOpen(true)}
                     />
                 )}
                 {currentPage === 'drivers' && (
@@ -1008,6 +1089,8 @@ function App() {
                         {...supportNavProps}
                         currentUser={currentUser}
                         onLogout={handleLogout}
+                        wishlistCount={wishlist.length}
+                        onWishlistToggle={() => setWishlistOpen(true)}
                     />
                 )}
                 {supportPages[currentPage] && (
@@ -1024,6 +1107,8 @@ function App() {
                         {...supportNavProps}
                         currentUser={currentUser}
                         onLogout={handleLogout}
+                        wishlistCount={wishlist.length}
+                        onWishlistToggle={() => setWishlistOpen(true)}
                     />
                 )}
                 {currentPage === 'admin-dashboard' && (

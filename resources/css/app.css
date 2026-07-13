@@ -705,3 +705,30 @@
     transform: translateY(-4px) scale(1.015) !important;
     text-shadow: 0 8px 24px rgba(179, 32, 0, 0.08) !important;
 }
+
+/* Shimmer keyframes & skeleton loader */
+@keyframes shimmer-sweep {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.shimmer-box {
+    background: linear-gradient(90deg, #e4f1eb 25%, #d5e9e0 37%, #e4f1eb 63%);
+    background-size: 200% 100%;
+    animation: shimmer-sweep 1.5s infinite linear;
+}
+
+/* Premium 3D tilt-on-hover effect for cards */
+.tilt-card-3d {
+    perspective: 1000px;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease !important;
+}
+
+.tilt-card-3d:hover {
+    transform: translateY(-8px) rotateX(3deg) rotateY(-3deg) scale(1.01) !important;
+    box-shadow: 0 30px 60px -12px rgba(179, 32, 0, 0.18) !important;
+}

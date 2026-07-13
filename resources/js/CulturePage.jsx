@@ -3,7 +3,7 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import ScrollReveal from './ScrollReveal';
 
-export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateExperiences, onNavigateAllDestinations, onNavigateJournal, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout }) {
+export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateExperiences, onNavigateAllDestinations, onNavigateJournal, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout, wishlistCount, onWishlistToggle }) {
     const [scrolled, setScrolled] = useState(false);
     const [heroParallax, setHeroParallax] = useState(0);
 
@@ -50,6 +50,8 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                 onNavigateJournal={onNavigateJournal}
                 currentUser={currentUser}
                 onLogout={onLogout}
+                wishlistCount={wishlistCount}
+                onWishlistToggle={onWishlistToggle}
             />
 
             <main style={{ paddingTop: 0 }}>

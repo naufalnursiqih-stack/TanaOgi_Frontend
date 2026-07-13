@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import ScrollReveal from './ScrollReveal';
+import ImageWithShimmer from './ImageWithShimmer';
 
 export default function JournalPage({
     onNavigateHome,
@@ -19,6 +20,8 @@ export default function JournalPage({
     onNavigateTerms,
     currentUser,
     onLogout,
+    wishlistCount,
+    onWishlistToggle,
 }) {
     const [scrolled, setScrolled] = useState(false);
     const [subscribed, setSubscribed] = useState(false);
@@ -60,15 +63,32 @@ export default function JournalPage({
             desc: 'Setiap garis, warna, dan ukiran menyimpan kisah tentang leluhur dan alam semesta di jantung Tana Toraja.',
             image: 'foto-ornamen-ukiran-tongkonan.webp',
             offset: true,
+            title: "Misteri Ukiran Tua Tongkonan",
+            excerpt: "Di balik warna merah, kuning, dan hitam di dinding kayu Tongkonan, tersimpan rahasia kosmologi dan tatanan sosial masyarakat Toraja.",
+            date: "12 Juni 2026",
+            author: "Naufal Nursiqih",
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBGPoA__DoHtGYacKqjDs60k-vMX2F6j75VZnJ95qsm5Q42FUdokRXbqsMFUEhdt25YTwYB0E-ga2cVznJSnsTdAfdhXiDD99WeTcpKLuvV5YkhKsBG11lnGfQneWxg3P-or2dzi8AyQ5EDKIpcW1Xw2Ujf4ZeSEkDbkCC1dl4XcBoOIu554RosFWXojq0dQvYrlWeGQU4aQrXGt_yEfAxttUSLv60dnP2KF45Rky1Gd8RQ-hcDvba_thdGZyWcJVgORSyJ-GWUMz8",
+            readTime: "5 min read",
+            featured: true
         },
         {
-            id: 3,
-            category: 'JIWA MARITIM',
-            title: 'Pelaut Terakhir Nusantara: Kisah di Atas Kapal Phinisi',
-            desc: 'Sepekan bersama para pembuat kapal legendaris di Bira, di mana samudra adalah rumah sekaligus guru.',
-            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDKtEqM_g13pOb7icU8XDn1IQ8PHQ4s0HgoSk4wyAklSR4m_TsF6WJV2xs2ygz449nT6iMy97pgW2iEyZi0XZ2Dy1dds6zHmNBcbZbmNBoyS0d9a3PaYxaREYky9JKls0HGVBhSlNb3tHS7fQpqS4tcZBzsicpoZ97Ve7OhYbtyqLq5kI2HGPIrNS630OrTfJ7LUr9fWe-4-E1si64hX1zst5qqUmkm4c_QRUeOpdyTp7Qy-7jfDPQZjCaTgexqpkgLowzxkN-CriY',
-            offset: false,
+            title: "Kapal Phinisi: Memahat Doa di Kayu Pesisir Bira",
+            excerpt: "Menyaksikan prosesi ritual pembuatan kapal legendaris Phinisi langsung dari para panrita lopi di pesisir Bulukumba.",
+            date: "05 Juni 2026",
+            author: "Muhammad Faathir",
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB3eZ-fa7mueito91akSt22MxT6c-vfU1SpegZLZnKAfDeNgLa4-6Q618D0GhY2Rv7jlJ85DQkoSZeP1BczTvl3BsF_Ev55whnuZWNVhbDNTLdzjq8knbTQ1fpglqqU_-Ragh7AqLJCdTMG7pDvGcIubNyQ2IfqEJzbcEp4xch9f8UyQV0P19N4wkwcxBHlVAevEiJLU0t_HPaV1dNXh6zJPG1L6aAtHbA97rFqhNNohSKWPyCZMl0L_xgJyCv6780vVQt25UNHQl4",
+            readTime: "7 min read",
+            featured: false
         },
+        {
+            title: "Menembus Kabut Purba Karst Rammang-Rammang",
+            excerpt: "Catatan perjalanan pagi menyusuri sungai Pute dengan perahu jolloro tradisional menuju desa tersembunyi Berua.",
+            date: "28 Mei 2026",
+            author: "Admin TanaOgi",
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCc6KtwA3DqtQmGNYT0zf93pd0fulPEMYOz_WmFoXw70YEwqC6MWXhKMarSvYnWjjcRtSH3n1JfH_3yGCFhsKQlCYFz2q-D7rOqZehIqPKRj9Yv3WZyEJj1cXXfhgEKILTc1GheVjUE-aqOLi91YN4kouhd1WrRSQwe3LpV9Z-W7cm2Yiutz83ugleIhCzOHN7hf-nn9awE65vE_D5xafr1VDgMmA8xqKiV0_blNcKvds7DXEDhzJ24fMk3F9qOAs-i94_6l4kdnI8",
+            readTime: "4 min read",
+            featured: false
+        }
     ];
 
     const handleSubscribe = (e) => {
@@ -94,17 +114,19 @@ export default function JournalPage({
                 onNavigateJournal={() => { }}
                 currentUser={currentUser}
                 onLogout={onLogout}
+                wishlistCount={wishlistCount}
+                onWishlistToggle={onWishlistToggle}
             />
 
             <main>
 
-                {/* â”€â”€ Hero Section â”€â”€ */}
+                {/* ── Hero Section ── */}
                 <section style={{ position: 'relative', height: '80vh', width: '100%', overflow: 'hidden' }}>
                     <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-                        <img
+                        <ImageWithShimmer
                             alt="Landscape Sulawesi - Kabut Pagi di Atas Lembah Karst Maros"
                             src="/sulawesi.jpg"
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            style={{ width: '100%', height: '100%' }}
                         />
                         <div style={{
                             position: 'absolute', inset: 0,
@@ -167,18 +189,25 @@ export default function JournalPage({
                         {/* Image */}
                         <div style={{ gridColumn: 'span 7', borderRadius: '16px', overflow: 'hidden', cursor: 'pointer' }}>
                             <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden' }}>
-                                <img
+                                <ImageWithShimmer
                                     alt="Formasi Karst Maros-Pangkep saat Golden Hour"
                                     src="hutankarsmaros.jpg"
                                     style={{
-                                        width: '100%', height: '100%', objectFit: 'cover',
-                                        transition: 'transform 0.7s ease',
+                                        width: '100%', height: '100%'
                                     }}
-                                    onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
-                                    onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                                    imgStyle={{ transition: 'transform 0.7s ease' }}
+                                    onMouseEnter={e => {
+                                        const imgEl = e.currentTarget.querySelector('img');
+                                        if (imgEl) imgEl.style.transform = 'scale(1.05)';
+                                    }}
+                                    onMouseLeave={e => {
+                                        const imgEl = e.currentTarget.querySelector('img');
+                                        if (imgEl) imgEl.style.transform = 'scale(1)';
+                                    }}
                                 />
                                 <div style={{
                                     position: 'absolute', top: '24px', left: '24px',
+                                    zIndex: 10
                                 }}>
                                     <span style={{
                                         backgroundColor: '#b32000', color: '#ffffff',
@@ -275,34 +304,30 @@ export default function JournalPage({
                             {articles.map((article, i) => (
                                 <article
                                     key={article.id}
+                                    className="tilt-card-3d"
                                     style={{
                                         backgroundColor: '#f0fcf7',
                                         padding: '12px',
                                         borderRadius: '16px',
                                         boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
                                         cursor: 'pointer',
-                                        transition: 'all 0.4s ease',
                                         marginTop: i === 1 ? '32px' : '0',
-                                    }}
-                                    onMouseEnter={e => {
-                                        e.currentTarget.style.transform = 'translateY(-4px)';
-                                        e.currentTarget.style.boxShadow = '0 20px 40px -10px rgba(0,0,0,0.15)';
-                                    }}
-                                    onMouseLeave={e => {
-                                        e.currentTarget.style.transform = 'translateY(0)';
-                                        e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)';
                                     }}
                                 >
                                     <div style={{ aspectRatio: '4/3', overflow: 'hidden', borderRadius: '12px', marginBottom: '24px' }}>
-                                        <img
+                                        <ImageWithShimmer
                                             src={article.image}
                                             alt={article.title}
-                                            style={{
-                                                width: '100%', height: '100%', objectFit: 'cover',
-                                                transition: 'transform 0.5s ease',
+                                            style={{ width: '100%', height: '100%' }}
+                                            imgStyle={{ transition: 'transform 0.5s ease' }}
+                                            onMouseEnter={e => {
+                                                const imgEl = e.currentTarget.querySelector('img');
+                                                if (imgEl) imgEl.style.transform = 'scale(1.1)';
                                             }}
-                                            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
-                                            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                                            onMouseLeave={e => {
+                                                const imgEl = e.currentTarget.querySelector('img');
+                                                if (imgEl) imgEl.style.transform = 'scale(1)';
+                                            }}
                                         />
                                     </div>
                                     <div style={{ padding: '0 12px 24px' }}>

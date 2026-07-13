@@ -3,8 +3,9 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import DestinationMapCard from './DestinationMapCard';
 import ScrollReveal from './ScrollReveal';
+import ImageWithShimmer from './ImageWithShimmer';
 
-export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout }) {
+export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout, wishlistCount, onWishlistToggle }) {
     const [scrolled, setScrolled] = useState(false);
     const [activeCategory, setActiveCategory] = useState('All Experiences');
     const [selectedDuration, setSelectedDuration] = useState('Duration');
@@ -255,6 +256,8 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                 onNavigateJournal={onNavigateJournal}
                 currentUser={currentUser}
                 onLogout={onLogout}
+                wishlistCount={wishlistCount}
+                onWishlistToggle={onWishlistToggle}
             />
 
             {/* â”€â”€ Hero Section â”€â”€ */}
@@ -425,7 +428,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                     {filteredExperiences.map(exp => (
                         <article 
                             key={exp.id} 
-                            className="glass-card-opaque cinematic-shadow pulse-hover"
+                            className="glass-card-opaque cinematic-shadow tilt-card-3d"
                             style={{
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -436,14 +439,12 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                         >
                             {/* Card Image Wrapper */}
                             <div style={{ position: 'relative', height: '256px', overflow: 'hidden' }} className="group">
-                                <img 
+                                <ImageWithShimmer 
                                     src={exp.image} 
                                     alt={exp.title}
                                     style={{
                                         width: '100%',
                                         height: '100%',
-                                        objectFit: 'cover',
-                                        transition: 'transform 0.7s ease'
                                     }}
                                 />
                                 {/* Badges */}

@@ -114,6 +114,8 @@ export default function SupportPageLayout({
         onNavigateJournal={onNavigateJournal}
         currentUser={currentUser}
         onLogout={onLogout}
+        wishlistCount={wishlistCount}
+        onWishlistToggle={onWishlistToggle}
       />
 
       <main className="responsive-padding-top" style={{ paddingTop: '120px' }}>

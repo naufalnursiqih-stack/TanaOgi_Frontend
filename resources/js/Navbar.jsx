@@ -16,6 +16,8 @@ export default function Navbar({
     isHeroTheme = false, // Atribut pendeteksi halaman utama
     currentUser = null,
     onLogout,
+    wishlistCount = 0,
+    onWishlistToggle,
 }) {
     const [scrolled, setScrolled] = useState(false);
     const [isNavbarHovered, setIsNavbarHovered] = useState(false);
@@ -64,7 +66,7 @@ export default function Navbar({
 
     // Menentukan warna teks link menu (Putih bersih jika di awal home page)
     const getDynamicTextColor = (key) => {
-        if (isTransparent) return '#ffffff';
+        if (isTransparent && isHeroTheme) return '#ffffff';
         if (isActive(key)) return '#b32000';
         return 'rgba(19,30,27,0.7)';
     };
@@ -72,11 +74,11 @@ export default function Navbar({
     const linkStyle = (key) => ({
         fontFamily: font,
         fontSize: '16px',
-        fontWeight: isTransparent ? 500 : (isActive(key) ? 700 : 500),
+        fontWeight: (isTransparent && isHeroTheme) ? 500 : (isActive(key) ? 700 : 500),
         color: getDynamicTextColor(key),
-        textShadow: isTransparent ? '0 1px 4px rgba(0,0,0,0.6)' : 'none',
+        textShadow: (isTransparent && isHeroTheme) ? '0 1px 4px rgba(0,0,0,0.6)' : 'none',
         textDecoration: 'none',
-        borderBottom: (isActive(key) && !isTransparent) ? '2px solid #b32000' : '2px solid transparent',
+        borderBottom: (isActive(key) && !(isTransparent && isHeroTheme)) ? '2px solid #b32000' : '2px solid transparent',
         paddingBottom: '4px',
         transition: 'all 0.3s ease',
         cursor: 'pointer',
@@ -138,10 +140,10 @@ export default function Navbar({
                 top: 0,
                 width: '100%',
                 zIndex: 50,
-                backgroundColor: isTransparent ? 'transparent' : 'rgba(255,255,255,0.95)',
-                backdropFilter: isTransparent ? 'none' : 'blur(20px)',
-                WebkitBackdropFilter: isTransparent ? 'none' : 'blur(20px)',
-                borderBottom: isTransparent ? 'none' : '1px solid rgba(19,30,27,0.06)',
+                backgroundColor: (isTransparent && isHeroTheme) ? 'transparent' : 'rgba(255,255,255,0.95)',
+                backdropFilter: (isTransparent && isHeroTheme) ? 'none' : 'blur(20px)',
+                WebkitBackdropFilter: (isTransparent && isHeroTheme) ? 'none' : 'blur(20px)',
+                borderBottom: (isTransparent && isHeroTheme) ? 'none' : '1px solid rgba(19,30,27,0.06)',
                 boxShadow: scrolled || isNavbarHovered ? '0 4px 30px rgba(0,0,0,0.05)' : 'none',
                 transition: 'all 0.4s ease',
             }}
@@ -181,8 +183,8 @@ export default function Navbar({
                             fontSize: '24px',
                             fontWeight: 700,
                             letterSpacing: '-0.01em',
-                            color: isTransparent ? '#ffffff' : '#b32000',
-                            textShadow: isTransparent ? '0 1px 4px rgba(0,0,0,0.5)' : 'none',
+                            color: (isTransparent && isHeroTheme) ? '#ffffff' : '#b32000',
+                            textShadow: (isTransparent && isHeroTheme) ? '0 1px 4px rgba(0,0,0,0.5)' : 'none',
                             opacity: fade ? 0 : 1,
                             filter: fade ? 'blur(8px)' : 'blur(0px)',
                             transform: fade ? 'scale(0.97)' : 'scale(1)',
@@ -202,7 +204,7 @@ export default function Navbar({
                             onClick={e => { e.preventDefault(); if (action) action(); }}
                             style={linkStyle(key)}
                             onMouseEnter={e => {
-                                e.currentTarget.style.color = isHeroTheme && !scrolled ? 'rgba(255,255,255,0.7)' : '#b32000';
+                                e.currentTarget.style.color = isHeroTheme && (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.7)' : '#b32000';
                             }}
                             onMouseLeave={e => {
                                 e.currentTarget.style.color = getDynamicTextColor(key);
@@ -215,6 +217,63 @@ export default function Navbar({
 
                 {/* Bagian Kanan: Akses Tombol / User Profile */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+                    {/* Floating Wishlist Button */}
+                    <div 
+                        onClick={onWishlistToggle}
+                        style={{
+                            position: 'relative',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '50%',
+                            backgroundColor: (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.15)' : 'rgba(0,107,94,0.06)',
+                            transition: 'all 0.3s ease',
+                        }}
+                        onMouseEnter={e => {
+                            e.currentTarget.style.transform = 'scale(1.08)';
+                            e.currentTarget.style.backgroundColor = (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.25)' : 'rgba(0,107,94,0.1)';
+                        }}
+                        onMouseLeave={e => {
+                            e.currentTarget.style.transform = 'scale(1)';
+                            e.currentTarget.style.backgroundColor = (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.15)' : 'rgba(0,107,94,0.06)';
+                        }}
+                    >
+                        <span 
+                            className="material-symbols-outlined" 
+                            style={{ 
+                                color: (isTransparent && isHeroTheme) ? '#ffffff' : '#006b5e',
+                                fontSize: '22px' 
+                            }}
+                        >
+                            favorite
+                        </span>
+                        {wishlistCount > 0 && (
+                            <span style={{
+                                position: 'absolute',
+                                top: '-4px',
+                                right: '-4px',
+                                backgroundColor: '#b32000',
+                                color: '#ffffff',
+                                fontSize: '9px',
+                                fontWeight: 800,
+                                width: '18px',
+                                height: '18px',
+                                borderRadius: '50%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                border: '2px solid ' + ((isTransparent && isHeroTheme) ? '#131e1b' : '#ffffff'),
+                                boxShadow: '0 4px 10px rgba(179,32,0,0.3)',
+                                transition: 'all 0.3s ease'
+                            }}>
+                                {wishlistCount}
+                            </span>
+                        )}
+                    </div>
+
                     {currentUser ? (
                         /* Logged-in state: show user avatar + name + logout */
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>

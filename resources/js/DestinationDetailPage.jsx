@@ -219,11 +219,76 @@ export default function DestinationDetailPage({
     onNavigateDrivers,
     destination = {},
     currentUser,
-    onLogout
+    onLogout,
+    wishlistCount,
+    onWishlistToggle
 }) {
     const [scrolled, setScrolled] = useState(false);
     const [transportMode, setTransportMode] = useState('driver'); // 'driver' or 'self'
     const [showStay, setShowStay] = useState(false);
+    const [weatherTab, setWeatherTab] = useState('today'); // 'today' | 'forecast' | 'packing'
+
+    const weatherDataMap = {
+        1: { // Toraja
+            temp: '22°C',
+            status: 'Berawan & Sejuk',
+            feelsLike: '21°C',
+            humidity: '82%',
+            wind: '8 km/h',
+            icon: 'cloudy',
+            color: '#006b5e',
+            forecast: [
+                { day: 'Besok', temp: '21°C', status: 'Hujan Ringan', icon: 'rainy' },
+                { day: 'Lusa', temp: '23°C', status: 'Berawan', icon: 'cloudy' }
+            ],
+            packing: [
+                'Jaket Tebal / Fleece (Suhu dingin)',
+                'Sepatu trekking anti-selip (Gua & sawah)',
+                'Payung / Jas Hujan portable (Hujan sore)',
+                'Pelembab kulit (Udara gunung sejuk)'
+            ]
+        },
+        2: { // Maros
+            temp: '30°C',
+            status: 'Cerah Berawan',
+            feelsLike: '33°C',
+            humidity: '75%',
+            wind: '12 km/h',
+            icon: 'partly_cloudy_day',
+            color: '#b32000',
+            forecast: [
+                { day: 'Besok', temp: '31°C', status: 'Cerah Terang', icon: 'sunny' },
+                { day: 'Lusa', temp: '30°C', status: 'Hujan Kilat Sore', icon: 'thunderstorm' }
+            ],
+            packing: [
+                'Pakaian katun (Menyerap keringat)',
+                'Losion anti-nyamuk (Sungai & gua)',
+                'Sepatu trekking anti-selip (Karst licin)',
+                'Topi & Kacamata Hitam (Terik matahari)'
+            ]
+        },
+        3: { // Bira
+            temp: '31°C',
+            status: 'Cerah Pesisir',
+            feelsLike: '34°C',
+            humidity: '68%',
+            wind: '18 km/h',
+            icon: 'sunny',
+            color: '#b32000',
+            forecast: [
+                { day: 'Besok', temp: '32°C', status: 'Cerah Terang', icon: 'sunny' },
+                { day: 'Lusa', temp: '31°C', status: 'Cerah Berangin', icon: 'air' }
+            ],
+            packing: [
+                'Baju renang & Sandal jepit (Aktivitas air)',
+                'Tabir surya / Sunscreen SPF 50+',
+                'Kacamata hitam & Topi pantai lebar',
+                'Pakaian linen / katun tipis berpori'
+            ]
+        }
+    };
+
+    const weatherData = weatherDataMap[activeId] || weatherDataMap[3];
 
     // ─── State GPS ───
     const [gpsStatus, setGpsStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error' | 'denied'
@@ -331,6 +396,8 @@ export default function DestinationDetailPage({
                 onNavigateJournal={onNavigateJournal}
                 currentUser={currentUser}
                 onLogout={onLogout}
+                wishlistCount={wishlistCount}
+                onWishlistToggle={onWishlistToggle}
             />
 
             {/* ── Hero Banner Section ── */}
@@ -1099,20 +1166,122 @@ export default function DestinationDetailPage({
                                     </button>
                                 </div>
                                 
-                                {/* Mini Weather Widget */}
-                                <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px', backgroundColor: 'rgba(222, 47, 8, 0.08)', borderRadius: '16px' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                        <span className="material-symbols-outlined" style={{ color: '#F5401B', fontSize: '32px' }}>sunny</span>
+                                {/* ── Premium Weather & Packing Widget ── */}
+                                <div style={{ 
+                                    marginTop: '24px', 
+                                    padding: '24px', 
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)', 
+                                    backdropFilter: 'blur(20px)',
+                                    WebkitBackdropFilter: 'blur(20px)',
+                                    borderRadius: '24px',
+                                    border: '1px solid rgba(255, 255, 255, 0.5)',
+                                    boxShadow: '0 15px 30px -10px rgba(0, 107, 94, 0.08)'
+                                }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+                                        <h4 className="text-forest" style={{ fontSize: '16px', fontWeight: 800, margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <span className="material-symbols-outlined" style={{ color: '#006b5e', fontSize: '20px' }}>thermostat</span>
+                                            Cuaca &amp; Tips Bawaan
+                                        </h4>
+                                        <span style={{ fontSize: '10px', color: '#5c4039', fontWeight: 600 }}>Live Update</span>
+                                    </div>
+
+                                    {/* Main Weather Display */}
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '24px', padding: '16px', backgroundColor: 'rgba(0, 107, 94, 0.04)', borderRadius: '16px' }}>
+                                        <span className="material-symbols-outlined" style={{ color: '#b32000', fontSize: '48px' }}>
+                                            {weatherData.icon}
+                                        </span>
                                         <div>
-                                            <span style={{ display: 'block', fontSize: '10px', fontWeight: 700, color: '#F5401B' }}>{destData.sidebarInfo.weatherStatus}</span>
-                                            <span style={{ fontSize: '20px', fontWeight: 800, color: '#2D4A42' }}>{destData.sidebarInfo.weatherTemp}</span>
+                                            <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                                                <span style={{ fontSize: '32px', fontWeight: 800, color: '#131e1b', lineHeight: 1 }}>{weatherData.temp}</span>
+                                            </div>
+                                            <span style={{ fontSize: '13px', fontWeight: 700, color: '#006b5e', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                                {weatherData.status}
+                                            </span>
                                         </div>
                                     </div>
-                                    <div style={{ textAlign: 'right' }}>
-                                        <span style={{ display: 'block', fontSize: '10px', color: '#5c4039', fontWeight: 700 }}>{destData.title.toUpperCase().split(' ').slice(-1)[0]}</span>
-                                        <span style={{ fontSize: '10px', color: '#5c4039' }}>Diperbarui 10m lalu</span>
+
+                                    {/* Tab Navigation */}
+                                    <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid rgba(0,0,0,0.05)', paddingBottom: '12px', marginBottom: '16px' }}>
+                                        {[
+                                            { id: 'today', label: 'Hari Ini' },
+                                            { id: 'forecast', label: 'Prakiraan' },
+                                            { id: 'packing', label: 'Tips Bawaan' }
+                                        ].map(tab => (
+                                            <button
+                                                key={tab.id}
+                                                onClick={() => setWeatherTab(tab.id)}
+                                                style={{
+                                                    flex: 1,
+                                                    padding: '8px 4px',
+                                                    borderRadius: '8px',
+                                                    border: 'none',
+                                                    backgroundColor: weatherTab === tab.id ? '#006b5e' : 'transparent',
+                                                    color: weatherTab === tab.id ? '#ffffff' : '#5c4039',
+                                                    fontWeight: 700,
+                                                    fontSize: '11px',
+                                                    cursor: 'pointer',
+                                                    transition: 'all 0.3s ease'
+                                                }}
+                                            >
+                                                {tab.label}
+                                            </button>
+                                        ))}
                                     </div>
-                                </div>
+
+                                    {/* Tab Content Panels */}
+                                    <div style={{ minHeight: '130px' }}>
+                                        {/* Today Tab */}
+                                        {weatherTab === 'today' && (
+                                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', textAlign: 'center' }}>
+                                                <div style={{ padding: '12px 4px', backgroundColor: 'rgba(255,255,255,0.4)', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.02)' }}>
+                                                    <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#5c4039', display: 'block', marginBottom: '4px' }}>device_thermostat</span>
+                                                    <span style={{ fontSize: '9px', color: '#5c4039', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Terasa</span>
+                                                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#131e1b' }}>{weatherData.feelsLike}</span>
+                                                </div>
+                                                <div style={{ padding: '12px 4px', backgroundColor: 'rgba(255,255,255,0.4)', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.02)' }}>
+                                                    <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#5c4039', display: 'block', marginBottom: '4px' }}>humidity_percentage</span>
+                                                    <span style={{ fontSize: '9px', color: '#5c4039', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Lembab</span>
+                                                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#131e1b' }}>{weatherData.humidity}</span>
+                                                </div>
+                                                <div style={{ padding: '12px 4px', backgroundColor: 'rgba(255,255,255,0.4)', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.02)' }}>
+                                                    <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#5c4039', display: 'block', marginBottom: '4px' }}>wind_power</span>
+                                                    <span style={{ fontSize: '9px', color: '#5c4039', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Angin</span>
+                                                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#131e1b' }}>{weatherData.wind}</span>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Forecast Tab */}
+                                        {weatherTab === 'forecast' && (
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                                {weatherData.forecast.map((fc, idx) => (
+                                                    <div key={idx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', backgroundColor: 'rgba(255,255,255,0.4)', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.02)' }}>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                            <span className="material-symbols-outlined" style={{ color: '#006b5e', fontSize: '24px' }}>{fc.icon}</span>
+                                                            <div>
+                                                                <span style={{ fontWeight: 700, fontSize: '13px', color: '#131e1b', display: 'block' }}>{fc.day}</span>
+                                                                <span style={{ fontSize: '11px', color: '#5c4039' }}>{fc.status}</span>
+                                                            </div>
+                                                        </div>
+                                                        <span style={{ fontWeight: 800, fontSize: '15px', color: '#b32000', marginLeft: 'auto' }}>{fc.temp}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+
+                                        {/* Packing Tab */}
+                                        {weatherTab === 'packing' && (
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                                {weatherData.packing.map((pack, idx) => (
+                                                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', backgroundColor: 'rgba(255,255,255,0.4)', borderRadius: '8px', fontSize: '12px', color: '#2D4A42', fontWeight: 600, border: '1px solid rgba(0,0,0,0.02)' }}>
+                                                        <span className="material-symbols-outlined" style={{ color: '#b32000', fontSize: '16px' }}>check_circle</span>
+                                                        <span>{pack}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                      </div>
+                                    </div>
                             </div>
                             
                         </div>

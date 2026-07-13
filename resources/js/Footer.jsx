@@ -20,26 +20,47 @@ export default function Footer({
 
     const footerLinkStyle = {
         fontFamily: font,
-        fontSize: '16px',
-        color: '#5c4039',
+        fontSize: '15px',
+        color: 'rgba(230, 189, 181, 0.7)',
         textDecoration: 'none',
-        transition: 'color 0.3s',
+        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
         cursor: 'pointer',
+        display: 'inline-block',
     };
 
     const colTitleStyle = {
         fontFamily: font,
-        fontSize: '12px',
+        fontSize: '11px',
         fontWeight: 700,
-        letterSpacing: '0.20em',
+        letterSpacing: '0.25em',
         textTransform: 'uppercase',
-        color: '#006b5e',
-        marginBottom: '16px',
+        color: '#23F7DB',
+        marginBottom: '20px',
         display: 'block',
     };
 
     return (
-        <footer style={{ backgroundColor: '#deebe6', padding: '80px 0' }}>
+        <footer style={{ 
+            backgroundColor: '#0f0a09', // Deep dark teakwood charcoal
+            borderTop: '1px solid rgba(230, 189, 181, 0.08)',
+            padding: '80px 0', 
+            position: 'relative',
+            overflow: 'hidden'
+        }}>
+            {/* Glowing backdrop auroras */}
+            <div style={{
+                position: 'absolute', bottom: '-100px', left: '-50px',
+                width: '350px', height: '350px',
+                background: 'radial-gradient(circle, rgba(179,32,0,0.1) 0%, transparent 70%)',
+                pointerEvents: 'none',
+            }} />
+            <div style={{
+                position: 'absolute', top: '-150px', right: '-50px',
+                width: '350px', height: '350px',
+                background: 'radial-gradient(circle, rgba(35,247,219,0.05) 0%, transparent 70%)',
+                pointerEvents: 'none',
+            }} />
+
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
@@ -48,10 +69,11 @@ export default function Footer({
                 maxWidth: '1440px',
                 margin: '0 auto',
                 boxSizing: 'border-box',
+                position: 'relative',
+                zIndex: 10
             }}>
                 {/* Brand Column */}
                 <div>
-                    {/* Flex Wrapper untuk Menyejajarkan Logo Lumayan Besar & Teks */}
                     <div
                         onClick={onNavigateHome}
                         style={{
@@ -66,18 +88,19 @@ export default function Footer({
                             src="/logo TanaOgi.png"
                             alt="Logo Tana Ogi"
                             style={{
-                                width: '64px', // Ukuran dibuat agak mayan besar sesuai request
+                                width: '56px',
                                 height: 'auto',
-                                objectFit: 'contain'
+                                objectFit: 'contain',
+                                filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.3))'
                             }}
                         />
                         <span
                             style={{
                                 fontFamily: font,
-                                fontSize: '32px',
+                                fontSize: '28px',
                                 fontWeight: 800,
                                 letterSpacing: '-0.02em',
-                                color: '#131e1b',
+                                color: '#ffffff',
                             }}
                         >
                             TanaOgi'
@@ -87,21 +110,38 @@ export default function Footer({
                     <p style={{
                         fontFamily: font,
                         fontSize: '14px',
-                        color: '#5c4039',
+                        color: 'rgba(230, 189, 181, 0.55)',
                         lineHeight: 1.6,
                         margin: 0,
                     }}>
                         © 2026 TanaOgi'.<br />
                         Dibuat untuk Para Penjelajah Budaya.
                     </p>
-                    <div style={{ display: 'flex', gap: '16px', marginTop: '20px' }}>
+                    <div style={{ display: 'flex', gap: '16px', marginTop: '24px' }}>
                         {['language', 'share'].map(icon => (
                             <span
                                 key={icon}
                                 className="material-symbols-outlined"
-                                style={{ cursor: 'pointer', color: '#5c4039', fontSize: '22px', transition: 'color 0.3s' }}
-                                onMouseEnter={e => e.currentTarget.style.color = '#b32000'}
-                                onMouseLeave={e => e.currentTarget.style.color = '#5c4039'}
+                                style={{ 
+                                    cursor: 'pointer', 
+                                    color: 'rgba(230, 189, 181, 0.6)', 
+                                    fontSize: '20px', 
+                                    transition: 'all 0.3s ease',
+                                    padding: '8px',
+                                    borderRadius: '50%',
+                                    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                                    border: '1px solid rgba(230, 189, 181, 0.1)'
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.color = '#ffffff';
+                                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+                                    e.currentTarget.style.transform = 'translateY(-2px)';
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.color = 'rgba(230, 189, 181, 0.6)';
+                                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                }}
                             >
                                 {icon}
                             </span>
@@ -123,8 +163,14 @@ export default function Footer({
                             href="#"
                             onClick={e => { e.preventDefault(); if (action) action(); }}
                             style={{ ...footerLinkStyle, marginBottom: '12px' }}
-                            onMouseEnter={e => e.currentTarget.style.color = '#00dfc5'}
-                            onMouseLeave={e => e.currentTarget.style.color = '#5c4039'}
+                            onMouseEnter={e => {
+                                e.currentTarget.style.color = '#ffffff';
+                                e.currentTarget.style.transform = 'translateX(6px)';
+                            }}
+                            onMouseLeave={e => {
+                                e.currentTarget.style.color = 'rgba(230, 189, 181, 0.7)';
+                                e.currentTarget.style.transform = 'translateX(0)';
+                            }}
                         >
                             {label}
                         </a>
@@ -145,8 +191,14 @@ export default function Footer({
                             href="#"
                             onClick={e => { e.preventDefault(); if (action) action(); }}
                             style={{ ...footerLinkStyle, marginBottom: '12px' }}
-                            onMouseEnter={e => e.currentTarget.style.color = '#00dfc5'}
-                            onMouseLeave={e => e.currentTarget.style.color = '#5c4039'}
+                            onMouseEnter={e => {
+                                e.currentTarget.style.color = '#ffffff';
+                                e.currentTarget.style.transform = 'translateX(6px)';
+                            }}
+                            onMouseLeave={e => {
+                                e.currentTarget.style.color = 'rgba(230, 189, 181, 0.7)';
+                                e.currentTarget.style.transform = 'translateX(0)';
+                            }}
                         >
                             {label}
                         </a>
@@ -165,8 +217,14 @@ export default function Footer({
                             href="#"
                             onClick={e => { e.preventDefault(); if (action) action(); }}
                             style={{ ...footerLinkStyle, marginBottom: '12px' }}
-                            onMouseEnter={e => e.currentTarget.style.color = '#00dfc5'}
-                            onMouseLeave={e => e.currentTarget.style.color = '#5c4039'}
+                            onMouseEnter={e => {
+                                e.currentTarget.style.color = '#ffffff';
+                                e.currentTarget.style.transform = 'translateX(6px)';
+                            }}
+                            onMouseLeave={e => {
+                                e.currentTarget.style.color = 'rgba(230, 189, 181, 0.7)';
+                                e.currentTarget.style.transform = 'translateX(0)';
+                            }}
                         >
                             {label}
                         </a>

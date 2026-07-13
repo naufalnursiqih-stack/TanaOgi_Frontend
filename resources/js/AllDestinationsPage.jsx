@@ -1,8 +1,9 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import ImageWithShimmer from './ImageWithShimmer';
 
-export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout }) {
+export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout, wishlistCount, onWishlistToggle, onToggleWishlist, isInWishlist }) {
     const [scrolled, setScrolled] = useState(false);
     const [activeRegion, setActiveRegion] = useState('Semua Wilayah');
     const font = "'Plus Jakarta Sans', sans-serif";
@@ -138,6 +139,8 @@ export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, o
                 onNavigateJournal={onNavigateJournal}
                 currentUser={currentUser}
                 onLogout={onLogout}
+                wishlistCount={wishlistCount}
+                onWishlistToggle={onWishlistToggle}
             />
 
             {/* â”€â”€ Main Content Area â”€â”€ */}
@@ -250,19 +253,62 @@ export default function AllDestinationsPage({ onNavigateHome, onNavigateLogin, o
                         return (
                             <div
                                 key={dest.id}
-                                className={`all-dest-card ${isFeatured ? 'all-dest-featured-card' : ''}`}
+                                className={`all-dest-card tilt-card-3d ${isFeatured ? 'all-dest-featured-card' : ''}`}
                                 onClick={() => { if (onNavigateDestinationDetail) onNavigateDestinationDetail(dest); }}
                                 style={{
                                     gridColumn: isFeatured ? 'span 2' : 'span 1',
                                     gridRow: isFeatured ? 'span 2' : 'span 1',
                                     height: isFeatured ? '800px' : 'auto',
                                     aspectRatio: isFeatured ? 'auto' : '4/5',
+                                    position: 'relative',
                                 }}
                             >
-                                <img
+                                {/* Floating heart button */}
+                                <button
+                                    onClick={e => {
+                                        e.stopPropagation();
+                                        if (onToggleWishlist) onToggleWishlist(dest);
+                                    }}
+                                    style={{
+                                        position: 'absolute',
+                                        top: '20px',
+                                        right: '20px',
+                                        zIndex: 30,
+                                        width: '40px',
+                                        height: '40px',
+                                        borderRadius: '50%',
+                                        backgroundColor: 'rgba(255,255,255,0.85)',
+                                        border: 'none',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        cursor: 'pointer',
+                                        boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+                                        transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                                    }}
+                                    onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.15)'}
+                                    onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                                >
+                                    <span 
+                                        className="material-symbols-outlined" 
+                                        style={{ 
+                                            color: isInWishlist && isInWishlist(dest.id) ? '#b32000' : 'rgba(19,30,27,0.4)',
+                                            fontVariationSettings: isInWishlist && isInWishlist(dest.id) ? "'FILL' 1" : "'FILL' 0",
+                                            fontSize: '20px',
+                                            transition: 'color 0.3s ease'
+                                        }}
+                                    >
+                                        favorite
+                                    </span>
+                                </button>
+                                <ImageWithShimmer
                                     src={dest.image}
                                     alt={dest.title}
-                                    className="all-dest-card-img"
+                                    imgClassName="all-dest-card-img"
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                    }}
                                 />
                                 <div className="all-dest-card-gradient" />
                                 

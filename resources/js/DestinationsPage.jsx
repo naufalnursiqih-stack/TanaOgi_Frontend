@@ -3,8 +3,9 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import SulawesiMapSection from './SulawesiMapSection';
 import ScrollReveal from './ScrollReveal';
+import ImageWithShimmer from './ImageWithShimmer';
 
-export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateAllDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout }) {
+export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNavigateRegister, onNavigateAllDestinations, onNavigateExperiences, onNavigateCulture, onNavigateJournal, onNavigateDestinationDetail, onNavigateTravelGuide, onNavigateSustainability, onNavigateAbout, onNavigatePressKit, onNavigatePrivacyPolicy, onNavigateTerms, currentUser, onLogout, wishlistCount, onWishlistToggle, onToggleWishlist, isInWishlist }) {
     const [scrolled, setScrolled] = useState(false);
     const [heroVisible, setHeroVisible] = useState(false);
     const font = "'Plus Jakarta Sans', sans-serif";
@@ -62,6 +63,8 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                 onNavigateJournal={onNavigateJournal}
                 currentUser={currentUser}
                 onLogout={onLogout}
+                wishlistCount={wishlistCount}
+                onWishlistToggle={onWishlistToggle}
             />
 
             {/* â”€â”€ Hero Section â”€â”€ */}
@@ -221,7 +224,7 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                 }}>
                     {/* Card 1: Tana Toraja â€” col-span 8 */}
                     <div
-                        className="dest-card"
+                        className="dest-card tilt-card-3d"
                         onClick={() => { if (onNavigateDestinationDetail) onNavigateDestinationDetail({ id: 1, title: 'Kete Kesu Village', region: 'Toraja Utara' }); }}
                         style={{
                             gridColumn: 'span 8',
@@ -233,15 +236,51 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                             cursor: 'pointer',
                         }}
                     >
-                        <img
+                        {/* Floating heart button */}
+                        <button
+                            onClick={e => {
+                                e.stopPropagation();
+                                if (onToggleWishlist) onToggleWishlist({ id: 1, title: 'Kete Kesu Village', region: 'Toraja Utara', image: '/Kete-Kesu.jpg' });
+                            }}
+                            style={{
+                                position: 'absolute',
+                                top: '24px',
+                                right: '24px',
+                                zIndex: 30,
+                                width: '44px',
+                                height: '44px',
+                                borderRadius: '50%',
+                                backgroundColor: 'rgba(255,255,255,0.85)',
+                                border: 'none',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                                transition: 'transform 0.2s ease',
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+                            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                        >
+                            <span 
+                                className="material-symbols-outlined" 
+                                style={{ 
+                                    color: isInWishlist && isInWishlist(1) ? '#b32000' : 'rgba(19,30,27,0.4)',
+                                    fontVariationSettings: isInWishlist && isInWishlist(1) ? "'FILL' 1" : "'FILL' 0",
+                                    fontSize: '22px',
+                                    transition: 'color 0.3s'
+                                }}
+                            >
+                                favorite
+                            </span>
+                        </button>
+                        <ImageWithShimmer
                             alt="Tana Toraja"
                             src="/Kete-Kesu.jpg"
-                            className="dest-card-img"
+                            imgClassName="dest-card-img"
                             style={{
                                 width: '100%',
                                 height: '100%',
-                                objectFit: 'cover',
-                                transition: 'transform 0.7s ease',
                             }}
                         />
                         <div style={{
@@ -314,7 +353,7 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
 
                     {/* Card 2: Rammang-Rammang â€” col-span 4 */}
                     <div
-                        className="dest-card"
+                        className="dest-card tilt-card-3d"
                         onClick={() => { if (onNavigateDestinationDetail) onNavigateDestinationDetail({ id: 2, title: 'Hutan Karst Maros', region: 'Maros' }); }}
                         style={{
                             gridColumn: 'span 4',
@@ -326,15 +365,51 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                             cursor: 'pointer',
                         }}
                     >
-                        <img
+                        {/* Floating heart button */}
+                        <button
+                            onClick={e => {
+                                e.stopPropagation();
+                                if (onToggleWishlist) onToggleWishlist({ id: 2, title: 'Hutan Karst Maros', region: 'Maros', image: 'rammangrammang.jpg' });
+                            }}
+                            style={{
+                                position: 'absolute',
+                                top: '24px',
+                                right: '24px',
+                                zIndex: 30,
+                                width: '44px',
+                                height: '44px',
+                                borderRadius: '50%',
+                                backgroundColor: 'rgba(255,255,255,0.85)',
+                                border: 'none',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                                transition: 'transform 0.2s ease',
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+                            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                        >
+                            <span 
+                                className="material-symbols-outlined" 
+                                style={{ 
+                                    color: isInWishlist && isInWishlist(2) ? '#b32000' : 'rgba(19,30,27,0.4)',
+                                    fontVariationSettings: isInWishlist && isInWishlist(2) ? "'FILL' 1" : "'FILL' 0",
+                                    fontSize: '22px',
+                                    transition: 'color 0.3s'
+                                }}
+                            >
+                                favorite
+                            </span>
+                        </button>
+                        <ImageWithShimmer
                             alt="Hutan Karst Maros"
                             src="rammangrammang.jpg"
-                            className="dest-card-img"
+                            imgClassName="dest-card-img"
                             style={{
                                 width: '100%',
                                 height: '100%',
-                                objectFit: 'cover',
-                                transition: 'transform 0.7s ease',
                             }}
                         />
                         <div style={{
@@ -394,7 +469,7 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
  
                     {/* Card 3: Tanjung Bira â€” col-span 12 */}
                     <div
-                        className="dest-card"
+                        className="dest-card tilt-card-3d"
                         onClick={() => { if (onNavigateDestinationDetail) onNavigateDestinationDetail({ id: 3, title: 'Pantai Tanjung Bira', region: 'Bulukumba' }); }}
                         style={{
                             gridColumn: 'span 12',
@@ -406,15 +481,51 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                             cursor: 'pointer',
                         }}
                     >
-                        <img
+                        {/* Floating heart button */}
+                        <button
+                            onClick={e => {
+                                e.stopPropagation();
+                                if (onToggleWishlist) onToggleWishlist({ id: 3, title: 'Pantai Tanjung Bira', region: 'Bulukumba', image: 'pasirputihbulkum.jpg' });
+                            }}
+                            style={{
+                                position: 'absolute',
+                                top: '24px',
+                                right: '24px',
+                                zIndex: 30,
+                                width: '44px',
+                                height: '44px',
+                                borderRadius: '50%',
+                                backgroundColor: 'rgba(255,255,255,0.85)',
+                                border: 'none',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                                transition: 'transform 0.2s ease',
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+                            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                        >
+                            <span 
+                                className="material-symbols-outlined" 
+                                style={{ 
+                                    color: isInWishlist && isInWishlist(3) ? '#b32000' : 'rgba(19,30,27,0.4)',
+                                    fontVariationSettings: isInWishlist && isInWishlist(3) ? "'FILL' 1" : "'FILL' 0",
+                                    fontSize: '22px',
+                                    transition: 'color 0.3s'
+                                }}
+                            >
+                                favorite
+                            </span>
+                        </button>
+                        <ImageWithShimmer
                             alt="Pasir Putih Tanjung Bira"
                             src="pasirputihbulkum.jpg"
-                            className="dest-card-img"
+                            imgClassName="dest-card-img"
                             style={{
                                 width: '100%',
                                 height: '100%',
-                                objectFit: 'cover',
-                                transition: 'transform 0.7s ease',
                             }}
                         />
                         <div style={{
@@ -528,7 +639,7 @@ export default function DestinationsPage({ onNavigateHome, onNavigateLogin, onNa
                 }}>
                     {/* Image */}
                     <div>
-                        <img
+                        <ImageWithShimmer
                             alt="Traditional Torajan Weaving"
                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2tpd489SCZCN7osEY1vPx5f5LQF0gN9GRwcwNfsNvGhpFHBhJ3FT3qBSA6KRK91qtPCi2GPbIw2eJ1DqIges9EBOg0qPttMYeH_KJgeznyFTeuH36Pdab31tHRTqkaIp2Gi81qLeKhrdljbU0RsGCLKqNaBdiqh2zA0gNn3BWCaqm_K6m_aoNGvGj-jQfI1ZsxhYrvMAXrUUHQ6w2gyj8Hkuh2h1F_eEkGcQs5EQsMta0KRvsjHYZo3-UtY1GTsfvfp8WQ2jPbsI"
                             style={{
