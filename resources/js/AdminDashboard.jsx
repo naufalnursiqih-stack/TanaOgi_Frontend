@@ -108,7 +108,7 @@ function StatusBadge({ status }) {
             padding: '4px 12px',
             borderRadius: '9999px',
             background: isPublished ? 'rgba(43,250,222,0.15)' : '#d9e5e0',
-            color: isPublished ? '#006b5e' : '#5c4039',
+            color: isPublished ? '#f5401b' : '#5c4039',
             fontFamily: font,
             fontSize: '11px',
             fontWeight: 700,
@@ -270,7 +270,7 @@ export default function AdminDashboard({ onLogout, adminName = 'Admin Portal' })
             sub: statsLoading ? 'Loading...' : `${stats?.destinations?.active ?? 0} aktif`,
             subIcon: 'trending_up',
             accent: '#b32000',
-            subColor: '#006b5e',
+            subColor: '#f5401b',
         },
         {
             label: 'REGENCIES',
@@ -287,8 +287,8 @@ export default function AdminDashboard({ onLogout, adminName = 'Admin Portal' })
             value: statsLoading ? '...' : (stats?.accommodations?.total ?? 0),
             sub: statsLoading ? 'Loading...' : `${stats?.accommodations?.active ?? 0} aktif`,
             subIcon: 'trending_up',
-            accent: '#006b5e',
-            subColor: '#006b5e',
+            accent: '#f5401b',
+            subColor: '#f5401b',
         },
         {
             label: 'VEHICLES',
@@ -374,7 +374,7 @@ export default function AdminDashboard({ onLogout, adminName = 'Admin Portal' })
                 }
             `}</style>
 
-            <div style={{ display: 'flex', minHeight: '100vh', background: '#f0fcf7', fontFamily: font }}>
+            <div style={{ display: 'flex', minHeight: '100vh', background: '#e4f0ed', fontFamily: font }}>
 
                 {/* ── Sidebar (reusable component) ─────────────────── */}
                 <AdminSidebar

@@ -228,7 +228,7 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin, onRegist
         fontSize: '16px',
         fontWeight: 400,
         color: '#131e1b',
-        backgroundColor: '#f0fcf7',
+        backgroundColor: '#e4f0ed',
         border: 'none',
         borderBottom: '2px solid #e6bdb5',
         padding: '12px',
@@ -510,7 +510,7 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin, onRegist
                                     type="button"
                                     onClick={() => fileInputRef.current.click()}
                                     style={{ width: '100%', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '10px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', color: '#131e1b', textAlign: 'left', fontWeight: 500, transition: 'background-color 0.2s' }}
-                                    onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0fcf7'}
+                                    onMouseEnter={e => e.currentTarget.style.backgroundColor = '#e4f0ed'}
                                     onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
                                 >
                                     <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#23F7DB' }}>folder_open</span> Pilih dari Komputer
@@ -519,7 +519,7 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin, onRegist
                                     type="button"
                                     onClick={startCamera}
                                     style={{ width: '100%', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '10px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', color: '#131e1b', textAlign: 'left', fontWeight: 500, transition: 'background-color 0.2s' }}
-                                    onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0fcf7'}
+                                    onMouseEnter={e => e.currentTarget.style.backgroundColor = '#e4f0ed'}
                                     onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
                                 >
                                     <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#23F7DB' }}>photo_camera</span> Gunakan Kamera
@@ -745,7 +745,7 @@ export default function RegisterPage({ onNavigateHome, onNavigateLogin, onRegist
                                     cursor: 'pointer',
                                     transition: 'border-color 0.3s ease'
                                 }}
-                                onMouseEnter={e => e.currentTarget.style.borderColor = '#006b5e'}
+                                onMouseEnter={e => e.currentTarget.style.borderColor = '#f5401b'}
                                 onMouseLeave={e => e.currentTarget.style.borderColor = '#e6bdb5'}
                             >
                                 <svg width="20" height="20" viewBox="0 0 24 24">

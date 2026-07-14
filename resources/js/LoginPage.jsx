@@ -43,7 +43,7 @@ export default function LoginPage({ onNavigateHome, onNavigateRegister, onNaviga
         setError('');
         setLoading(true);
         try {
-            const res = await fetch('/api/v1/auth/user-login', {
+            const res = await fetch('/api/v1/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify(formData),
@@ -153,7 +153,7 @@ export default function LoginPage({ onNavigateHome, onNavigateRegister, onNaviga
             display: 'flex',
             flexDirection: 'row',
             fontFamily: font,
-            backgroundColor: '#f0fcf7',
+            backgroundColor: '#e4f0ed',
             position: 'relative',
         }}>
             {/* Admin Login Link */}
@@ -300,7 +300,7 @@ export default function LoginPage({ onNavigateHome, onNavigateRegister, onNaviga
             {/* Right Side: Login Form */}
             <section style={{
                 width: '50%',
-                backgroundColor: '#f0fcf7',
+                backgroundColor: '#e4f0ed',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',

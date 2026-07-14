@@ -38,7 +38,7 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
     ];
 
     return (
-        <div style={{ fontFamily: font, backgroundColor: '#f0fcf7', color: '#131e1b', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <div style={{ fontFamily: font, backgroundColor: '#e4f0ed', color: '#131e1b', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Navbar
                 activePage="culture"
                 onNavigateHome={onNavigateHome}
@@ -99,7 +99,7 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                                 letterSpacing: '0.20em',
                                 textTransform: 'uppercase',
                                 color: '#31fde1',
-                                backgroundColor: 'rgba(0,107,94,0.2)',
+                                backgroundColor: 'rgba(245, 64, 27,0.2)',
                                 backdropFilter: 'blur(12px)',
                                 padding: '8px 16px',
                                 borderRadius: '9999px',
@@ -295,7 +295,7 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                                         fontWeight: 700,
                                         letterSpacing: '0.20em',
                                         textTransform: 'uppercase',
-                                        color: '#006b5e',
+                                        color: '#f5401b',
                                         display: 'block',
                                         marginBottom: '12px',
                                     }}>TENUN SUTRA</span>
@@ -313,7 +313,7 @@ export default function CulturePage({ onNavigateHome, onNavigateLogin, onNavigat
                                     <blockquote style={{
                                         fontStyle: 'italic',
                                         color: '#5c4039',
-                                        borderLeft: '2px solid #006b5e',
+                                        borderLeft: '2px solid #f5401b',
                                         paddingLeft: '16px',
                                         marginBottom: '24px',
                                         fontFamily: font,

@@ -33,7 +33,7 @@ export default function SupportPageLayout({
   ];
 
   return (
-    <div style={{ fontFamily: font, backgroundColor: '#f0fcf7', color: '#131e1b', minHeight: '100vh' }}>
+    <div style={{ fontFamily: font, backgroundColor: '#e4f0ed', color: '#131e1b', minHeight: '100vh' }}>
       <style>{`
         .support-card {
           transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
@@ -41,25 +41,25 @@ export default function SupportPageLayout({
         .support-card:hover {
           transform: translateY(-6px);
           box-shadow: 0 30px 60px rgba(19,30,27,0.08) !important;
-          border-color: rgba(0, 107, 94, 0.2) !important;
+          border-color: rgba(245, 64, 27, 0.2) !important;
         }
         .sidebar-link {
           transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
         }
         .sidebar-link:hover {
-          background-color: rgba(0, 107, 94, 0.08) !important;
-          color: #006b5e !important;
+          background-color: rgba(245, 64, 27, 0.08) !important;
+          color: #f5401b !important;
           transform: translateX(6px);
-          box-shadow: 0 4px 12px rgba(0, 107, 94, 0.05);
+          box-shadow: 0 4px 12px rgba(245, 64, 27, 0.05);
         }
         .sidebar-link.active-link {
-          background-color: rgba(0, 107, 94, 0.12) !important;
-          color: #006b5e !important;
-          border-left: 3px solid #006b5e !important;
+          background-color: rgba(245, 64, 27, 0.12) !important;
+          color: #f5401b !important;
+          border-left: 3px solid #f5401b !important;
           padding-left: 13px !important;
         }
         .sidebar-link.active-link:hover {
-          background-color: rgba(0, 107, 94, 0.18) !important;
+          background-color: rgba(245, 64, 27, 0.18) !important;
           transform: none;
         }
         .header-gradient-box {
@@ -123,10 +123,10 @@ export default function SupportPageLayout({
           <div
             className="header-gradient-box responsive-header-padding"
             style={{
-              background: 'linear-gradient(135deg, rgba(0,107,94,0.08) 0%, rgba(179,32,0,0.06) 100%)',
+              background: 'linear-gradient(135deg, rgba(245, 64, 27,0.08) 0%, rgba(179,32,0,0.06) 100%)',
               borderRadius: '32px',
               padding: '64px',
-              border: '1px solid rgba(0,107,94,0.12)',
+              border: '1px solid rgba(245, 64, 27,0.12)',
               boxShadow: '0 24px 60px rgba(19,30,27,0.06)'
             }}
           >
@@ -138,7 +138,7 @@ export default function SupportPageLayout({
                 fontWeight: 700,
                 letterSpacing: '0.24em',
                 textTransform: 'uppercase',
-                color: '#006b5e'
+                color: '#f5401b'
               }}
             >
               {content.eyebrow}
@@ -245,7 +245,7 @@ export default function SupportPageLayout({
                   fontWeight: 700,
                   letterSpacing: '0.24em',
                   textTransform: 'uppercase',
-                  color: '#006b5e'
+                  color: '#f5401b'
                 }}
               >
                 Link Terkait

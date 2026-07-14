@@ -57,7 +57,7 @@ export default function ScrollToTop() {
                 backgroundColor: 'rgba(240, 252, 247, 0.85)', // Light TanaOgi mint surface
                 backdropFilter: 'blur(12px)',
                 WebkitBackdropFilter: 'blur(12px)',
-                border: '1px solid rgba(0, 107, 94, 0.15)',
+                border: '1px solid rgba(245, 64, 27, 0.15)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -67,7 +67,7 @@ export default function ScrollToTop() {
                 transform: visible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.8)',
                 pointerEvents: visible ? 'all' : 'none',
                 transition: 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s',
-                boxShadow: '0 10px 30px -5px rgba(0, 107, 94, 0.15)',
+                boxShadow: '0 10px 30px -5px rgba(245, 64, 27, 0.15)',
                 padding: 0,
                 outline: 'none',
             }}
@@ -97,7 +97,7 @@ export default function ScrollToTop() {
                     cy="24"
                     r={radius}
                     fill="transparent"
-                    stroke="rgba(0, 107, 94, 0.08)"
+                    stroke="rgba(245, 64, 27, 0.08)"
                     strokeWidth={strokeWidth}
                 />
                 {/* Foreground Progress Circle */}
@@ -120,7 +120,7 @@ export default function ScrollToTop() {
                 className="material-symbols-outlined"
                 style={{
                     fontSize: '20px',
-                    color: '#006b5e', // Brand dark green
+                    color: '#f5401b', // Brand dark green
                     position: 'relative',
                     zIndex: 2,
                 }}

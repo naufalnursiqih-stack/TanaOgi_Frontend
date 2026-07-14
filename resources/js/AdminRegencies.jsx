@@ -24,7 +24,7 @@ function Badge({ active }) {
             fontSize: '11px',
             fontWeight: 700,
             background: active ? 'rgba(43,250,222,0.13)' : 'rgba(92,64,57,0.09)',
-            color: active ? '#006b5e' : '#5c4039',
+            color: active ? '#f5401b' : '#5c4039',
         }}>
             <span style={{
                 width: '6px', height: '6px', borderRadius: '9999px',
@@ -266,7 +266,7 @@ export default function AdminRegencies() {
                     border: `1.5px solid ${toast.type === 'error' ? '#e6bdb5' : '#2bfade55'}`,
                     boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
                     fontFamily: font, fontSize: '14px', fontWeight: 600,
-                    color: toast.type === 'error' ? '#b32000' : '#006b5e',
+                    color: toast.type === 'error' ? '#b32000' : '#f5401b',
                     animation: 'slideInRight 0.3s ease',
                 }}>
                     <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
@@ -304,7 +304,7 @@ export default function AdminRegencies() {
                 }
                 .reg-action-btn:hover { background: #d9e5e0; }
                 .reg-action-btn.danger:hover { background: #ffdad3; color: #b32000; }
-                .reg-action-btn.active-toggle { color: #006b5e; }
+                .reg-action-btn.active-toggle { color: #f5401b; }
                 .reg-action-btn.active-toggle:hover { background: rgba(43,250,222,0.15); }
                 .reg-action-btn.inactive-toggle { color: #b09890; }
                 .reg-action-btn.inactive-toggle:hover { background: #f5eded; }
@@ -423,7 +423,7 @@ export default function AdminRegencies() {
                     }}>
                         {[
                             { label: 'Total Kabupaten', value: meta.total, icon: 'map', accent: '#b32000' },
-                            { label: 'Aktif', value: regencies.filter(r => r.is_active).length + (loading ? '…' : ''), icon: 'check_circle', accent: '#006b5e' },
+                            { label: 'Aktif', value: regencies.filter(r => r.is_active).length + (loading ? '…' : ''), icon: 'check_circle', accent: '#f5401b' },
                             { label: 'Nonaktif', value: regencies.filter(r => !r.is_active).length, icon: 'cancel', accent: '#5c4039' },
                         ].map((s) => (
                             <div key={s.label} style={{
@@ -555,7 +555,7 @@ export default function AdminRegencies() {
                                                     <div style={{
                                                         width: '40px', height: '40px',
                                                         borderRadius: '10px',
-                                                        background: 'linear-gradient(135deg, #f0fcf7 0%, #d9e5e0 100%)',
+                                                        background: 'linear-gradient(135deg, #e4f0ed 0%, #d9e5e0 100%)',
                                                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                                                         flexShrink: 0,
                                                         border: '1px solid rgba(230,189,181,0.4)',
@@ -574,8 +574,8 @@ export default function AdminRegencies() {
                                             <td style={{ padding: '16px 20px' }}>
                                                 <code style={{
                                                     fontFamily: 'monospace', fontSize: '12px',
-                                                    background: '#f0fcf7', padding: '3px 8px',
-                                                    borderRadius: '6px', color: '#006b5e',
+                                                    background: '#e4f0ed', padding: '3px 8px',
+                                                    borderRadius: '6px', color: '#f5401b',
                                                     border: '1px solid rgba(43,250,222,0.2)',
                                                 }}>{reg.slug}</code>
                                             </td>
@@ -760,8 +760,8 @@ export default function AdminRegencies() {
                                     {/* Slug preview */}
                                     {formData.name.trim() && (
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
-                                            <span className="material-symbols-outlined" style={{ fontSize: '14px', color: '#006b5e' }}>tag</span>
-                                            <span style={{ fontFamily: 'monospace', fontSize: '12px', color: '#006b5e' }}>
+                                            <span className="material-symbols-outlined" style={{ fontSize: '14px', color: '#f5401b' }}>tag</span>
+                                            <span style={{ fontFamily: 'monospace', fontSize: '12px', color: '#f5401b' }}>
                                                 {formData.name.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}
                                             </span>
                                         </div>
@@ -793,7 +793,7 @@ export default function AdminRegencies() {
                                         onClick={() => setFormData(p => ({ ...p, is_active: !p.is_active }))}
                                         style={{
                                             width: '52px', height: '28px', borderRadius: '9999px',
-                                            background: formData.is_active ? '#006b5e' : '#c7b0aa',
+                                            background: formData.is_active ? '#f5401b' : '#c7b0aa',
                                             border: 'none', cursor: 'pointer', position: 'relative',
                                             transition: 'background 0.25s ease', flexShrink: 0,
                                         }}

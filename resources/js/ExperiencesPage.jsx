@@ -10,25 +10,11 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
     const [activeCategory, setActiveCategory] = useState('All Experiences');
     const [selectedDuration, setSelectedDuration] = useState('Duration');
     
-    // Reviews state
-    const [reviews, setReviews] = useState([
-        {
-            id: 1,
-            name: 'Sayyid Kamal Assegaf',
-            avatar: '#31fde1',
-            rating: 5,
-            text: 'Tur menyaksikan matahari terbit di Phinisi benar-benar mengubah hidup. Menyaksikan matahari terbit di atas Laut Flores sambil menikmati kopi lokal adalah pengalaman yang sangat ajaib.',
-            date: 'August 2024'
-        },
-        {
-            id: 2,
-            name: 'Gus Thoriq Ziyad',
-            avatar: '#ffdad3',
-            rating: 4,
-            text: 'Lokakarya tenun itu mengajari saya banyak hal tentang warisan Bugis. Alhamdulillah Pemandu kami sangat sabar dan berbakat.',
-            date: 'July 2024'
-        }
-    ]);
+    // API data states
+    const [reviews, setReviews] = useState([]);
+    const [destinations, setDestinations] = useState([]);
+    const [selectedDestinationId, setSelectedDestinationId] = useState('');
+    const [reviewsLoading, setReviewsLoading] = useState(true);
     
     // Review form state
     const [newReviewRating, setNewReviewRating] = useState(0);
@@ -37,6 +23,34 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
     const [mapLoaded, setMapLoaded] = useState(false);
 
     const font = "'Plus Jakarta Sans', sans-serif";
+
+    // Fetch reviews and destinations from backend API
+    useEffect(() => {
+        let isMounted = true;
+        setReviewsLoading(true);
+
+        Promise.all([
+            fetch('/api/v1/reviews').then(r => r.ok ? r.json() : null),
+            fetch('/api/v1/destinations').then(r => r.ok ? r.json() : null)
+        ])
+        .then(([revData, destData]) => {
+            if (!isMounted) return;
+            if (revData?.success) {
+                setReviews(revData.data || []);
+            }
+            if (destData?.success) {
+                const list = destData.data || [];
+                setDestinations(list);
+                if (list.length > 0) {
+                    setSelectedDestinationId(list[0].id);
+                }
+            }
+        })
+        .catch(err => console.error('Failed to load reviews/destinations:', err))
+        .finally(() => { if (isMounted) setReviewsLoading(false); });
+
+        return () => { isMounted = false; };
+    }, []);
 
     const destinationRegionMap = {
         'tanjung-bira': 'Kabupaten Bulukumba',
@@ -94,39 +108,63 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
         }
     };
     
-    // Fungsi submit review
-    const handleSubmitReview = (e) => {
+    // Submit review to database
+    const handleSubmitReview = async (e) => {
         e.preventDefault();
+        
+        const token = localStorage.getItem('auth_token');
+        if (!token) {
+            alert('Silakan login terlebih dahulu untuk menulis ulasan!');
+            return;
+        }
+
+        if (!selectedDestinationId) {
+            alert('Silakan pilih destinasi untuk diulas!');
+            return;
+        }
+
         if (!newReviewText.trim() || newReviewRating === 0) {
             alert('Mohon isi rating dan ulasan Anda!');
             return;
         }
         
-        const currentDate = new Date();
-        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        const formattedDate = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
-        
-        // Generate random avatar color
-        const colors = ['#31fde1', '#ffdad3', '#fde047', '#86efac', '#93c5fd', '#d8b4fe'];
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        
-        const newReview = {
-            id: Date.now(),
-            name: currentUser?.name || 'Pengguna Anonim',
-            avatar: randomColor,
-            rating: newReviewRating,
-            text: newReviewText,
-            date: formattedDate
-        };
-        
-        setReviews([newReview, ...reviews]);
-        
-        // Reset form
-        setNewReviewText('');
-        setNewReviewRating(0);
-        setShowReviewForm(false);
-        
-        console.log('Review submitted! (Akan disimpan ke database nanti):', newReview);
+        try {
+            const response = await fetch('/api/v1/reviews', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    destination_id: selectedDestinationId,
+                    rating: newReviewRating,
+                    comment: newReviewText
+                })
+            });
+
+            const data = await response.json();
+            if (response.ok && data.success) {
+                alert('Terima kasih! Ulasan Anda telah terkirim.');
+                
+                // Fetch fresh reviews
+                const revRes = await fetch('/api/v1/reviews');
+                const revData = await revRes.json();
+                if (revData?.success) {
+                    setReviews(revData.data || []);
+                }
+
+                // Reset form
+                setNewReviewText('');
+                setNewReviewRating(0);
+                setShowReviewForm(false);
+            } else {
+                alert(data.message || 'Gagal mengirim ulasan.');
+            }
+        } catch (err) {
+            console.error('Failed to submit review:', err);
+            alert('Terjadi kesalahan koneksi saat mengirim ulasan.');
+        }
     };
     
     // Hitung rata-rata rating
@@ -145,7 +183,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                         className="material-symbols-outlined"
                         style={{
                             fontVariationSettings: "'FILL' 1",
-                            color: star <= rating ? '#006b5e' : '#d1d5db',
+                            color: star <= rating ? '#f5401b' : '#d1d5db',
                             cursor: interactive ? 'pointer' : 'default',
                             fontSize: '20px',
                             transition: 'transform 0.2s ease',
@@ -244,7 +282,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
     });
 
     return (
-        <div style={{ fontFamily: font, backgroundColor: '#f0fcf7', color: '#131e1b', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <div style={{ fontFamily: font, backgroundColor: '#e4f0ed', color: '#131e1b', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Navbar
                 activePage="experiences"
                 onNavigateHome={onNavigateHome}
@@ -278,7 +316,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                     <div style={{
                         position: 'absolute',
                         inset: 0,
-                        background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 60%, #f0fcf7 100%)'
+                        background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 60%, #e4f0ed 100%)'
                     }} />
                 </div>
                 
@@ -333,7 +371,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                     }}
                     onMouseEnter={e => {
                         e.currentTarget.style.transform = 'translateY(-4px)';
-                        e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(0, 107, 94, 0.18)';
+                        e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(245, 64, 27, 0.18)';
                     }}
                     onMouseLeave={e => {
                         e.currentTarget.style.transform = 'translateY(0)';
@@ -356,9 +394,9 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                                     style={{
                                         padding: '8px 24px',
                                         borderRadius: '9999px',
-                                        backgroundColor: isActive ? '#006b5e' : 'rgba(0, 107, 94, 0.08)',
-                                        border: isActive ? '1px solid #006b5e' : '1px solid rgba(0, 107, 94, 0.15)',
-                                        color: isActive ? '#ffffff' : '#006b5e',
+                                        backgroundColor: isActive ? '#f5401b' : 'rgba(245, 64, 27, 0.08)',
+                                        border: isActive ? '1px solid #f5401b' : '1px solid rgba(245, 64, 27, 0.15)',
+                                        color: isActive ? '#ffffff' : '#f5401b',
                                         fontFamily: font,
                                         fontSize: '12px',
                                         fontWeight: 700,
@@ -458,7 +496,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                                 }}>
                                     {exp.badges.map(badge => {
                                         let bg = '#b32000';
-                                        if (badge === 'Instant Booking' || badge === 'Top Rated') bg = '#006b5e';
+                                        if (badge === 'Instant Booking' || badge === 'Top Rated') bg = '#f5401b';
                                         if (badge === 'New') bg = '#535e5c';
                                         return (
                                             <span 
@@ -573,10 +611,10 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                         <div className="glass-card-opaque cinematic-shadow" style={{
                             padding: '40px',
                             borderRadius: '16px',
-                            borderLeft: '4px solid #006b5e'
+                            borderLeft: '4px solid #f5401b'
                         }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
-                                <span className="material-symbols-outlined" style={{ color: '#006b5e', fontSize: '36px', fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                                <span className="material-symbols-outlined" style={{ color: '#f5401b', fontSize: '36px', fontVariationSettings: "'FILL' 1" }}>check_circle</span>
                                 <h3 style={{ fontFamily: font, fontSize: '24px', fontWeight: 700, margin: 0 }}>Fasilitas termasuk</h3>
                             </div>
                             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -587,7 +625,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                                     { icon: 'medical_services', text: 'Cakupan asuransi perjalanan' }
                                 ].map((item, idx) => (
                                     <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                                        <span className="material-symbols-outlined" style={{ color: '#006b5e' }}>{item.icon}</span>
+                                        <span className="material-symbols-outlined" style={{ color: '#f5401b' }}>{item.icon}</span>
                                         <span style={{ fontSize: '16px', fontWeight: 500, color: '#5c4039' }}>{item.text}</span>
                                     </li>
                                 ))}
@@ -642,7 +680,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                                 style={{
                                     padding: '8px 24px',
                                     borderRadius: '9999px',
-                                    backgroundColor: '#006b5e',
+                                    backgroundColor: '#f5401b',
                                     color: 'white',
                                     border: 'none',
                                     fontFamily: font,
@@ -651,8 +689,8 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                                     cursor: 'pointer',
                                     transition: 'all 0.3s ease'
                                 }}
-                                onMouseOver={(e) => e.target.style.backgroundColor = '#004d44'}
-                                onMouseOut={(e) => e.target.style.backgroundColor = '#006b5e'}
+                                onMouseOver={(e) => e.target.style.backgroundColor = '#0f1a17'}
+                                onMouseOut={(e) => e.target.style.backgroundColor = '#f5401b'}
                             >
                                 {showReviewForm ? 'Batal' : 'Tulis Ulasan'}
                             </button>
@@ -663,10 +701,33 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                             <div className="glass-card-opaque cinematic-shadow" style={{
                                 padding: '24px',
                                 borderRadius: '12px',
-                                backgroundColor: 'rgba(0,107,94,0.03)',
-                                border: '1px solid rgba(0,107,94,0.15)'
-                            }}>
+                                backgroundColor: 'rgba(245, 64, 27,0.03)',
+                                border: '1px solid rgba(245, 64, 27,0.15)'
+                             }}>
                                 <form onSubmit={handleSubmitReview} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                    <div>
+                                        <label style={{ fontSize: '14px', fontWeight: 700, color: '#131e1b', marginBottom: '8px', display: 'block' }}>Pilih Destinasi</label>
+                                        <select 
+                                            value={selectedDestinationId}
+                                            onChange={(e) => setSelectedDestinationId(e.target.value)}
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                borderRadius: '8px',
+                                                border: '1px solid rgba(245, 64, 27,0.2)',
+                                                fontSize: '14px',
+                                                fontFamily: font,
+                                                outline: 'none',
+                                                backgroundColor: '#ffffff',
+                                                color: '#131e1b'
+                                            }}
+                                        >
+                                            {destinations.map(d => (
+                                                <option key={d.id} value={d.id}>{d.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+
                                     <div>
                                         <label style={{ fontSize: '14px', fontWeight: 700, color: '#131e1b', marginBottom: '8px', display: 'block' }}>Rating Anda</label>
                                         <StarRating 
@@ -687,7 +748,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                                                 width: '100%',
                                                 padding: '12px 16px',
                                                 borderRadius: '8px',
-                                                border: '1px solid rgba(0,107,94,0.2)',
+                                                border: '1px solid rgba(245, 64, 27,0.2)',
                                                 fontSize: '14px',
                                                 fontFamily: font,
                                                 outline: 'none',
@@ -700,7 +761,7 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                                         style={{
                                             padding: '12px 24px',
                                             borderRadius: '8px',
-                                            backgroundColor: '#006b5e',
+                                            backgroundColor: '#f5401b',
                                             color: 'white',
                                             border: 'none',
                                             fontFamily: font,
@@ -710,8 +771,8 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                                             transition: 'all 0.3s ease',
                                             marginTop: '8px'
                                         }}
-                                        onMouseOver={(e) => e.target.style.backgroundColor = '#004d44'}
-                                        onMouseOut={(e) => e.target.style.backgroundColor = '#006b5e'}
+                                        onMouseOver={(e) => e.target.style.backgroundColor = '#0f1a17'}
+                                        onMouseOut={(e) => e.target.style.backgroundColor = '#f5401b'}
                                     >
                                         Kirim Ulasan
                                     </button>
@@ -720,35 +781,65 @@ export default function ExperiencesPage({ onNavigateHome, onNavigateLogin, onNav
                         )}
                         
                         {/* Daftar Ulasan */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
-                            {reviews.map(review => (
-                                <div key={review.id} className="glass-card-opaque p-md rounded-lg cinematic-shadow" style={{ padding: '24px', borderRadius: '12px' }}>
-                                    <StarRating rating={review.rating} />
-                                    <p style={{ fontSize: '14px', fontStyle: 'italic', color: '#5c4039', lineHeight: 1.6, marginBottom: '20px', marginTop: '12px' }}>
-                                        "{review.text}"
-                                    </p>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                        <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: review.avatar }} />
-                                        <div>
-                                            <p style={{ margin: 0, fontSize: '12px', fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase' }}>{review.name}</p>
-                                            <p style={{ margin: 0, fontSize: '11px', color: '#5c4039' }}>{review.date}</p>
+                        {reviewsLoading ? (
+                            <div style={{ textAlign: 'center', padding: '32px 0', color: '#5c4039' }}>
+                                <p style={{ fontSize: '16px', fontWeight: 500 }}>Memuat ulasan...</p>
+                            </div>
+                        ) : reviews.length === 0 ? (
+                            <div style={{ textAlign: 'center', padding: '32px 0', color: '#5c4039' }}>
+                                <p style={{ fontSize: '16px', fontWeight: 500 }}>Belum ada ulasan. Jadilah yang pertama memberikan ulasan!</p>
+                            </div>
+                        ) : (
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
+                                {reviews.map(review => {
+                                    // Generate initials for avatar fallback
+                                    const name = review.name || 'Pengguna';
+                                    const initials = name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+                                    const avatarBg = review.avatar && review.avatar.startsWith('#') ? review.avatar : '#006b5e';
+                                    
+                                    return (
+                                        <div key={review.id} className="glass-card-opaque p-md rounded-lg cinematic-shadow" style={{ padding: '24px', borderRadius: '12px', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                                            <StarRating rating={review.rating} />
+                                            <p style={{ fontSize: '14px', fontStyle: 'italic', color: '#5c4039', lineHeight: 1.6, marginBottom: '20px', marginTop: '12px', flexGrow: 1 }}>
+                                                "{review.text}"
+                                            </p>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: 'auto' }}>
+                                                <div style={{ 
+                                                    width: '40px', 
+                                                    height: '40px', 
+                                                    borderRadius: '50%', 
+                                                    backgroundColor: avatarBg,
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    color: '#ffffff',
+                                                    fontSize: '14px',
+                                                    fontWeight: 700
+                                                }}>
+                                                    {initials}
+                                                </div>
+                                                <div>
+                                                    <p style={{ margin: 0, fontSize: '12px', fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase' }}>{name}</p>
+                                                    <p style={{ margin: 0, fontSize: '11px', color: '#5c4039' }}>{review.date}</p>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
 
                         {/* Overall Rating card */}
                         <div className="glass-card-opaque cinematic-shadow" style={{
                             padding: '32px',
                             borderRadius: '16px',
-                            backgroundColor: 'rgba(0,107,94,0.05)',
-                            border: '1px solid rgba(0,107,94,0.15)',
+                            backgroundColor: 'rgba(245, 64, 27,0.05)',
+                            border: '1px solid rgba(245, 64, 27,0.15)',
                             textAlign: 'center',
                             marginTop: 'auto'
                         }}>
-                            <p style={{ fontSize: '32px', fontWeight: 800, color: '#006b5e', margin: '0 0 4px 0' }}>{averageRating} / 5.0</p>
-                            <p style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.20em', textTransform: 'uppercase', color: '#006b5e', opacity: 0.7, margin: '0 0 24px 0' }}>Berdasarkan {reviews.length} ulasan tamu</p>
+                            <p style={{ fontSize: '32px', fontWeight: 800, color: '#f5401b', margin: '0 0 4px 0' }}>{averageRating} / 5.0</p>
+                            <p style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.20em', textTransform: 'uppercase', color: '#f5401b', opacity: 0.7, margin: '0 0 24px 0' }}>Berdasarkan {reviews.length} ulasan tamu</p>
                             
                             {/* Avatars row */}
                             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

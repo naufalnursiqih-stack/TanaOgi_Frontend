@@ -22,10 +22,10 @@ const ACCOMMODATION_TYPES = [
 
 const TYPE_COLORS = {
     Hotel: { bg: 'rgba(179,32,0,0.08)', color: '#b32000', icon: 'hotel' },
-    Resort: { bg: 'rgba(0,107,94,0.08)', color: '#006b5e', icon: 'villa' },
+    Resort: { bg: 'rgba(245, 64, 27,0.08)', color: '#f5401b', icon: 'villa' },
     Hostel: { bg: 'rgba(83,94,92,0.09)', color: '#535e5c', icon: 'meeting_room' },
     Guesthouse: { bg: 'rgba(92,64,57,0.09)', color: '#5c4039', icon: 'home' },
-    Homestay: { bg: 'rgba(43,250,222,0.10)', color: '#006b5e', icon: 'cottage' },
+    Homestay: { bg: 'rgba(43,250,222,0.10)', color: '#f5401b', icon: 'cottage' },
     Villa: { bg: 'rgba(179,32,0,0.06)', color: '#b32000', icon: 'house' },
     Camping: { bg: 'rgba(83,94,92,0.09)', color: '#535e5c', icon: 'camping' },
 };
@@ -58,7 +58,7 @@ function StatusBadge({ active }) {
             display: 'inline-flex', alignItems: 'center', gap: '5px',
             padding: '4px 12px', borderRadius: '9999px',
             background: active ? 'rgba(43,250,222,0.13)' : 'rgba(92,64,57,0.09)',
-            color: active ? '#006b5e' : '#5c4039',
+            color: active ? '#f5401b' : '#5c4039',
             fontFamily: font, fontSize: '11px', fontWeight: 700,
         }}>
             <span style={{
@@ -324,7 +324,7 @@ export default function AdminAccommodations() {
                     border: `1.5px solid ${toast.type === 'error' ? '#e6bdb5' : '#2bfade55'}`,
                     boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
                     fontFamily: font, fontSize: '14px', fontWeight: 600,
-                    color: toast.type === 'error' ? '#b32000' : '#006b5e',
+                    color: toast.type === 'error' ? '#b32000' : '#f5401b',
                     animation: 'slideInRight 0.3s ease',
                 }}>
                     <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
@@ -357,7 +357,7 @@ export default function AdminAccommodations() {
                 }
                 .acc-action-btn:hover { background: #d9e5e0; }
                 .acc-action-btn.danger:hover { background: #ffdad3; color: #b32000; }
-                .acc-action-btn.on { color: #006b5e; }
+                .acc-action-btn.on { color: #f5401b; }
                 .acc-action-btn.on:hover { background: rgba(43,250,222,0.15); }
                 .acc-action-btn.off { color: #b09890; }
                 .acc-action-btn.off:hover { background: #f5eded; }
@@ -461,7 +461,7 @@ export default function AdminAccommodations() {
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
                         {[
                             { label: 'Total', value: meta.total, icon: 'hotel', accent: '#b32000' },
-                            { label: 'Aktif', value: accommodations.filter(a => a.is_active).length, icon: 'check_circle', accent: '#006b5e' },
+                            { label: 'Aktif', value: accommodations.filter(a => a.is_active).length, icon: 'check_circle', accent: '#f5401b' },
                             { label: 'Nonaktif', value: accommodations.filter(a => !a.is_active).length, icon: 'cancel', accent: '#5c4039' },
                             { label: 'Tipe', value: ACCOMMODATION_TYPES.length, icon: 'category', accent: '#535e5c' },
                         ].map((s) => (
@@ -615,7 +615,7 @@ export default function AdminAccommodations() {
                                             <td style={{ padding: '14px 18px', textAlign: 'center' }}>
                                                 <span style={{
                                                     fontFamily: font, fontSize: '13px', fontWeight: 700,
-                                                    color: '#006b5e',
+                                                    color: '#f5401b',
                                                 }}>
                                                     {acc.price_per_night === 0
                                                         ? <span style={{ color: '#5c4039' }}>Gratis</span>
@@ -831,7 +831,7 @@ export default function AdminAccommodations() {
                                                 required />
                                         </div>
                                         {formData.price_per_night && (
-                                            <p style={{ fontFamily: font, fontSize: '11px', color: '#006b5e', marginTop: '4px' }}>
+                                            <p style={{ fontFamily: font, fontSize: '11px', color: '#f5401b', marginTop: '4px' }}>
                                                 {parseInt(formData.price_per_night) === 0 ? 'Gratis' : formatRupiah(formData.price_per_night)}
                                             </p>
                                         )}
@@ -892,7 +892,7 @@ export default function AdminAccommodations() {
                                         onClick={() => setFormData(p => ({ ...p, is_active: !p.is_active }))}
                                         style={{
                                             width: '52px', height: '28px', borderRadius: '9999px',
-                                            background: formData.is_active ? '#006b5e' : '#c7b0aa',
+                                            background: formData.is_active ? '#f5401b' : '#c7b0aa',
                                             border: 'none', cursor: 'pointer', position: 'relative',
                                             transition: 'background 0.25s', flexShrink: 0,
                                         }}>

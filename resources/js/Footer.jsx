@@ -21,7 +21,7 @@ export default function Footer({
     const footerLinkStyle = {
         fontFamily: font,
         fontSize: '15px',
-        color: 'rgba(230, 189, 181, 0.7)',
+        color: 'rgba(15, 26, 23, 0.7)',
         textDecoration: 'none',
         transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
         cursor: 'pointer',
@@ -31,18 +31,18 @@ export default function Footer({
     const colTitleStyle = {
         fontFamily: font,
         fontSize: '11px',
-        fontWeight: 700,
-        letterSpacing: '0.25em',
+        fontWeight: 800,
+        letterSpacing: '0.2em',
         textTransform: 'uppercase',
-        color: '#23F7DB',
+        color: '#f5401b',
         marginBottom: '20px',
         display: 'block',
     };
 
     return (
         <footer style={{ 
-            backgroundColor: '#0f0a09', // Deep dark teakwood charcoal
-            borderTop: '1px solid rgba(230, 189, 181, 0.08)',
+            backgroundColor: '#e4f0ed', // Premium light theme background
+            borderTop: '1px solid rgba(15, 26, 23, 0.08)',
             padding: '80px 0', 
             position: 'relative',
             overflow: 'hidden'
@@ -51,13 +51,13 @@ export default function Footer({
             <div style={{
                 position: 'absolute', bottom: '-100px', left: '-50px',
                 width: '350px', height: '350px',
-                background: 'radial-gradient(circle, rgba(179,32,0,0.1) 0%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(245, 64, 27,0.05) 0%, transparent 70%)',
                 pointerEvents: 'none',
             }} />
             <div style={{
                 position: 'absolute', top: '-150px', right: '-50px',
                 width: '350px', height: '350px',
-                background: 'radial-gradient(circle, rgba(35,247,219,0.05) 0%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(35, 247, 219,0.06) 0%, transparent 70%)',
                 pointerEvents: 'none',
             }} />
 
@@ -91,7 +91,7 @@ export default function Footer({
                                 width: '56px',
                                 height: 'auto',
                                 objectFit: 'contain',
-                                filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.3))'
+                                filter: 'drop-shadow(0 4px 6px rgba(15,26,23,0.1))'
                             }}
                         />
                         <span
@@ -100,7 +100,7 @@ export default function Footer({
                                 fontSize: '28px',
                                 fontWeight: 800,
                                 letterSpacing: '-0.02em',
-                                color: '#ffffff',
+                                color: '#0f1a17',
                             }}
                         >
                             TanaOgi'
@@ -110,7 +110,7 @@ export default function Footer({
                     <p style={{
                         fontFamily: font,
                         fontSize: '14px',
-                        color: 'rgba(230, 189, 181, 0.55)',
+                        color: 'rgba(15, 26, 23, 0.6)',
                         lineHeight: 1.6,
                         margin: 0,
                     }}>
@@ -124,22 +124,22 @@ export default function Footer({
                                 className="material-symbols-outlined"
                                 style={{ 
                                     cursor: 'pointer', 
-                                    color: 'rgba(230, 189, 181, 0.6)', 
+                                    color: 'rgba(15, 26, 23, 0.6)', 
                                     fontSize: '20px', 
                                     transition: 'all 0.3s ease',
                                     padding: '8px',
                                     borderRadius: '50%',
-                                    backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                                    border: '1px solid rgba(230, 189, 181, 0.1)'
+                                    backgroundColor: 'rgba(15, 26, 23, 0.03)',
+                                    border: '1px solid rgba(15, 26, 23, 0.08)'
                                 }}
                                 onMouseEnter={e => {
-                                    e.currentTarget.style.color = '#ffffff';
-                                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+                                    e.currentTarget.style.color = '#f5401b';
+                                    e.currentTarget.style.backgroundColor = 'rgba(245, 64, 27, 0.08)';
                                     e.currentTarget.style.transform = 'translateY(-2px)';
                                 }}
                                 onMouseLeave={e => {
-                                    e.currentTarget.style.color = 'rgba(230, 189, 181, 0.6)';
-                                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
+                                    e.currentTarget.style.color = 'rgba(15, 26, 23, 0.6)';
+                                    e.currentTarget.style.backgroundColor = 'rgba(15, 26, 23, 0.03)';
                                     e.currentTarget.style.transform = 'translateY(0)';
                                 }}
                             >
@@ -164,11 +164,11 @@ export default function Footer({
                             onClick={e => { e.preventDefault(); if (action) action(); }}
                             style={{ ...footerLinkStyle, marginBottom: '12px' }}
                             onMouseEnter={e => {
-                                e.currentTarget.style.color = '#ffffff';
+                                e.currentTarget.style.color = '#f5401b';
                                 e.currentTarget.style.transform = 'translateX(6px)';
                             }}
                             onMouseLeave={e => {
-                                e.currentTarget.style.color = 'rgba(230, 189, 181, 0.7)';
+                                e.currentTarget.style.color = 'rgba(15, 26, 23, 0.7)';
                                 e.currentTarget.style.transform = 'translateX(0)';
                             }}
                         >
@@ -192,11 +192,11 @@ export default function Footer({
                             onClick={e => { e.preventDefault(); if (action) action(); }}
                             style={{ ...footerLinkStyle, marginBottom: '12px' }}
                             onMouseEnter={e => {
-                                e.currentTarget.style.color = '#ffffff';
+                                e.currentTarget.style.color = '#f5401b';
                                 e.currentTarget.style.transform = 'translateX(6px)';
                             }}
                             onMouseLeave={e => {
-                                e.currentTarget.style.color = 'rgba(230, 189, 181, 0.7)';
+                                e.currentTarget.style.color = 'rgba(15, 26, 23, 0.7)';
                                 e.currentTarget.style.transform = 'translateX(0)';
                             }}
                         >
@@ -218,11 +218,11 @@ export default function Footer({
                             onClick={e => { e.preventDefault(); if (action) action(); }}
                             style={{ ...footerLinkStyle, marginBottom: '12px' }}
                             onMouseEnter={e => {
-                                e.currentTarget.style.color = '#ffffff';
+                                e.currentTarget.style.color = '#f5401b';
                                 e.currentTarget.style.transform = 'translateX(6px)';
                             }}
                             onMouseLeave={e => {
-                                e.currentTarget.style.color = 'rgba(230, 189, 181, 0.7)';
+                                e.currentTarget.style.color = 'rgba(15, 26, 23, 0.7)';
                                 e.currentTarget.style.transform = 'translateX(0)';
                             }}
                         >

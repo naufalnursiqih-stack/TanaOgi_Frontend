@@ -84,11 +84,11 @@ export default function AdminLoginPage({ onNavigateBack, onLoginSuccess }) {
         display: 'flex',
         alignItems: 'center',
         backgroundColor: focused ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.55)',
-        border: focused ? '1.5px solid #006b5e' : '1px solid rgba(145,111,104,0.22)',
+        border: focused ? '1.5px solid #f5401b' : '1px solid rgba(145,111,104,0.22)',
         borderRadius: '9999px',
         padding: '0 20px 0 48px',
         transition: 'all 0.25s ease',
-        boxShadow: focused ? '0 4px 20px rgba(0,107,94,0.12)' : 'none',
+        boxShadow: focused ? '0 4px 20px rgba(245, 64, 27,0.12)' : 'none',
         transform: focused ? 'scale(1.018)' : 'scale(1)',
     });
 
@@ -152,7 +152,7 @@ export default function AdminLoginPage({ onNavigateBack, onLoginSuccess }) {
                 .btn-admin-submit:hover:not(:disabled) {
                     background-color: #e03918;
                     transform: translateY(-2px);
-                    box-shadow: 0 12px 28px -6px rgba(245,64,27,0.45) !important;
+                    box-shadow: 0 12px 28px -6px rgba(245, 64, 27,0.45) !important;
                 }
                 .btn-admin-submit:active:not(:disabled) {
                     transform: scale(0.98);
@@ -170,7 +170,7 @@ export default function AdminLoginPage({ onNavigateBack, onLoginSuccess }) {
                     color: #5c4039;
                 }
                 .back-link:hover {
-                    color: #006b5e;
+                    color: #f5401b;
                     transform: translateX(-3px);
                 }
                 input::placeholder {
@@ -259,7 +259,7 @@ export default function AdminLoginPage({ onNavigateBack, onLoginSuccess }) {
                                 fontWeight: 700,
                                 letterSpacing: '0.22em',
                                 textTransform: 'uppercase',
-                                color: '#006b5e',
+                                color: '#f5401b',
                                 opacity: 0.75,
                                 margin: 0,
                             }}>Akses Manajemen Aman</p>
@@ -276,8 +276,8 @@ export default function AdminLoginPage({ onNavigateBack, onLoginSuccess }) {
                             <div
                                 className="error-shake"
                                 style={{
-                                    background: 'rgba(245,64,27,0.10)',
-                                    border: '1px solid rgba(245,64,27,0.25)',
+                                    background: 'rgba(245, 64, 27,0.10)',
+                                    border: '1px solid rgba(245, 64, 27,0.25)',
                                     borderRadius: '12px',
                                     padding: '12px 16px',
                                     fontFamily: font,
@@ -295,7 +295,7 @@ export default function AdminLoginPage({ onNavigateBack, onLoginSuccess }) {
                             <div style={inputWrapStyle(usernameFocused)}>
                                 <span
                                     className="material-symbols-outlined"
-                                    style={{ ...iconStyle, color: usernameFocused ? '#006b5e' : '#916f68' }}
+                                    style={{ ...iconStyle, color: usernameFocused ? '#f5401b' : '#916f68' }}
                                 >person</span>
                                 <input
                                     id="admin-username"
@@ -324,18 +324,18 @@ export default function AdminLoginPage({ onNavigateBack, onLoginSuccess }) {
                                         fontWeight: 700,
                                         letterSpacing: '0.20em',
                                         textTransform: 'uppercase',
-                                        color: '#006b5e',
+                                        color: '#f5401b',
                                         textDecoration: 'none',
                                         transition: 'color 0.2s',
                                     }}
                                     onMouseEnter={e => e.target.style.color = '#f5401b'}
-                                    onMouseLeave={e => e.target.style.color = '#006b5e'}
+                                    onMouseLeave={e => e.target.style.color = '#f5401b'}
                                 >Lupa?</a>
                             </div>
                             <div style={inputWrapStyle(passwordFocused)}>
                                 <span
                                     className="material-symbols-outlined"
-                                    style={{ ...iconStyle, color: passwordFocused ? '#006b5e' : '#916f68' }}
+                                    style={{ ...iconStyle, color: passwordFocused ? '#f5401b' : '#916f68' }}
                                 >lock</span>
                                 <input
                                     id="admin-password"
@@ -364,7 +364,7 @@ export default function AdminLoginPage({ onNavigateBack, onLoginSuccess }) {
                                         alignItems: 'center',
                                         transition: 'color 0.2s',
                                     }}
-                                    onMouseEnter={e => e.currentTarget.style.color = '#006b5e'}
+                                    onMouseEnter={e => e.currentTarget.style.color = '#f5401b'}
                                     onMouseLeave={e => e.currentTarget.style.color = '#916f68'}
                                     tabIndex={-1}
                                 >
@@ -394,7 +394,7 @@ export default function AdminLoginPage({ onNavigateBack, onLoginSuccess }) {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     gap: '10px',
-                                    boxShadow: '0 8px 24px -6px rgba(245,64,27,0.35)',
+                                    boxShadow: '0 8px 24px -6px rgba(245, 64, 27,0.35)',
                                 }}
                             >
                                 {isLoading ? (

@@ -102,7 +102,7 @@ export default function JournalPage({
     };
 
     return (
-        <div style={{ fontFamily: font, backgroundColor: '#f0fcf7', color: '#131e1b', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <div style={{ fontFamily: font, backgroundColor: '#e4f0ed', color: '#131e1b', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Navbar
                 activePage="journal"
                 onNavigateHome={onNavigateHome}
@@ -221,7 +221,7 @@ export default function JournalPage({
 
                         {/* Text */}
                         <div style={{ gridColumn: 'span 5', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                            <div style={{ width: '48px', height: '4px', backgroundColor: '#006b5e', marginBottom: '24px' }} />
+                            <div style={{ width: '48px', height: '4px', backgroundColor: '#f5401b', marginBottom: '24px' }} />
                             <h2 style={{
                                 fontFamily: font, fontSize: '32px', fontWeight: 700,
                                 lineHeight: 1.2, letterSpacing: '-0.02em',
@@ -306,7 +306,7 @@ export default function JournalPage({
                                     key={article.id}
                                     className="tilt-card-3d"
                                     style={{
-                                        backgroundColor: '#f0fcf7',
+                                        backgroundColor: '#e4f0ed',
                                         padding: '12px',
                                         borderRadius: '16px',
                                         boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
@@ -334,7 +334,7 @@ export default function JournalPage({
                                         <span style={{
                                             fontFamily: font, fontSize: '12px', fontWeight: 700,
                                             letterSpacing: '0.20em', textTransform: 'uppercase',
-                                            color: '#006b5e', display: 'block', marginBottom: '12px',
+                                            color: '#f5401b', display: 'block', marginBottom: '12px',
                                         }}>{article.category}</span>
                                         <h4
                                             style={{
@@ -507,7 +507,7 @@ export default function JournalPage({
                                 <button
                                     type="submit"
                                     style={{
-                                        backgroundColor: subscribed ? '#006b5e' : '#b32000',
+                                        backgroundColor: subscribed ? '#f5401b' : '#b32000',
                                         color: '#ffffff',
                                         padding: '18px',
                                         borderRadius: '16px',

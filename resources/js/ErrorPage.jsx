@@ -132,8 +132,8 @@ const ERROR_CONFIG = {
     orbitColor2: 'rgba(245, 64, 27, 0.13)',
     glowColor: 'rgba(35, 247, 219, 0.06)',
     meshGradient: `
-      radial-gradient(circle at 20% 20%, rgba(245,64,27,0.08) 0%, transparent 40%),
-      radial-gradient(circle at 80% 10%, rgba(35,247,219,0.12) 0%, transparent 40%)
+      radial-gradient(circle at 20% 20%, rgba(245, 64, 27,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 80% 10%, rgba(35, 247, 219,0.12) 0%, transparent 40%)
     `,
     primaryBtn: { label: 'Kembali ke Beranda', emoji: '🏠', action: 'home', color: '#b32000' },
     secondaryBtn: { label: 'Halaman Sebelumnya', icon: 'arrow_back', action: 'back' },
@@ -151,7 +151,7 @@ const ERROR_CONFIG = {
     glowColor: 'rgba(179, 32, 0, 0.06)',
     meshGradient: `
       radial-gradient(circle at 15% 25%, rgba(179,32,0,0.10) 0%, transparent 45%),
-      radial-gradient(circle at 85% 15%, rgba(245,64,27,0.08) 0%, transparent 40%)
+      radial-gradient(circle at 85% 15%, rgba(245, 64, 27,0.08) 0%, transparent 40%)
     `,
     primaryBtn: { label: 'Kembali ke Beranda', emoji: '🏠', action: 'home', color: '#b32000' },
     secondaryBtn: { label: 'Halaman Sebelumnya', icon: 'arrow_back', action: 'back' },
@@ -164,15 +164,15 @@ const ERROR_CONFIG = {
     title: 'Perlu Masuk Akun',
     description:
       'Anda harus login terlebih dahulu untuk mengakses area ini. Silakan masuk dengan akun Anda atau daftar jika belum memiliki akun.',
-    gradient: 'linear-gradient(135deg, #006b5e 0%, #23F7DB 100%)',
-    orbitColor1: 'rgba(0, 107, 94, 0.20)',
+    gradient: 'linear-gradient(135deg, #f5401b 0%, #23F7DB 100%)',
+    orbitColor1: 'rgba(245, 64, 27, 0.20)',
     orbitColor2: 'rgba(35, 247, 219, 0.12)',
-    glowColor: 'rgba(0, 107, 94, 0.06)',
+    glowColor: 'rgba(245, 64, 27, 0.06)',
     meshGradient: `
-      radial-gradient(circle at 20% 20%, rgba(0,107,94,0.10) 0%, transparent 45%),
-      radial-gradient(circle at 80% 15%, rgba(35,247,219,0.08) 0%, transparent 40%)
+      radial-gradient(circle at 20% 20%, rgba(245, 64, 27,0.10) 0%, transparent 45%),
+      radial-gradient(circle at 80% 15%, rgba(35, 247, 219,0.08) 0%, transparent 40%)
     `,
-    primaryBtn: { label: 'Masuk Sekarang', emoji: '🔑', action: 'login', color: '#006b5e' },
+    primaryBtn: { label: 'Masuk Sekarang', emoji: '🔑', action: 'login', color: '#f5401b' },
     secondaryBtn: { label: 'Kembali ke Beranda', icon: 'home', action: 'home' },
     badge: null,
   },
@@ -188,7 +188,7 @@ const ERROR_CONFIG = {
     glowColor: 'rgba(45, 74, 66, 0.06)',
     meshGradient: `
       radial-gradient(circle at 10% 30%, rgba(45,74,66,0.10) 0%, transparent 50%),
-      radial-gradient(circle at 90% 20%, rgba(35,247,219,0.08) 0%, transparent 45%)
+      radial-gradient(circle at 90% 20%, rgba(35, 247, 219,0.08) 0%, transparent 45%)
     `,
     primaryBtn: { label: 'Kembali ke Beranda', emoji: '🏠', action: 'home', color: '#2D4A42' },
     secondaryBtn: { label: 'Coba Lagi', icon: 'refresh', action: 'reload' },
@@ -200,17 +200,17 @@ const ERROR_CONFIG = {
     title: 'Layanan Tidak Tersedia',
     description:
       'Layanan sedang mengalami gangguan atau dalam proses pemeliharaan rutin. Kami akan segera kembali dengan kondisi prima untuk menemani petualangan Anda.',
-    gradient: 'linear-gradient(135deg, #006b5e 0%, #F5401B 100%)',
-    orbitColor1: 'rgba(0, 107, 94, 0.18)',
+    gradient: 'linear-gradient(135deg, #f5401b 0%, #F5401B 100%)',
+    orbitColor1: 'rgba(245, 64, 27, 0.18)',
     orbitColor2: 'rgba(245, 64, 27, 0.12)',
-    glowColor: 'rgba(0, 107, 94, 0.06)',
+    glowColor: 'rgba(245, 64, 27, 0.06)',
     meshGradient: `
-      radial-gradient(circle at 20% 30%, rgba(0,107,94,0.10) 0%, transparent 45%),
-      radial-gradient(circle at 80% 15%, rgba(245,64,27,0.07) 0%, transparent 40%)
+      radial-gradient(circle at 20% 30%, rgba(245, 64, 27,0.10) 0%, transparent 45%),
+      radial-gradient(circle at 80% 15%, rgba(245, 64, 27,0.07) 0%, transparent 40%)
     `,
-    primaryBtn: { label: 'Kembali ke Beranda', emoji: '🏠', action: 'home', color: '#006b5e' },
+    primaryBtn: { label: 'Kembali ke Beranda', emoji: '🏠', action: 'home', color: '#f5401b' },
     secondaryBtn: { label: 'Coba Lagi', icon: 'refresh', action: 'reload' },
-    badge: { text: 'SEDANG DALAM PEMELIHARAAN', color: '#006b5e', dotColor: '#23F7DB' },
+    badge: { text: 'SEDANG DALAM PEMELIHARAAN', color: '#f5401b', dotColor: '#23F7DB' },
   },
   429: {
     emoji: '🚦',
@@ -224,7 +224,7 @@ const ERROR_CONFIG = {
     glowColor: 'rgba(255, 153, 0, 0.07)',
     meshGradient: `
       radial-gradient(circle at 20% 20%, rgba(255,153,0,0.10) 0%, transparent 45%),
-      radial-gradient(circle at 80% 10%, rgba(245,64,27,0.08) 0%, transparent 40%)
+      radial-gradient(circle at 80% 10%, rgba(245, 64, 27,0.08) 0%, transparent 40%)
     `,
     primaryBtn: { label: 'Kembali ke Beranda', emoji: '🏠', action: 'home', color: '#b32000' },
     secondaryBtn: { label: 'Coba Lagi', icon: 'refresh', action: 'reload' },

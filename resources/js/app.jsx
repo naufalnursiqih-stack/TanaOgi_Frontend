@@ -9,7 +9,7 @@ import ExperiencesPage from './ExperiencesPage';
 import CulturePage from './CulturePage';
 import JournalPage from './JournalPage';
 import DestinationDetailPage from './DestinationDetailPage';
-import DriversPage from './DriversPage';
+
 import SupportPageLayout from './SupportPageLayout';
 import { supportPages } from './supportPages';
 import Preloader from './Preloader';
@@ -17,6 +17,7 @@ import AdminLoginPage from './AdminLoginPage';
 import AdminDashboard from './AdminDashboard';
 import ErrorPage from './ErrorPage';
 import WishlistSidebar from './WishlistSidebar';
+import PendingPaymentModal from './PendingPaymentModal';
 
 
 /**
@@ -35,6 +36,8 @@ function Navbar({
     isHeroTheme = false, // Atribut pendeteksi halaman utama
     currentUser = null,
     onLogout,
+    wishlistCount = 0,
+    onWishlistToggle,
 }) {
     const [scrolled, setScrolled] = useState(false);
     const isTransparent = isHeroTheme && !scrolled;
@@ -43,6 +46,32 @@ function Navbar({
     const [fade, setFade] = useState(false);
 
     const font = "'Plus Jakarta Sans', sans-serif";
+    const [historyOpen, setHistoryOpen] = useState(false);
+    const [bookings, setBookings] = useState([]);
+    const [loadingBookings, setLoadingBookings] = useState(false);
+    const [pendingBooking, setPendingBooking] = useState(null); // booking to pay
+
+    useEffect(() => {
+        if (historyOpen && currentUser) {
+            const token = localStorage.getItem('auth_token');
+            if (!token) return;
+            setLoadingBookings(true);
+            fetch('/api/v1/bookings', {
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(res => res.ok ? res.json() : null)
+            .then(data => {
+                if (data && data.bookings) {
+                    setBookings(data.bookings);
+                }
+            })
+            .catch(err => console.error(err))
+            .finally(() => setLoadingBookings(false));
+        }
+    }, [historyOpen, currentUser]);
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -174,6 +203,236 @@ function Navbar({
 
                 {/* Bagian Kanan: Akses Tombol / User Profile */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+                    {/* Floating Wishlist Button */}
+                    <div 
+                        onClick={onWishlistToggle}
+                        style={{
+                            position: 'relative',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '50%',
+                            backgroundColor: (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.15)' : '#e4f0ed',
+                            transition: 'all 0.3s ease',
+                        }}
+                        onMouseEnter={e => {
+                            e.currentTarget.style.transform = 'scale(1.08)';
+                            e.currentTarget.style.backgroundColor = (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.25)' : 'rgba(245, 64, 27, 0.1)';
+                        }}
+                        onMouseLeave={e => {
+                            e.currentTarget.style.transform = 'scale(1)';
+                            e.currentTarget.style.backgroundColor = (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.15)' : '#e4f0ed';
+                        }}
+                        title="Destinasi Impian"
+                    >
+                        <span 
+                            className="material-symbols-outlined" 
+                            style={{ 
+                                color: (isTransparent && isHeroTheme) ? '#ffffff' : '#f5401b',
+                                fontSize: '22px' 
+                            }}
+                        >
+                            favorite
+                        </span>
+                        {wishlistCount > 0 && (
+                            <span style={{
+                                position: 'absolute',
+                                top: '-4px',
+                                right: '-4px',
+                                backgroundColor: '#f5401b',
+                                color: '#ffffff',
+                                fontSize: '9px',
+                                fontWeight: 800,
+                                width: '18px',
+                                height: '18px',
+                                borderRadius: '50%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                border: '2px solid ' + ((isTransparent && isHeroTheme) ? '#131e1b' : '#ffffff'),
+                                boxShadow: '0 4px 10px rgba(245, 64, 27,0.3)',
+                                transition: 'all 0.3s ease'
+                            }}>
+                                {wishlistCount}
+                            </span>
+                        )}
+                    </div>
+
+                    {/* Floating Booking History Button */}
+                    {currentUser && (
+                        <div style={{ position: 'relative' }}>
+                            <div 
+                                onClick={() => setHistoryOpen(!historyOpen)}
+                                style={{
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: '40px',
+                                    height: '40px',
+                                    borderRadius: '50%',
+                                    backgroundColor: (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.15)' : '#e4f0ed',
+                                    border: historyOpen ? '1.5px solid #f5401b' : 'none',
+                                    transition: 'all 0.3s ease',
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.transform = 'scale(1.08)';
+                                    e.currentTarget.style.backgroundColor = (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.25)' : 'rgba(245, 64, 27, 0.1)';
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.transform = 'scale(1)';
+                                    e.currentTarget.style.backgroundColor = (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.15)' : '#e4f0ed';
+                                }}
+                                title="Riwayat Pemesanan"
+                            >
+                                <span 
+                                    className="material-symbols-outlined" 
+                                    style={{ 
+                                        color: (isTransparent && isHeroTheme) ? '#ffffff' : '#0f1a17',
+                                        fontSize: '22px' 
+                                    }}
+                                >
+                                    history
+                                </span>
+                            </div>
+
+                            {/* History Dropdown Card */}
+                            {historyOpen && (
+                                <div style={{
+                                    position: 'absolute',
+                                    top: '52px',
+                                    right: '0',
+                                    width: '320px',
+                                    maxHeight: '420px',
+                                    overflowY: 'auto',
+                                    backgroundColor: '#ffffff',
+                                    borderRadius: '16px',
+                                    border: '1.5px solid #e4f0ed',
+                                    boxShadow: '0 16px 45px -10px rgba(15, 26, 23, 0.18)',
+                                    zIndex: 9999,
+                                    padding: '16px',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '12px'
+                                }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(15, 26, 23, 0.08)', paddingBottom: '8px' }}>
+                                        <span style={{ fontSize: '14px', fontWeight: 800, color: '#0f1a17', fontFamily: font }}>Riwayat Pemesanan</span>
+                                        <span 
+                                            onClick={() => setHistoryOpen(false)}
+                                            className="material-symbols-outlined" 
+                                            style={{ fontSize: '18px', color: 'rgba(15, 26, 23, 0.4)', cursor: 'pointer' }}
+                                        >
+                                            close
+                                        </span>
+                                    </div>
+
+                                    {loadingBookings ? (
+                                        <div style={{ padding: '20px 0', textAlign: 'center', color: 'rgba(15, 26, 23, 0.5)', fontSize: '12px', fontFamily: font }}>
+                                            Memuat data...
+                                        </div>
+                                    ) : bookings.length === 0 ? (
+                                        <div style={{ padding: '30px 0', textAlign: 'center', color: 'rgba(15, 26, 23, 0.45)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', fontFamily: font }}>
+                                            <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'rgba(15, 26, 23, 0.3)' }}>receipt_long</span>
+                                            <span style={{ fontSize: '12px' }}>Belum ada riwayat transaksi.</span>
+                                        </div>
+                                    ) : (
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                            {bookings.map((booking, idx) => (
+                                                <div 
+                                                    key={idx}
+                                                    style={{
+                                                        padding: '10px 12px',
+                                                        borderRadius: '10px',
+                                                        backgroundColor: '#e4f0ed',
+                                                        border: '1px solid rgba(15, 26, 23, 0.05)',
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        gap: '4px',
+                                                        fontSize: '11px',
+                                                        fontFamily: font
+                                                    }}
+                                                >
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                        <span style={{ fontWeight: 800, color: '#0f1a17', maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                            {booking.destination?.title || booking.destination_slug || 'Destinasi Wisata'}
+                                                        </span>
+                                                        <span style={{ 
+                                                            fontWeight: 800, 
+                                                            fontSize: '9px',
+                                                            color: '#0f1a17',
+                                                            backgroundColor: booking.payment_status === 'paid' ? '#23f7db' : 'rgba(245, 64, 27, 0.15)',
+                                                            padding: '2px 6px',
+                                                            borderRadius: '4px'
+                                                        }}>
+                                                            {booking.payment_status === 'paid' ? 'LUNAS' : 'PENDING'}
+                                                        </span>
+                                                    </div>
+                                                    <div style={{ color: 'rgba(15, 26, 23, 0.6)', display: 'flex', justifyContent: 'space-between' }}>
+                                                        <span>Tanggal:</span>
+                                                        <span style={{ fontWeight: 600 }}>{booking.visit_date}</span>
+                                                    </div>
+                                                    <div style={{ color: 'rgba(15, 26, 23, 0.6)', display: 'flex', justifyContent: 'space-between' }}>
+                                                        <span>Pengunjung:</span>
+                                                        <span style={{ fontWeight: 600 }}>{booking.pax_count} Pax</span>
+                                                    </div>
+                                                    {booking.total_amount_web > 0 && (
+                                                        <div style={{ color: '#f5401b', display: 'flex', justifyContent: 'space-between', fontWeight: 700, borderTop: '1px dashed rgba(15,26,23,0.1)', paddingTop: '4px', marginTop: '2px' }}>
+                                                            <span>Total Web:</span>
+                                                            <span>Rp {parseInt(booking.total_amount_web).toLocaleString('id-ID')}</span>
+                                                        </div>
+                                                    )}
+                                                    {booking.payment_status === 'pending' && booking.total_amount_web > 0 && (
+                                                        <button
+                                                            onClick={() => { setHistoryOpen(false); setPendingBooking(booking); }}
+                                                            style={{
+                                                                marginTop: '6px',
+                                                                width: '100%',
+                                                                padding: '8px',
+                                                                borderRadius: '8px',
+                                                                border: 'none',
+                                                                background: 'linear-gradient(135deg, #f5401b, #e03010)',
+                                                                color: '#ffffff',
+                                                                fontSize: '11px',
+                                                                fontWeight: 700,
+                                                                cursor: 'pointer',
+                                                                fontFamily: font,
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                gap: '5px',
+                                                                boxShadow: '0 2px 8px rgba(245, 64, 27,0.3)',
+                                                            }}
+                                                        >
+                                                            <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>credit_card</span>
+                                                            Lunasi Sekarang
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Pending Payment Modal */}
+                    {pendingBooking && (
+                        <PendingPaymentModal
+                            booking={pendingBooking}
+                            onClose={() => setPendingBooking(null)}
+                            onPaymentSuccess={(bookingId) => {
+                                setBookings(prev => prev.map(b =>
+                                    b.id === bookingId ? { ...b, payment_status: 'paid' } : b
+                                ));
+                                setPendingBooking(null);
+                            }}
+                        />
+                    )}
+
                     {currentUser ? (
                         /* Logged-in state: show user avatar + name + logout */
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -313,23 +572,28 @@ function Navbar({
 const stories = [
     {
         title: "Kabut Suci Toraja",
-        poem: "Gagahnya pegunungan Toraja, berselimut kabut menembus cakrawala. Tanah para raja, tempat arwah bermukim di tebing-tebing batu sakral, menjaga warisan leluhur yang tak lekang oleh waktu."
+        poem: "Gagahnya pegunungan Toraja, berselimut kabut menembus cakrawala. Tanah para raja, tempat arwah bermukim di tebing-tebing batu sakral, menjaga warisan leluhur yang tak lekang oleh waktu.",
+        hotspot: { top: '22%', left: '48%' },
     },
     {
         title: "Labirin Purba Rammang-Rammang",
-        poem: "Menjaga rahasia masa purba di sela-sela hijau sawah dan sunyinya sungai Pute. Labirin batu karst tertua kedua di dunia, tegak berdiri merajut kesunyian alam Celebes."
+        poem: "Menjaga rahasia masa purba di sela-sela hijau sawah dan sunyinya sungai Pute. Labirin batu karst tertua kedua di dunia, tegak berdiri merajut kesunyian alam Celebes.",
+        hotspot: { top: '30%', left: '55%' },
     },
     {
         title: "Dendang Ombak & Phinisi",
-        poem: "Ombak Bulukumba mencium pasir putih Bira, tempat para pelaut tangguh Bugis-Makassar memahat kapal Phinisi. Perahu legendaris pembelah samudra, simbol keberanian yang tak pernah padam."
+        poem: "Ombak Bulukumba mencium pasir putih Bira, tempat para pelaut tangguh Bugis-Makassar memahat kapal Phinisi. Perahu legendaris pembelah samudra, simbol keberanian yang tak pernah padam.",
+        hotspot: { top: '50%', left: '60%' },
     },
     {
         title: "Tebing Appalarang yang Kokoh",
-        poem: "Tebing Appalarang berdiri kokoh menantang deburan ombak membiru. Saksi bisu keindahan pesisir yang tiada duanya, tempat karang dan laut bersatu dalam simfoni abadi."
+        poem: "Tebing Appalarang berdiri kokoh menantang deburan ombak membiru. Saksi bisu keindahan pesisir yang tiada duanya, tempat karang dan laut bersatu dalam simfoni abadi.",
+        hotspot: { top: '38%', left: '58%' },
     },
     {
         title: "Ketenangan Danau Tempe",
-        poem: "Danau Tempe yang berkilau, saksi kehidupan di atas air terapung. Tempat harmoni nelayan berdendang bersama burung-burung migran di bawah lembayung senja yang tenang."
+        poem: "Danau Tempe yang berkilau, saksi kehidupan di atas air terapung. Tempat harmoni nelayan berdendang bersama burung-burung migran di bawah lembayung senja yang tenang.",
+        hotspot: { top: '45%', left: '52%' },
     }
 ];
 
@@ -341,56 +605,29 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
     const [isInside, setIsInside] = useState(false);
 
     // Story states
-    const activeStoryIndexRef = React.useRef(0);
     const [activeStoryIndex, setActiveStoryIndex] = useState(0);
-    const [storyFade, setStoryFade] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
-    const [cardPosition, setCardPosition] = useState({ top: '20%', left: '68%' });
+    const [isStoryHovered, setIsStoryHovered] = useState(false);
+    const hotspotColor = isStoryHovered ? '#23F7DB' : '#FFFFFF';
+    const [isHotspotHovered, setIsHotspotHovered] = useState(false);
+    const videoRef = React.useRef(null);
+    const activeStory = stories[activeStoryIndex];
 
-    // Handle random movement and rotation every 3.5 seconds
-    useEffect(() => {
-        if (isExpanded) return;
+    const syncStoryToVideo = (event) => {
+        const { currentTime, duration } = event.currentTarget;
+        if (!Number.isFinite(duration) || duration <= 0) return;
 
-        const interval = setInterval(() => {
-            setStoryFade(true);
-            setTimeout(() => {
-                const isMobile = window.innerWidth < 1024;
-                let randomTop, randomLeft;
-
-                if (isMobile) {
-                    // Mobile safe range: upper-middle center/left
-                    randomTop = Math.floor(Math.random() * 25) + 15;  // 15% to 40%
-                    randomLeft = Math.floor(Math.random() * 35) + 10; // 10% to 45%
-                } else {
-                    // Desktop safe quadrants: randomly choose one of three quadrants
-                    const quadrants = [
-                        // Quadrant 1: High Left (very high up on the left, well above "Jelajahi")
-                        { minTop: 15, maxTop: 24, minLeft: 10, maxLeft: 28 },
-                        // Quadrant 2: High Center (high center, above the headline text block)
-                        { minTop: 15, maxTop: 28, minLeft: 46, maxLeft: 60 },
-                        // Quadrant 3: Right Side (entire right-middle side column, completely safe)
-                        { minTop: 15, maxTop: 68, minLeft: 64, maxLeft: 78 }
-                    ];
-                    
-                    const q = quadrants[Math.floor(Math.random() * quadrants.length)];
-                    randomTop = Math.floor(Math.random() * (q.maxTop - q.minTop)) + q.minTop;
-                    randomLeft = Math.floor(Math.random() * (q.maxLeft - q.minLeft)) + q.minLeft;
-                }
-                
-                setCardPosition({
-                    top: `${randomTop}%`,
-                    left: `${randomLeft}%`
-                });
-
-                const nextIndex = (activeStoryIndexRef.current + 1) % stories.length;
-                activeStoryIndexRef.current = nextIndex;
-                setActiveStoryIndex(nextIndex);
-                setStoryFade(false);
-            }, 300);
-        }, 3800); // 3.8s total loop (3.5s displaying + 0.3s transitioning)
-
-        return () => clearInterval(interval);
-    }, [isExpanded]);
+        const segmentDuration = duration / stories.length;
+        const nextIndex = Math.min(Math.floor(currentTime / segmentDuration), stories.length - 1);
+        setActiveStoryIndex((currentIndex) => {
+            if (currentIndex !== nextIndex) {
+                // Story berganti: tutup card detail agar tidak ghost ke story berikutnya
+                setIsExpanded(false);
+                setIsStoryHovered(false);
+            }
+            return nextIndex;
+        });
+    };
 
     useEffect(() => {
         const handleGlobalMouseMove = (e) => {
@@ -430,15 +667,29 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
         if (onNavigateAllDestinations) onNavigateAllDestinations();
     };
 
-    const handleCardClick = (e) => {
+    const handleHotspotClick = (e) => {
+        e.stopPropagation();
         if (!isExpanded) {
             setIsExpanded(true);
+            setIsStoryHovered(true);
+            videoRef.current?.pause();
+        } else {
+            setIsExpanded(false);
+            videoRef.current?.play().catch(() => {});
         }
     };
 
     const handleCloseCard = (e) => {
         e.stopPropagation();
         setIsExpanded(false);
+        videoRef.current?.play().catch(() => {});
+    };
+
+    const handleStoryLeave = () => {
+        setIsHovering(false);
+        setIsHotspotHovered(false);
+        // isExpanded tetap terbuka meski mouse leave
+        // user harus klik lagi untuk menutup detail
     };
 
     const font = "'Plus Jakarta Sans', sans-serif";
@@ -449,7 +700,7 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
                 @keyframes modalSlideUp {
                     from {
                         opacity: 0;
-                        transform: translateY(40px) scale(0.95);
+                        transform: translateY(20px) scale(0.95);
                     }
                     to {
                         opacity: 1;
@@ -462,6 +713,14 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
                 @keyframes fadeIn {
                     from { opacity: 0; }
                     to { opacity: 1; }
+                }
+                @keyframes hotspotPulse {
+                    0%, 100% {
+                        box-shadow: 0 0 0 4px rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.3);
+                    }
+                    50% {
+                        box-shadow: 0 0 0 8px rgba(255,255,255,0.08), 0 4px 16px rgba(0,0,0,0.4);
+                    }
                 }
             `}</style>
 
@@ -491,10 +750,13 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
                 {/* Background Video */}
                 <div className="absolute inset-0 z-0" style={{ overflow: 'hidden' }}>
                     <video
+                        ref={videoRef}
                         autoPlay
                         muted
                         loop
                         playsInline
+                        onLoadedMetadata={syncStoryToVideo}
+                        onTimeUpdate={syncStoryToVideo}
                         className="w-full h-full object-cover"
                         style={{ 
                             width: '100%', 
@@ -504,7 +766,7 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
                             transition: 'transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)',
                         }}
                     >
-                        <source src="/final-web2.mp4" type="video/mp4" />
+                        <source src="/TanaOgi_Video.mp4" type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
                     <div className="absolute inset-0 hero-gradient" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.4) 100%)' }}></div>
@@ -639,86 +901,278 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
                         </div>
                     </div>
 
-                    {/* Floating Story Card */}
+                    {/* ── HOTSPOT: lingkaran kecil → 3-fold connector → lingkaran besar ── */}
+                    {/*
+                        GEOMETRI (semua relatif ke titik kiri-atas container):
+                        - Small dot:   top:0,   left:0,  size:14×14  → center = (7, 7)
+                        - SVG anchor:  top:7px, left:7px (center small dot), overflow:visible
+                          Line1 H: (0,0)→(48,0)    horizontal kanan
+                          Line2 V: (48,0)→(48,-58)  vertikal naik
+                          Line3 H: (48,-58)→(108,-58) horizontal kanan
+                        - Large circle center: (7+108, 7-58) = (115, -51) dari container
+                          size:52×52 → top-left: (115-26, -51-26) = (89, -77)
+                        - Detail card: left dari large circle right edge → (89+52+12=153, -77)
+                    */}
                     <div
-                        onClick={handleCardClick}
-                        onMouseEnter={() => setIsHovering(true)}
-                        onMouseLeave={() => setIsHovering(false)}
-                        className="flex flex-col gap-2 p-5 rounded-2xl border border-white/10 backdrop-blur-md select-none cursor-pointer"
                         style={{
                             position: 'absolute',
-                            top: cardPosition.top,
-                            left: cardPosition.left,
+                            top: activeStory.hotspot.top,
+                            left: activeStory.hotspot.left,
                             zIndex: 30,
-                            width: '290px',
-                            boxSizing: 'border-box',
-                            backgroundColor: 'rgba(0, 0, 0, 0.45)',
-                            boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
                             transform: `translate(${parallax.x * -0.3}px, ${parallax.y * -0.3}px)`,
-                            transition: 'left 0.8s cubic-bezier(0.25, 1, 0.5, 1), top 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)',
+                            transition: 'left 0.6s ease, top 0.6s ease, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)',
                         }}
+                        onMouseEnter={() => { setIsHovering(true); setIsHotspotHovered(true); }}
+                        onMouseLeave={() => { setIsHovering(false); setIsHotspotHovered(false); }}
                     >
-                        <div 
+                        {/* ── 1. Dot kecil (origin, 8×8px) ── */}
+                        {/*
+                            Geometri baru (sesuai gambar referensi):
+                            Dot center: (4, 4) relatif container
+                            SVG anchor: top:4px left:4px
+                              L1 H: (0,0)→(55,0)       kanan 55px
+                              L2 V: (55,0)→(55,-65)    naik 65px
+                              L3 H: (55,-65)→(140,-65) kanan 85px
+                            Large circle center: (4+140, 4-65)=(144,-61)
+                            Large circle 36×36 → top-left: (144-18=126, -61-18=-79)
+                            Card: left = 126+36+10 = 172, top = -79+18-card_mid ≈ -100
+                        */}
+                        <div
+                            onClick={handleHotspotClick}
                             style={{
-                                opacity: storyFade ? 0 : 1,
-                                transition: 'opacity 0.25s ease-in-out'
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                width: '8px',
+                                height: '8px',
+                                borderRadius: '50%',
+                                border: `1.5px solid ${isExpanded ? '#23F7DB' : '#ffffff'}`,
+                                backgroundColor: 'transparent',
+                                cursor: 'pointer',
+                                zIndex: 4,
+                                transition: 'border-color 0.3s, box-shadow 0.3s',
+                                boxShadow: isExpanded
+                                    ? '0 0 0 3px rgba(35, 247, 219,0.2), 0 0 10px rgba(35, 247, 219,0.5)'
+                                    : '0 0 0 2px rgba(255,255,255,0.15)',
+                                animation: !isExpanded ? 'hotspotPulse 2.8s ease-in-out infinite' : 'none',
                             }}
+                        />
+
+                        {/* ── 2. SVG 3-fold connector (tipis, sesuai gambar) ── */}
+                        <svg
+                            style={{
+                                position: 'absolute',
+                                top: '4px',
+                                left: '4px',
+                                overflow: 'visible',
+                                pointerEvents: 'none',
+                                zIndex: 2,
+                            }}
+                            width="0"
+                            height="0"
                         >
-                            <div className="flex items-center gap-2 mb-2">
-                                <span className="animate-ping rounded-full w-2 h-2 bg-[#23F7DB]"></span>
-                                <span style={{
+                            {/* L1: horizontal kanan 0→55 di y=0 */}
+                            <line x1="0" y1="0" x2="55" y2="0"
+                                stroke={isExpanded ? '#23F7DB' : 'rgba(255,255,255,0.85)'}
+                                strokeWidth="1.5"
+                                strokeLinecap="square"
+                                style={{ transition: 'stroke 0.3s' }}
+                            />
+                            {/* L2: vertikal naik 0→-65 di x=55 */}
+                            <line x1="55" y1="0" x2="55" y2="-65"
+                                stroke={isExpanded ? '#23F7DB' : 'rgba(255,255,255,0.85)'}
+                                strokeWidth="1.5"
+                                strokeLinecap="square"
+                                style={{ transition: 'stroke 0.3s' }}
+                            />
+                            {/* L3: horizontal kanan 55→140 di y=-65 */}
+                            <line x1="55" y1="-65" x2="140" y2="-65"
+                                stroke={isExpanded ? '#23F7DB' : 'rgba(255,255,255,0.85)'}
+                                strokeWidth="1.5"
+                                strokeLinecap="square"
+                                style={{ transition: 'stroke 0.3s' }}
+                            />
+                        </svg>
+
+                        {/* ── 3. Lingkaran besar (36×36, kosong — hanya visual) ── */}
+                        {/* center=(144,-61) → top-left=(126,-79) */}
+                        <div
+                            onClick={handleHotspotClick}
+                            style={{
+                                position: 'absolute',
+                                top: '-79px',
+                                left: '126px',
+                                width: '36px',
+                                height: '36px',
+                                borderRadius: '50%',
+                                border: `2px solid ${isExpanded ? '#23F7DB' : '#ffffff'}`,
+                                backgroundColor: 'rgba(255,255,255,0.06)',
+                                cursor: 'pointer',
+                                transition: 'border-color 0.3s, box-shadow 0.3s, background-color 0.3s',
+                                boxShadow: isExpanded
+                                    ? '0 0 0 4px rgba(35, 247, 219,0.15), 0 0 16px rgba(35, 247, 219,0.3)'
+                                    : '0 0 0 3px rgba(255,255,255,0.1)',
+                                zIndex: 4,
+                            }}
+                        />
+
+                        {/* ── 4. Preview card — muncul saat hover (sebelum klik) ── */}
+                        {isHotspotHovered && !isExpanded && (
+                            <div
+                                onClick={handleHotspotClick}
+                                style={{
+                                    position: 'absolute',
+                                    top: '-100px',
+                                    left: '172px',
+                                    width: '256px',
+                                    backgroundColor: 'rgba(5, 10, 8, 0.78)',
+                                    backdropFilter: 'blur(14px)',
+                                    WebkitBackdropFilter: 'blur(14px)',
+                                    borderRadius: '14px',
+                                    border: '1px solid rgba(255,255,255,0.12)',
+                                    padding: '14px 16px',
+                                    boxSizing: 'border-box',
+                                    boxShadow: '0 12px 36px rgba(0,0,0,0.5)',
+                                    animation: 'modalSlideUp 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+                                    zIndex: 5,
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                {/* Badge header */}
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                                    <span style={{
+                                        display: 'block',
+                                        width: '5px',
+                                        height: '5px',
+                                        borderRadius: '50%',
+                                        backgroundColor: '#23F7DB',
+                                        flexShrink: 0,
+                                    }} />
+                                    <span style={{
+                                        fontFamily: font,
+                                        fontSize: '9px',
+                                        fontWeight: 700,
+                                        letterSpacing: '0.14em',
+                                        color: '#23F7DB',
+                                        textTransform: 'uppercase',
+                                    }}>
+                                        Senandung Celebes
+                                    </span>
+                                </div>
+                                {/* Judul */}
+                                <h3 style={{
                                     fontFamily: font,
-                                    fontSize: '10px',
+                                    fontSize: '15px',
                                     fontWeight: 700,
-                                    letterSpacing: '0.15em',
-                                    color: '#23F7DB',
-                                    textTransform: 'uppercase'
-                                }}>Senandung Celebes</span>
-                            </div>
-                            
-                            <h3 style={{
-                                fontFamily: font,
-                                fontSize: '16px',
-                                fontWeight: 700,
-                                color: '#ffffff',
-                                lineHeight: 1.3
-                            }}>
-                                {stories[activeStoryIndex].title}
-                            </h3>
-                            
-                            {!isExpanded ? (
+                                    color: '#ffffff',
+                                    lineHeight: 1.3,
+                                    margin: '0 0 8px 0',
+                                }}>
+                                    {activeStory.title}
+                                </h3>
+                                {/* Hint klik */}
                                 <p style={{
                                     fontFamily: font,
-                                    fontSize: '11px',
-                                    color: 'rgba(255,255,255,0.7)',
-                                    lineHeight: 1.4,
-                                    marginTop: '6px'
+                                    fontSize: '12px',
+                                    color: 'rgba(255,255,255,0.5)',
+                                    lineHeight: 1.5,
+                                    margin: 0,
+                                    fontStyle: 'italic',
                                 }}>
                                     Klik untuk meraba kisah alam...
                                 </p>
-                            ) : (
-                                <>
-                                    <p style={{
+                            </div>
+                        )}
+
+                        {/* ── 5. Detail card — muncul setelah klik (full poem) ── */}
+                        {isExpanded && (
+                            <div
+                                style={{
+                                    position: 'absolute',
+                                    top: '-100px',
+                                    left: '172px',
+                                    width: '256px',
+                                    backgroundColor: 'rgba(5, 10, 8, 0.78)',
+                                    backdropFilter: 'blur(14px)',
+                                    WebkitBackdropFilter: 'blur(14px)',
+                                    borderRadius: '14px',
+                                    border: '1px solid rgba(35, 247, 219,0.22)',
+                                    padding: '14px 16px',
+                                    boxSizing: 'border-box',
+                                    boxShadow: '0 16px 48px rgba(0,0,0,0.55)',
+                                    animation: 'modalSlideUp 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+                                    zIndex: 5,
+                                }}
+                            >
+                                {/* Badge header */}
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                                    <span style={{
+                                        display: 'block',
+                                        width: '5px',
+                                        height: '5px',
+                                        borderRadius: '50%',
+                                        backgroundColor: '#23F7DB',
+                                        flexShrink: 0,
+                                    }} />
+                                    <span style={{
                                         fontFamily: font,
-                                        fontSize: '13px',
-                                        color: 'rgba(255,255,255,0.9)',
-                                        lineHeight: 1.6,
-                                        marginTop: '10px',
-                                        fontStyle: 'italic'
+                                        fontSize: '9px',
+                                        fontWeight: 700,
+                                        letterSpacing: '0.14em',
+                                        color: '#23F7DB',
+                                        textTransform: 'uppercase',
                                     }}>
-                                        "{stories[activeStoryIndex].poem}"
-                                    </p>
-                                    <button 
-                                        onClick={handleCloseCard}
-                                        onMouseEnter={() => setIsHovering(true)}
-                                        onMouseLeave={() => setIsHovering(false)}
-                                        className="text-[#23F7DB] hover:underline text-xs mt-3 font-bold text-left block border-none bg-transparent p-0 cursor-pointer"
-                                    >
-                                        Tutup Kisah
-                                    </button>
-                                </>
-                            )}
-                        </div>
+                                        Senandung Celebes
+                                    </span>
+                                </div>
+                                {/* Judul */}
+                                <h3 style={{
+                                    fontFamily: font,
+                                    fontSize: '15px',
+                                    fontWeight: 700,
+                                    color: '#ffffff',
+                                    lineHeight: 1.3,
+                                    margin: '0 0 8px 0',
+                                }}>
+                                    {activeStory.title}
+                                </h3>
+                                {/* Puisi */}
+                                <p style={{
+                                    fontFamily: font,
+                                    fontSize: '12px',
+                                    color: 'rgba(255,255,255,0.82)',
+                                    lineHeight: 1.65,
+                                    fontStyle: 'italic',
+                                    margin: 0,
+                                }}>
+                                    "{activeStory.poem}"
+                                </p>
+                                {/* Tombol tutup */}
+                                <button
+                                    onClick={handleCloseCard}
+                                    style={{
+                                        marginTop: '12px',
+                                        color: '#23F7DB',
+                                        fontSize: '10px',
+                                        fontWeight: 700,
+                                        fontFamily: font,
+                                        background: 'none',
+                                        border: 'none',
+                                        padding: 0,
+                                        cursor: 'pointer',
+                                        letterSpacing: '0.08em',
+                                        textTransform: 'uppercase',
+                                        opacity: 0.8,
+                                        display: 'block',
+                                        transition: 'opacity 0.2s',
+                                    }}
+                                    onMouseEnter={e => e.currentTarget.style.opacity = '1'}
+                                    onMouseLeave={e => e.currentTarget.style.opacity = '0.8'}
+                                >
+                                    ✕ Tutup Kisah
+                                </button>
+                            </div>
+                        )}
                     </div>
 
 
@@ -749,8 +1203,25 @@ function HomePage({ onNavigateRegister, onNavigateLogin, onNavigateDestinations,
 /**
  * App Wrapper
  */
+const navigablePages = new Set([
+    'home', 'register', 'login', 'admin-login', 'admin-dashboard',
+    'destinations', 'all-destinations', 'experiences', 'culture', 'journal',
+    'destination-detail', 'drivers', 'travel-guide', 'sustainability', 'about',
+    'press-kit', 'privacy', 'terms',
+]);
+
+const pageFromLocation = () => {
+    const page = window.location.hash.slice(1);
+
+    return navigablePages.has(page) ? page : 'home';
+};
+
+const urlForPage = (page) => page === 'home'
+    ? `${window.location.pathname}${window.location.search}`
+    : `${window.location.pathname}${window.location.search}#${page}`;
+
 function App() {
-    const [currentPage, setCurrentPage] = useState('home');
+    const [currentPage, setCurrentPage] = useState(pageFromLocation);
     const [transitioning, setTransitioning] = useState(false);
     const [selectedDestination, setSelectedDestination] = useState(null);
 
@@ -825,6 +1296,26 @@ function App() {
         return () => clearTimeout(timer);
     }, []);
 
+    useEffect(() => {
+        if (!window.history.state?.page) {
+            window.history.replaceState({ page: currentPage, destination: null }, '', urlForPage(currentPage));
+        }
+
+        const handlePopState = (event) => {
+            const state = event.state;
+            const page = navigablePages.has(state?.page) ? state.page : pageFromLocation();
+
+            setSelectedDestination(state?.destination ?? null);
+            setCurrentPage(page);
+            setShowLoader(false);
+            window.scrollTo(0, 0);
+        };
+
+        window.addEventListener('popstate', handlePopState);
+
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, []);
+
     const lockedPages = ['register'];
 
     useEffect(() => {
@@ -881,7 +1372,7 @@ function App() {
 
     const navigateTo = (page, destData = null) => {
         // Protected pages: destination-detail and drivers
-        const protectedPages = ['destination-detail', 'drivers'];
+        const protectedPages = ['destination-detail'];
 
         if (protectedPages.includes(page) && !currentUser) {
             // Save destination data if navigating to detail, so we can return to it
@@ -892,12 +1383,18 @@ function App() {
             destData = null;
         }
 
-        const pagesWithLoader = ['home', 'experiences', 'culture', 'journal', 'destinations', 'all-destinations', 'destination-detail', 'login', 'register', 'drivers', 'travel-guide', 'sustainability', 'about', 'press-kit', 'privacy', 'terms'];
+        window.history.pushState(
+            { page, destination: destData },
+            '',
+            urlForPage(page),
+        );
+
+        const pagesWithLoader = ['home', 'experiences', 'culture', 'journal', 'destinations', 'all-destinations', 'destination-detail', 'login', 'register', 'travel-guide', 'sustainability', 'about', 'press-kit', 'privacy', 'terms'];
 
         if (pagesWithLoader.includes(page)) {
             setShowLoader(true);
             setTimeout(() => {
-                if (destData) setSelectedDestination(destData);
+                setSelectedDestination(destData);
                 setCurrentPage(page);
                 window.scrollTo(0, 0);
             }, 400);
@@ -908,9 +1405,7 @@ function App() {
         } else {
             setTransitioning(true);
             setTimeout(() => {
-                if (destData) {
-                    setSelectedDestination(destData);
-                }
+                setSelectedDestination(destData);
                 setCurrentPage(page);
                 window.scrollTo(0, 0);
                 setTransitioning(false);
@@ -969,14 +1464,14 @@ function App() {
                     <LoginPage
                         onNavigateHome={() => navigateTo('home')}
                         onNavigateRegister={() => navigateTo('register')}
-                        onNavigateAdmin={() => setCurrentPage('admin-login')}
+                        onNavigateAdmin={() => navigateTo('admin-login')}
                         onLoginSuccess={handleLoginSuccess}
                     />
                 )}
                 {currentPage === 'admin-login' && (
                     <AdminLoginPage 
-                    onNavigateBack={() => setCurrentPage('login')}
-                    onLoginSuccess={() => setCurrentPage('admin-dashboard')} />
+                    onNavigateBack={() => navigateTo('login')}
+                    onLoginSuccess={() => navigateTo('admin-dashboard')} />
                     )}
                 {currentPage === 'destinations' && (
                     <DestinationsPage
@@ -1068,25 +1563,8 @@ function App() {
                         onNavigateExperiences={() => navigateTo('experiences')}
                         onNavigateCulture={() => navigateTo('culture')}
                         onNavigateJournal={() => navigateTo('journal')}
-                        onNavigateDrivers={() => navigateTo('drivers')}
                         {...supportNavProps}
                         destination={selectedDestination || {}}
-                        currentUser={currentUser}
-                        onLogout={handleLogout}
-                        wishlistCount={wishlist.length}
-                        onWishlistToggle={() => setWishlistOpen(true)}
-                    />
-                )}
-                {currentPage === 'drivers' && (
-                    <DriversPage
-                        onNavigateHome={() => navigateTo('home')}
-                        onNavigateLogin={() => navigateTo('login')}
-                        onNavigateRegister={() => navigateTo('register')}
-                        onNavigateDestinations={() => navigateTo('destinations')}
-                        onNavigateExperiences={() => navigateTo('experiences')}
-                        onNavigateCulture={() => navigateTo('culture')}
-                        onNavigateJournal={() => navigateTo('journal')}
-                        {...supportNavProps}
                         currentUser={currentUser}
                         onLogout={handleLogout}
                         wishlistCount={wishlist.length}
@@ -1114,10 +1592,10 @@ function App() {
                 {currentPage === 'admin-dashboard' && (
                     <AdminDashboard 
                         adminName="Naufal" 
-                        onLogout={() => setCurrentPage('login')} 
+                        onLogout={() => navigateTo('login')} 
                     />
                 )}
-                {!['home', 'register', 'login', 'admin-login', 'destinations', 'all-destinations', 'experiences', 'culture', 'journal', 'destination-detail', 'drivers', 'travel-guide', 'sustainability', 'about', 'press-kit', 'privacy', 'terms', 'admin-dashboard'].includes(currentPage) && (
+                {!['home', 'register', 'login', 'admin-login', 'destinations', 'all-destinations', 'experiences', 'culture', 'journal', 'destination-detail', 'travel-guide', 'sustainability', 'about', 'press-kit', 'privacy', 'terms', 'admin-dashboard'].includes(currentPage) && (
                     <ErrorPage
                         errorCode={404}
                         onNavigateHome={() => navigateTo('home')}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PendingPaymentModal from './PendingPaymentModal';
 
 /**
  * Shared Navbar Component — Tana Ogi (Default)
@@ -36,6 +37,32 @@ export default function Navbar({
     const streamRef = useRef(null);
 
     const font = "'Plus Jakarta Sans', sans-serif";
+    const [historyOpen, setHistoryOpen] = useState(false);
+    const [bookings, setBookings] = useState([]);
+    const [loadingBookings, setLoadingBookings] = useState(false);
+    const [pendingBooking, setPendingBooking] = useState(null); // booking to pay
+
+    useEffect(() => {
+        if (historyOpen && currentUser) {
+            const token = localStorage.getItem('auth_token');
+            if (!token) return;
+            setLoadingBookings(true);
+            fetch('/api/v1/bookings', {
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(res => res.ok ? res.json() : null)
+            .then(data => {
+                if (data && data.bookings) {
+                    setBookings(data.bookings);
+                }
+            })
+            .catch(err => console.error(err))
+            .finally(() => setLoadingBookings(false));
+        }
+    }, [historyOpen, currentUser]);
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -229,22 +256,23 @@ export default function Navbar({
                             width: '40px',
                             height: '40px',
                             borderRadius: '50%',
-                            backgroundColor: (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.15)' : 'rgba(0,107,94,0.06)',
+                            backgroundColor: (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.15)' : '#e4f0ed',
                             transition: 'all 0.3s ease',
                         }}
                         onMouseEnter={e => {
                             e.currentTarget.style.transform = 'scale(1.08)';
-                            e.currentTarget.style.backgroundColor = (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.25)' : 'rgba(0,107,94,0.1)';
+                            e.currentTarget.style.backgroundColor = (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.25)' : 'rgba(245, 64, 27, 0.1)';
                         }}
                         onMouseLeave={e => {
                             e.currentTarget.style.transform = 'scale(1)';
-                            e.currentTarget.style.backgroundColor = (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.15)' : 'rgba(0,107,94,0.06)';
+                            e.currentTarget.style.backgroundColor = (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.15)' : '#e4f0ed';
                         }}
+                        title="Destinasi Impian"
                     >
                         <span 
                             className="material-symbols-outlined" 
                             style={{ 
-                                color: (isTransparent && isHeroTheme) ? '#ffffff' : '#006b5e',
+                                color: (isTransparent && isHeroTheme) ? '#ffffff' : '#f5401b',
                                 fontSize: '22px' 
                             }}
                         >
@@ -255,7 +283,7 @@ export default function Navbar({
                                 position: 'absolute',
                                 top: '-4px',
                                 right: '-4px',
-                                backgroundColor: '#b32000',
+                                backgroundColor: '#f5401b',
                                 color: '#ffffff',
                                 fontSize: '9px',
                                 fontWeight: 800,
@@ -266,13 +294,186 @@ export default function Navbar({
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 border: '2px solid ' + ((isTransparent && isHeroTheme) ? '#131e1b' : '#ffffff'),
-                                boxShadow: '0 4px 10px rgba(179,32,0,0.3)',
+                                boxShadow: '0 4px 10px rgba(245, 64, 27,0.3)',
                                 transition: 'all 0.3s ease'
                             }}>
                                 {wishlistCount}
                             </span>
                         )}
                     </div>
+
+                    {/* Floating Booking History Button */}
+                    {currentUser && (
+                        <div style={{ position: 'relative' }}>
+                            <div 
+                                onClick={() => setHistoryOpen(!historyOpen)}
+                                style={{
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: '40px',
+                                    height: '40px',
+                                    borderRadius: '50%',
+                                    backgroundColor: (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.15)' : '#e4f0ed',
+                                    border: historyOpen ? '1.5px solid #f5401b' : 'none',
+                                    transition: 'all 0.3s ease',
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.transform = 'scale(1.08)';
+                                    e.currentTarget.style.backgroundColor = (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.25)' : 'rgba(245, 64, 27, 0.1)';
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.transform = 'scale(1)';
+                                    e.currentTarget.style.backgroundColor = (isTransparent && isHeroTheme) ? 'rgba(255,255,255,0.15)' : '#e4f0ed';
+                                }}
+                                title="Riwayat Pemesanan"
+                            >
+                                <span 
+                                    className="material-symbols-outlined" 
+                                    style={{ 
+                                        color: (isTransparent && isHeroTheme) ? '#ffffff' : '#0f1a17',
+                                        fontSize: '22px' 
+                                    }}
+                                >
+                                    history
+                                </span>
+                            </div>
+
+                            {/* History Dropdown Card */}
+                            {historyOpen && (
+                                <div style={{
+                                    position: 'absolute',
+                                    top: '52px',
+                                    right: '0',
+                                    width: '320px',
+                                    maxHeight: '420px',
+                                    overflowY: 'auto',
+                                    backgroundColor: '#ffffff',
+                                    borderRadius: '16px',
+                                    border: '1.5px solid #e4f0ed',
+                                    boxShadow: '0 16px 45px -10px rgba(15, 26, 23, 0.18)',
+                                    zIndex: 9999,
+                                    padding: '16px',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '12px'
+                                }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(15, 26, 23, 0.08)', paddingBottom: '8px' }}>
+                                        <span style={{ fontSize: '14px', fontWeight: 800, color: '#0f1a17', fontFamily: font }}>Riwayat Pemesanan</span>
+                                        <span 
+                                            onClick={() => setHistoryOpen(false)}
+                                            className="material-symbols-outlined" 
+                                            style={{ fontSize: '18px', color: 'rgba(15, 26, 23, 0.4)', cursor: 'pointer' }}
+                                        >
+                                            close
+                                        </span>
+                                    </div>
+
+                                    {loadingBookings ? (
+                                        <div style={{ padding: '20px 0', textAlign: 'center', color: 'rgba(15, 26, 23, 0.5)', fontSize: '12px', fontFamily: font }}>
+                                            Memuat data...
+                                        </div>
+                                    ) : bookings.length === 0 ? (
+                                        <div style={{ padding: '30px 0', textAlign: 'center', color: 'rgba(15, 26, 23, 0.45)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', fontFamily: font }}>
+                                            <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'rgba(15, 26, 23, 0.3)' }}>receipt_long</span>
+                                            <span style={{ fontSize: '12px' }}>Belum ada riwayat transaksi.</span>
+                                        </div>
+                                    ) : (
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                            {bookings.map((booking, idx) => (
+                                                <div 
+                                                    key={idx}
+                                                    style={{
+                                                        padding: '10px 12px',
+                                                        borderRadius: '10px',
+                                                        backgroundColor: '#e4f0ed',
+                                                        border: '1px solid rgba(15, 26, 23, 0.05)',
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        gap: '4px',
+                                                        fontSize: '11px',
+                                                        fontFamily: font
+                                                    }}
+                                                >
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                        <span style={{ fontWeight: 800, color: '#0f1a17', maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                            {booking.destination?.title || booking.destination_slug || 'Destinasi Wisata'}
+                                                        </span>
+                                                        <span style={{ 
+                                                            fontWeight: 800, 
+                                                            fontSize: '9px',
+                                                            color: '#0f1a17',
+                                                            backgroundColor: booking.payment_status === 'paid' ? '#23f7db' : 'rgba(245, 64, 27, 0.15)',
+                                                            padding: '2px 6px',
+                                                            borderRadius: '4px'
+                                                        }}>
+                                                            {booking.payment_status === 'paid' ? 'LUNAS' : 'PENDING'}
+                                                        </span>
+                                                    </div>
+                                                    <div style={{ color: 'rgba(15, 26, 23, 0.6)', display: 'flex', justifyContent: 'space-between' }}>
+                                                        <span>Tanggal:</span>
+                                                        <span style={{ fontWeight: 600 }}>{booking.visit_date}</span>
+                                                    </div>
+                                                    <div style={{ color: 'rgba(15, 26, 23, 0.6)', display: 'flex', justifyContent: 'space-between' }}>
+                                                        <span>Pengunjung:</span>
+                                                        <span style={{ fontWeight: 600 }}>{booking.pax_count} Pax</span>
+                                                    </div>
+                                                    {booking.total_amount_web > 0 && (
+                                                        <div style={{ color: '#f5401b', display: 'flex', justifyContent: 'space-between', fontWeight: 700, borderTop: '1px dashed rgba(15,26,23,0.1)', paddingTop: '4px', marginTop: '2px' }}>
+                                                            <span>Total Web:</span>
+                                                            <span>Rp {parseInt(booking.total_amount_web).toLocaleString('id-ID')}</span>
+                                                        </div>
+                                                    )}
+                                                    {booking.payment_status === 'pending' && booking.total_amount_web > 0 && (
+                                                        <button
+                                                            onClick={() => { setHistoryOpen(false); setPendingBooking(booking); }}
+                                                            style={{
+                                                                marginTop: '6px',
+                                                                width: '100%',
+                                                                padding: '8px',
+                                                                borderRadius: '8px',
+                                                                border: 'none',
+                                                                background: 'linear-gradient(135deg, #f5401b, #e03010)',
+                                                                color: '#ffffff',
+                                                                fontSize: '11px',
+                                                                fontWeight: 700,
+                                                                cursor: 'pointer',
+                                                                fontFamily: font,
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                gap: '5px',
+                                                                boxShadow: '0 2px 8px rgba(245, 64, 27,0.3)',
+                                                            }}
+                                                        >
+                                                            <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>credit_card</span>
+                                                            Lunasi Sekarang
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Pending Payment Modal */}
+                    {pendingBooking && (
+                        <PendingPaymentModal
+                            booking={pendingBooking}
+                            onClose={() => setPendingBooking(null)}
+                            onPaymentSuccess={(bookingId) => {
+                                // Update local bookings list to reflect paid status
+                                setBookings(prev => prev.map(b =>
+                                    b.id === bookingId ? { ...b, payment_status: 'paid' } : b
+                                ));
+                                setPendingBooking(null);
+                            }}
+                        />
+                    )}
 
                     {currentUser ? (
                         /* Logged-in state: show user avatar + name + logout */
@@ -323,7 +524,7 @@ export default function Navbar({
                                         <button 
                                             onClick={() => fileInputRef.current.click()}
                                             style={{ width: '100%', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '10px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', color: '#131e1b', textAlign: 'left', fontWeight: 500, transition: 'background-color 0.2s' }}
-                                            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0fcf7'}
+                                            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#e4f0ed'}
                                             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
                                         >
                                             <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#23F7DB' }}>folder_open</span> Pilih dari Komputer
@@ -331,7 +532,7 @@ export default function Navbar({
                                         <button 
                                             onClick={startCamera}
                                             style={{ width: '100%', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '10px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', color: '#131e1b', textAlign: 'left', fontWeight: 500, transition: 'background-color 0.2s' }}
-                                            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0fcf7'}
+                                            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#e4f0ed'}
                                             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
                                         >
                                             <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#23F7DB' }}>photo_camera</span> Gunakan Kamera

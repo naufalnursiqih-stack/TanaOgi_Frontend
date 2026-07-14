@@ -18,6 +18,9 @@
         <!-- Google Identity Services -->
         <script src="https://accounts.google.com/gsi/client" async defer></script>
 
+        <!-- Midtrans Snap JS SDK -->
+        <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('VITE_MIDTRANS_CLIENT_KEY') }}"></script>
+
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.jsx'])
     </head>

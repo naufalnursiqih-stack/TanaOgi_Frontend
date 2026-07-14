@@ -218,7 +218,7 @@ export default function WishlistSidebar({
                                         }}
                                         onMouseEnter={e => {
                                             e.currentTarget.style.color = '#F5401B';
-                                            e.currentTarget.style.backgroundColor = 'rgba(245,64,27,0.06)';
+                                            e.currentTarget.style.backgroundColor = 'rgba(245, 64, 27,0.06)';
                                         }}
                                         onMouseLeave={e => {
                                             e.currentTarget.style.color = 'rgba(230, 189, 181, 0.4)';

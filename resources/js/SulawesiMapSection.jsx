@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { sulselRegencies } from './constants/sulselRegencies';
+import { regencyPaths, regencyLabelPositions } from './constants/sulselRegencyPaths';
 
 const font = "'Plus Jakarta Sans', sans-serif";
 
@@ -71,47 +72,32 @@ const labelPositions = {
     sulut: { x: 355, y: 111 }
 };
 
-/*
- * Detailed SVG paths for individual regencies within South Sulawesi.
- * Structured to seamlessly overlay and align with the original province path
- * when zoomed into coordinates X: 90 to 220, Y: 290 to 540.
- */
-const regencyPaths = {
-    "tana-toraja": "M 123.4,300.3 L 132.1,297.3 L 141.3,301.1 L 146.9,298.6 L 160.7,309.8 L 176.3,311.5 L 168.0,325.0 L 145.0,325.0 L 132.0,312.0 Z",
-    "luwu": "M 176.3,311.5 L 191.7,317.2 L 205.2,326.9 L 200.3,337.9 L 188.3,342.8 L 175.2,332.5 L 172.1,336.5 L 168.0,325.0 Z",
-    "pangkep": "M 115.2,311.4 L 123.4,300.3 L 132.0,312.0 L 145.0,325.0 L 137.1,341.1 L 139.9,349.1 L 120.0,345.0 L 118.8,324.4 Z",
-    "bone": "M 145.0,325.0 L 168.0,325.0 L 175.2,332.5 L 188.3,342.8 L 175.1,329.4 L 161.0,326.1 L 146.9,353.5 L 143.4,388.8 L 135.0,380.0 L 139.9,349.1 Z",
-    "maros": "M 118.8,324.4 L 120.0,345.0 L 139.9,349.1 L 135.0,380.0 L 125.0,375.0 L 125.0,398.5 L 113.4,398.5 L 113.3,383.5 L 105.6,372.7 L 106.5,363.6 L 102.8,351.5 L 110.9,331.7 L 118.2,330.0 L 118.8,324.4 Z",
-    "gowa": "M 113.4,398.5 L 125.0,398.5 L 135.0,410.0 L 142.3,449.3 L 134.5,452.7 L 125.9,451.0 L 120.0,430.0 L 106.8,417.0 Z",
-    "makassar": "M 101.4,441.5 L 104.1,451.5 L 116.3,457.6 L 125.9,451.0 L 120.0,430.0 L 106.8,417.0 L 108.6,424.4 Z",
-    "bulukumba": "M 142.3,449.3 L 148.8,453.6 L 140.5,433.7 L 142.0,422.0 L 148.2,413.0 L 143.8,403.1 L 143.4,388.8 L 147.7,374.1 L 146.9,353.5 L 135.0,380.0 L 135.0,410.0 Z",
-    "selayar": "M 147.8,478.6 L 149.5,491.2 L 153.2,472.7 L 150.2,460.5 L 147.8,478.6 Z M 162.0,518.1 L 155.4,513.3 L 156.1,518.5 L 162.0,518.1 Z M 175.9,530.0 L 178.7,528.0 L 175.2,526.0 L 175.9,530.0 Z"
-};
-
-// Hand-curated neat alternating soft color scheme for South Sulawesi regencies
+// Grayscale color scheme for South Sulawesi regencies — alternating light/mid-gray tiers
 const regencyColors = {
-    "tana-toraja": "#c2e9de",
-    "luwu": "#b4e5d8",
-    "pangkep": "#d0ece3",
-    "bone": "#a7e1d3",
-    "maros": "#b4e5d8",
-    "gowa": "#c2e9de",
-    "makassar": "#d0ece3",
-    "bulukumba": "#a7e1d3",
-    "selayar": "#b4e5d8"
-};
-
-// Scaled label coordinates for regencies when zoomed in
-const regencyLabelPositions = {
-    "tana-toraja": { x: 144, y: 312 },
-    "luwu": { x: 186, y: 328 },
-    "pangkep": { x: 128, y: 332 },
-    "bone": { x: 165, y: 352 },
-    "maros": { x: 122, y: 374 },
-    "makassar": { x: 111, y: 432 },
-    "gowa": { x: 128, y: 418 },
-    "bulukumba": { x: 145, y: 408 },
-    "selayar": { x: 162, y: 494 }
+    "tana-toraja": "#b8b8b8",
+    "toraja-utara": "#ababab",
+    "enrekang": "#b2b2b2",
+    "pinrang": "#a5a5a5",
+    "parepare": "#b8b8b8",
+    "sidrap": "#ababab",
+    "barru": "#b2b2b2",
+    "pangkep": "#a5a5a5",
+    "maros": "#b8b8b8",
+    "makassar": "#b2b2b2",
+    "gowa": "#ababab",
+    "takalar": "#a5a5a5",
+    "jeneponto": "#b8b8b8",
+    "bantaeng": "#b2b2b2",
+    "bulukumba": "#a5a5a5",
+    "sinjai": "#ababab",
+    "bone": "#b8b8b8",
+    "soppeng": "#b2b2b2",
+    "wajo": "#a5a5a5",
+    "luwu": "#ababab",
+    "luwu-utara": "#b8b8b8",
+    "luwu-timur": "#b2b2b2",
+    "palopo": "#a5a5a5",
+    "selayar": "#ababab"
 };
 
 export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
@@ -141,8 +127,8 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
     };
 
     const getFill = (id, isHovered) => {
-        if (id === 'sulsel') return isHovered ? '#00897b' : '#006b5e';
-        return isHovered ? '#9cc0b4' : '#c8ddd7';
+        if (id === 'sulsel') return isHovered ? '#5a5a5a' : '#8c8c8c'; // Sulsel: medium-dark gray → darker on hover
+        return isHovered ? '#6e6e6e' : '#b0b0b0'; // Other provinces: light gray → dark gray on hover
     };
 
     return (
@@ -150,7 +136,7 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
             id="sulawesi-map-section"
             style={{
                 padding: '60px 48px',
-                backgroundColor: '#f0fcf7',
+                backgroundColor: '#e4f0ed',
                 position: 'relative',
                 overflow: 'hidden',
             }}
@@ -158,7 +144,7 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
             {/* Subtle dot pattern */}
             <div style={{
                 position: 'absolute', inset: 0, opacity: 0.03,
-                backgroundImage: 'radial-gradient(circle at 1px 1px, #006b5e 1px, transparent 0)',
+                backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(15,26,23,0.06) 1px, transparent 0)',
                 backgroundSize: '40px 40px',
                 pointerEvents: 'none',
             }} />
@@ -175,7 +161,7 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                     <span style={{
                         fontFamily: font, fontSize: '12px', fontWeight: 700,
                         letterSpacing: '0.25em', textTransform: 'uppercase',
-                        color: '#006b5e', display: 'block', marginBottom: '16px',
+                        color: '#f5401b', display: 'block', marginBottom: '16px',
                     }}>
                         {isZoomedToSulsel ? 'Eksplorasi Detail Wilayah' : 'Temukan destinasi dan atraksi terbaik'}
                     </span>
@@ -194,7 +180,7 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
 
                 {/* ── Map + Info ── */}
                 <div style={{
-                    display: 'grid', gridTemplateColumns: '1.2fr 360px',
+                    display: 'grid', gridTemplateColumns: '1.4fr 360px',
                     gap: '32px', alignItems: 'center',
                     opacity: sectionVisible ? 1 : 0,
                     transform: sectionVisible ? 'translateY(0)' : 'translateY(40px)',
@@ -203,29 +189,29 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                     {/* ── SVG Map Container ── */}
                     <div style={{ position: 'relative', width: '100%', overflow: 'hidden', borderRadius: '40px' }} onMouseMove={handleMouseMove}>
                         <svg 
-                            viewBox="70 15 360 520" 
+                            viewBox="20 -80 460 670" 
                             style={{
-                                width: '100%', height: 'auto', maxHeight: '580px',
-                                filter: 'drop-shadow(0 16px 32px rgba(0,107,94,0.08))',
+                                width: '100%', height: 'auto', maxHeight: '680px',
+                                filter: 'drop-shadow(0 16px 32px rgba(15,26,23,0.08))',
                                 display: 'block',
                             }}
                         >
                             <defs>
                                 <filter id="glow-sulsel" x="-20%" y="-20%" width="140%" height="140%">
-                                    <feGaussianBlur stdDeviation="5" result="b" />
-                                    <feFlood floodColor="#006b5e" floodOpacity="0.35" result="c" />
+                                    <feGaussianBlur stdDeviation="4" result="b" />
+                                    <feFlood floodColor="#333333" floodOpacity="0.3" result="c" />
                                     <feComposite in="c" in2="b" operator="in" result="g" />
                                     <feMerge><feMergeNode in="g" /><feMergeNode in="SourceGraphic" /></feMerge>
                                 </filter>
                                 <filter id="glow-hover" x="-15%" y="-15%" width="130%" height="130%">
-                                    <feGaussianBlur stdDeviation="3.5" result="b" />
-                                    <feFlood floodColor="#9cc0b4" floodOpacity="0.45" result="c" />
+                                    <feGaussianBlur stdDeviation="3" result="b" />
+                                    <feFlood floodColor="#222222" floodOpacity="0.35" result="c" />
                                     <feComposite in="c" in2="b" operator="in" result="g" />
                                     <feMerge><feMergeNode in="g" /><feMergeNode in="SourceGraphic" /></feMerge>
                                 </filter>
                                 <filter id="glow-regency" x="-10%" y="-10%" width="120%" height="120%">
-                                    <feGaussianBlur stdDeviation="2" result="b" />
-                                    <feFlood floodColor="#23F7DB" floodOpacity="0.5" result="c" />
+                                    <feGaussianBlur stdDeviation="1.5" result="b" />
+                                    <feFlood floodColor="#111111" floodOpacity="0.4" result="c" />
                                     <feComposite in="c" in2="b" operator="in" result="g" />
                                     <feMerge><feMergeNode in="g" /><feMergeNode in="SourceGraphic" /></feMerge>
                                 </filter>
@@ -234,7 +220,7 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                             {/* Main Animated Group: Transitions scale and translate smoothly via GPU acceleration */}
                             <g
                                 style={{
-                                    transform: isZoomedToSulsel ? 'translate(-110px, -721px) scale(2.4)' : 'translate(0px, 0px) scale(1)',
+                                    transform: isZoomedToSulsel ? 'translate(-115px, -685px) scale(2.5)' : 'translate(0px, 0px) scale(1)',
                                     transformOrigin: '0px 0px',
                                     transition: 'transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)',
                                 }}
@@ -256,17 +242,17 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                             <path
                                                 d={d}
                                                 fill={getFill(id, isHovered)}
-                                                stroke={isSulsel ? '#004d40' : '#a0bfb5'}
-                                                strokeWidth={isSulsel ? 2 : 1}
+                                                stroke={isSulsel ? '#888888' : '#d0d0d0'}
+                                                strokeWidth={isSulsel ? 1.5 : 1}
                                                 strokeLinejoin="round"
-                                                filter={isSulsel ? 'url(#glow-sulsel)' : (isHovered ? 'url(#glow-hover)' : 'none')}
+                                                filter={isHovered ? 'url(#glow-hover)' : 'none'}
                                                 style={{ cursor: 'pointer', transition: 'fill .35s ease', pointerEvents }}
                                                 onMouseEnter={() => setHoveredProvince(id)}
                                                 onMouseLeave={() => setHoveredProvince(null)}
                                                 onClick={() => {
                                                     if (isSulsel) {
                                                         setIsZoomedToSulsel(true);
-                                                        setActiveRegencyId('bulukumba');
+                                                        setActiveRegencyId(null);
                                                     }
                                                 }}
                                             />
@@ -276,9 +262,9 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                                 textAnchor="middle" dominantBaseline="middle"
                                                 style={{
                                                     fontFamily: font,
-                                                    fontSize: isSulsel ? '14px' : '11px',
-                                                    fontWeight: isSulsel ? 800 : 600,
-                                                    fill: isSulsel ? '#fff' : '#4a6b60',
+                                                    fontSize: isSulsel ? '13px' : '11px',
+                                                    fontWeight: 500, // Not bold
+                                                    fill: '#0f1a17', // Dark arang for high contrast and flat clean look,
                                                     pointerEvents: 'none',
                                                     letterSpacing: '0.03em',
                                                 }}
@@ -309,60 +295,82 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
 
                                 {/* Detailed South Sulawesi Regency Paths (Fades in smoothly) */}
                                 <g style={{ opacity: isZoomedToSulsel ? 1 : 0, transition: 'opacity 0.6s ease', pointerEvents: isZoomedToSulsel ? 'auto' : 'none' }}>
+                                    {/* 1. Regency Paths */}
                                     {Object.entries(regencyPaths).map(([id, d]) => {
                                         const isRegencyHovered = hoveredRegencyId === id;
                                         const isRegencyActive = activeRegencyId === id;
                                         
-                                        // Curated colors for clean layout contrast
-                                        let fill = regencyColors[id] || '#c8e6c9';
+                                        // Grayscale: normal → hover (faded TanaOgi orange) → active (near-black)
+                                        let fill = regencyColors[id] || '#b0b0b0';
                                         if (isRegencyActive) {
-                                            fill = '#004d40'; // Active selection: deep dark forest green
+                                            fill = '#2a2a2a'; // Active selection: near-black
                                         } else if (isRegencyHovered) {
-                                            fill = '#00897b'; // Hovered: vibrant teal
+                                            fill = '#ffbea3'; // Hovered: faded TanaOgi orange
                                         }
 
                                         return (
-                                            <g key={id}>
-                                                <path
-                                                    d={d}
-                                                    fill={fill}
-                                                    stroke={isRegencyActive ? '#23F7DB' : '#fff'}
-                                                    strokeWidth={isRegencyActive ? 1.2 : 0.5}
-                                                    strokeLinejoin="round"
-                                                    filter={isRegencyActive ? 'url(#glow-regency)' : 'none'}
-                                                    style={{ cursor: 'pointer', transition: 'fill .3s ease, stroke .3s ease' }}
-                                                    onMouseEnter={() => setHoveredRegencyId(id)}
-                                                    onMouseLeave={() => setHoveredRegencyId(null)}
-                                                    onClick={() => setActiveRegencyId(id)}
-                                                />
-                                                {/* Regency Label - scaled for zoomed in coordinate space */}
-                                                {regencyLabelPositions[id] && (
-                                                    <text
-                                                        x={regencyLabelPositions[id].x}
-                                                        y={regencyLabelPositions[id].y}
-                                                        textAnchor="middle"
-                                                        dominantBaseline="middle"
-                                                        style={{
-                                                            fontFamily: font,
-                                                            fontSize: '4.8px',
-                                                            fontWeight: isRegencyActive ? 800 : 600,
-                                                            fill: isRegencyActive ? '#fff' : '#1b3a32',
-                                                            pointerEvents: 'none',
-                                                            textShadow: '0.4px 0.4px 0px rgba(255,255,255,0.75)',
-                                                        }}
-                                                    >
-                                                        {id === 'tana-toraja' ? 'Toraja' :
-                                                         id === 'luwu' ? 'Luwu' :
-                                                         id === 'pangkep' ? 'Pangkep' :
-                                                         id === 'bone' ? 'Bone' :
-                                                         id === 'maros' ? 'Maros' :
-                                                         id === 'makassar' ? 'Makassar' :
-                                                         id === 'gowa' ? 'Gowa' :
-                                                         id === 'bulukumba' ? 'Bira' :
-                                                         id === 'selayar' ? 'Selayar' : ''}
-                                                    </text>
-                                                )}
-                                            </g>
+                                            <path
+                                                key={`path-${id}`}
+                                                d={d}
+                                                fill={fill}
+                                                stroke={isRegencyActive ? '#ffffff' : '#e0e0e0'}
+                                                strokeWidth={isRegencyActive ? 1.2 : 0.5}
+                                                strokeLinejoin="round"
+                                                filter={isRegencyActive ? 'url(#glow-regency)' : 'none'}
+                                                style={{ cursor: 'pointer', transition: 'fill .3s ease, stroke .3s ease' }}
+                                                onMouseEnter={() => setHoveredRegencyId(id)}
+                                                onMouseLeave={() => setHoveredRegencyId(null)}
+                                                onClick={() => setActiveRegencyId(id)}
+                                            />
+                                        );
+                                    })}
+
+                                    {/* 2. Regency Labels (always on top of all paths) */}
+                                    {Object.entries(regencyPaths).map(([id, d]) => {
+                                        const isRegencyHovered = hoveredRegencyId === id;
+                                        const isRegencyActive = activeRegencyId === id;
+
+                                        return (isRegencyHovered || isRegencyActive) && regencyLabelPositions[id] && (
+                                            <text
+                                                key={`label-${id}`}
+                                                x={regencyLabelPositions[id].x}
+                                                y={regencyLabelPositions[id].y}
+                                                textAnchor="middle"
+                                                dominantBaseline="middle"
+                                                style={{
+                                                    fontFamily: font,
+                                                    fontSize: '4.8px',
+                                                    fontWeight: isRegencyActive ? 700 : 500,
+                                                    fill: isRegencyActive ? '#ffffff' : '#111111',
+                                                    pointerEvents: 'none',
+                                                    textShadow: '0.4px 0.4px 0px rgba(255,255,255,0.75)',
+                                                }}
+                                            >
+                                                {id === 'tana-toraja' ? 'Tana Toraja' :
+                                                 id === 'toraja-utara' ? 'Toraja Utara' :
+                                                 id === 'enrekang' ? 'Enrekang' :
+                                                 id === 'pinrang' ? 'Pinrang' :
+                                                 id === 'parepare' ? 'Parepare' :
+                                                 id === 'sidrap' ? 'Si. Rappang' :
+                                                 id === 'barru' ? 'Barru' :
+                                                 id === 'pangkep' ? 'Pangkep' :
+                                                 id === 'maros' ? 'Maros' :
+                                                 id === 'makassar' ? 'Makassar' :
+                                                 id === 'gowa' ? 'Gowa' :
+                                                 id === 'takalar' ? 'Takalar' :
+                                                 id === 'jeneponto' ? 'Jeneponto' :
+                                                 id === 'bantaeng' ? 'Bant.' :
+                                                 id === 'bulukumba' ? 'Bulukumba' :
+                                                 id === 'sinjai' ? 'Sinjai' :
+                                                 id === 'bone' ? 'Bone' :
+                                                 id === 'soppeng' ? 'Soppeng' :
+                                                 id === 'wajo' ? 'Wajo' :
+                                                 id === 'luwu' ? 'Luwu' :
+                                                 id === 'luwu-utara' ? 'Luwu U.' :
+                                                 id === 'luwu-timur' ? 'Luwu T.' :
+                                                 id === 'palopo' ? 'Palopo' :
+                                                 id === 'selayar' ? 'Kepulauan Selayar' : ''}
+                                            </text>
                                         );
                                     })}
                                 </g>
@@ -384,26 +392,26 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                     alignItems: 'center',
                                     gap: '8px',
                                     background: 'rgba(255, 255, 255, 0.95)',
-                                    border: '1px solid rgba(0,107,94,.15)',
+                                    border: '1px solid rgba(15,26,23,.15)',
                                     borderRadius: '30px',
                                     padding: '10px 18px',
                                     fontFamily: font,
                                     fontSize: '12px',
                                     fontWeight: 700,
-                                    color: '#006b5e',
+                                    color: '#0f1a17',
                                     cursor: 'pointer',
-                                    boxShadow: '0 8px 24px rgba(0,107,94,0.12)',
+                                    boxShadow: '0 8px 24px rgba(15,26,23,0.08)',
                                     transition: 'all .25s ease',
                                     zIndex: 20,
                                 }}
                                 onMouseEnter={(e) => {
-                                    e.currentTarget.style.backgroundColor = '#006b5e';
+                                    e.currentTarget.style.backgroundColor = '#f5401b';
                                     e.currentTarget.style.color = '#fff';
                                     e.currentTarget.style.transform = 'translateY(-2px)';
                                 }}
                                 onMouseLeave={(e) => {
                                     e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-                                    e.currentTarget.style.color = '#006b5e';
+                                    e.currentTarget.style.color = '#f5401b';
                                     e.currentTarget.style.transform = 'translateY(0)';
                                 }}
                             >
@@ -436,60 +444,41 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                             </div>
                         )}
 
-                        {/* Regency Tooltip (Zoomed In) */}
-                        {isZoomedToSulsel && hoveredRegencyId && (
-                            <div style={{
-                                position: 'absolute',
-                                left: Math.min(tooltipPos.x + 18, 320),
-                                top: tooltipPos.y - 8,
-                                background: 'rgba(19,30,27,.92)',
-                                backdropFilter: 'blur(14px)',
-                                color: '#fff', padding: '10px 16px', borderRadius: '10px',
-                                pointerEvents: 'none', zIndex: 50,
-                                border: '1px solid rgba(255,255,255,.08)',
-                                boxShadow: '0 10px 28px rgba(0,0,0,.28)',
-                                maxWidth: '220px',
-                            }}>
-                                <p style={{
-                                    fontFamily: font, fontSize: '13px', fontWeight: 700, marginBottom: '2px',
-                                    color: '#23F7DB',
-                                }}>{sulselRegencies[hoveredRegencyId]?.name}</p>
-                                <p style={{
-                                    fontFamily: font, fontSize: '11px', color: 'rgba(255,255,255,.65)', lineHeight: 1.3,
-                                }}>Destinasi: {sulselRegencies[hoveredRegencyId]?.destinations?.map(d => d.name).join(', ') || 'Segera hadir'}</p>
-                            </div>
-                        )}
+
                     </div>
 
                     {/* ── Right Info Panel ── */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
                         {!isZoomedToSulsel ? (
                             <>
                                 {/* Province Detail Card */}
                                 <div style={{
                                     background: activeProvince?.highlight
-                                        ? 'linear-gradient(135deg, #006b5e, #004d44)'
+                                        ? 'linear-gradient(135deg, #0f1a17, #1b2e29)'
                                         : '#ffffff',
                                     borderRadius: '20px', padding: '36px',
                                     boxShadow: activeProvince?.highlight
-                                        ? '0 24px 48px -10px rgba(0,107,94,.35)'
+                                        ? '0 24px 48px -10px rgba(15,26,23,.35)'
                                         : '0 8px 24px -6px rgba(0,0,0,.06)',
                                     border: activeProvince?.highlight
-                                        ? '1px solid rgba(35,247,219,.25)'
-                                        : '1px solid rgba(0,0,0,.05)',
-                                    transition: 'all .45s ease',
+                                        ? '1px solid rgba(35, 247, 219,.25)'
+                                        : '1px solid rgba(15,26,23,.05)',
+                                    transition: 'background .45s ease, box-shadow .45s ease, border .45s ease',
+                                    height: '360px',
+                                    overflow: 'hidden',
+                                    boxSizing: 'border-box',
                                 }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
                                         <span className="material-symbols-outlined" style={{
                                             fontSize: '18px',
-                                            color: activeProvince?.highlight ? '#23F7DB' : '#006b5e',
-                                            backgroundColor: activeProvince?.highlight ? 'rgba(35,247,219,.12)' : 'rgba(0,107,94,.08)',
+                                            color: activeProvince?.highlight ? '#23F7DB' : '#f5401b',
+                                            backgroundColor: activeProvince?.highlight ? 'rgba(35, 247, 219,.12)' : 'rgba(245, 64, 27,.08)',
                                             padding: '7px', borderRadius: '10px',
                                         }}>location_on</span>
                                         <span style={{
                                             fontFamily: font, fontSize: '11px', fontWeight: 700,
                                             letterSpacing: '.18em', textTransform: 'uppercase',
-                                            color: activeProvince?.highlight ? 'rgba(255,255,255,.6)' : '#006b5e',
+                                            color: activeProvince?.highlight ? 'rgba(255,255,255,.6)' : '#f5401b',
                                         }}>Provinsi Terpilih</span>
                                     </div>
 
@@ -513,8 +502,8 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                     {activeProvince?.highlight && (
                                         <div style={{
                                             marginTop: '20px', padding: '10px 16px',
-                                            background: 'rgba(35,247,219,.08)', borderRadius: '10px',
-                                            border: '1px solid rgba(35,247,219,.18)',
+                                            background: 'rgba(35, 247, 219,.08)', borderRadius: '10px',
+                                            border: '1px solid rgba(35, 247, 219,.18)',
                                             display: 'flex', alignItems: 'center', gap: '8px',
                                         }}>
                                             <span className="material-symbols-outlined" style={{ fontSize: '16px', color: '#23F7DB' }}>auto_awesome</span>
@@ -526,7 +515,7 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                 </div>
 
                                 {/* Province List Chips */}
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', rowGap: '28px', columnGap: '12px' }}>
                                     {provinces.map((p) => (
                                         <div
                                             key={p.id}
@@ -542,21 +531,21 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                                 display: 'flex', alignItems: 'center', gap: '10px',
                                                 padding: '10px 14px', borderRadius: '12px', cursor: 'pointer',
                                                 background: hoveredProvince === p.id
-                                                    ? (p.highlight ? 'rgba(0,107,94,.1)' : 'rgba(0,0,0,.04)')
+                                                    ? (p.highlight ? 'rgba(245, 64, 27,.08)' : 'rgba(15,26,23,.04)')
                                                     : 'transparent',
-                                                border: p.highlight ? '1px solid rgba(0,107,94,.18)' : '1px solid transparent',
+                                                border: p.highlight ? '1px solid rgba(245, 64, 27,.18)' : '1px solid transparent',
                                                 transition: 'background .25s ease',
                                             }}
                                         >
                                             <div style={{
                                                 width: '9px', height: '9px', borderRadius: '50%', flexShrink: 0,
-                                                backgroundColor: p.highlight ? '#006b5e' : '#c8ddd7',
-                                                boxShadow: p.highlight ? '0 0 6px rgba(0,107,94,.4)' : 'none',
+                                                backgroundColor: p.highlight ? '#f5401b' : '#e4f0ed',
+                                                boxShadow: p.highlight ? '0 0 6px rgba(245, 64, 27,.4)' : 'none',
                                             }} />
                                             <span style={{
                                                 fontFamily: font, fontSize: '12px',
                                                 fontWeight: p.highlight ? 700 : 500,
-                                                color: p.highlight ? '#006b5e' : '#5c4039',
+                                                color: p.highlight ? '#f5401b' : '#0f1a17',
                                             }}>{p.name}</span>
                                         </div>
                                     ))}
@@ -572,7 +561,7 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                             background: '#ffffff',
                                             borderRadius: '20px', padding: '30px',
                                             boxShadow: '0 8px 24px -6px rgba(0,0,0,.06)',
-                                            border: '1px solid rgba(0,107,94,.1)',
+                                            border: '1px solid rgba(15,26,23,.08)',
                                             transition: 'all .45s ease',
                                             display: 'flex',
                                             flexDirection: 'column',
@@ -594,13 +583,13 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                             <div>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                                                     <span className="material-symbols-outlined" style={{
-                                                        fontSize: '16px', color: '#006b5e',
-                                                        backgroundColor: 'rgba(0,107,94,.08)',
+                                                        fontSize: '16px', color: '#f5401b',
+                                                        backgroundColor: 'rgba(245, 64, 27,.08)',
                                                         padding: '6px', borderRadius: '8px',
                                                     }}>explore</span>
                                                     <span style={{
                                                         fontFamily: font, fontSize: '10px', fontWeight: 700,
-                                                        letterSpacing: '.18em', textTransform: 'uppercase', color: '#006b5e',
+                                                        letterSpacing: '.18em', textTransform: 'uppercase', color: '#f5401b',
                                                     }}>Kabupaten / Kota</span>
                                                 </div>
 
@@ -615,7 +604,7 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                                 {regencyData.tags.map((tag, i) => (
                                                     <span key={i} style={{
                                                         fontFamily: font, fontSize: '11px', fontWeight: 600,
-                                                        backgroundColor: 'rgba(0,107,94,.08)', color: '#006b5e',
+                                                        backgroundColor: '#e4f0ed', color: '#0f1a17',
                                                         padding: '4px 10px', borderRadius: '30px',
                                                     }}>{tag}</span>
                                                 ))}
@@ -639,8 +628,8 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                                         <div key={i} style={{
                                                             padding: '12px 14px',
                                                             borderRadius: '10px',
-                                                            backgroundColor: '#f0fcf7',
-                                                            border: '1px solid rgba(0,107,94,.08)',
+                                                            backgroundColor: '#e4f0ed',
+                                                            border: '1px solid rgba(15,26,23,.05)',
                                                             display: 'flex',
                                                             justifyContent: 'space-between',
                                                             alignItems: 'center',
@@ -660,7 +649,7 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                                                     }
                                                                 }}
                                                                 style={{
-                                                                    backgroundColor: '#006b5e',
+                                                                    backgroundColor: '#f5401b',
                                                                     border: 'none',
                                                                     borderRadius: '8px',
                                                                     color: '#fff',
@@ -671,8 +660,8 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                                                     cursor: 'pointer',
                                                                     transition: 'background .2s',
                                                                 }}
-                                                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#004d40'}
-                                                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#006b5e'}
+                                                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e03010'}
+                                                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f5401b'}
                                                             >
                                                                 Jelajahi
                                                             </button>
@@ -691,12 +680,12 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                                     marginTop: '4px',
                                                     padding: '12px',
                                                     backgroundColor: 'transparent',
-                                                    border: '1.5px solid #006b5e',
+                                                    border: '1.5px solid #f5401b',
                                                     borderRadius: '10px',
                                                     fontFamily: font,
                                                     fontSize: '12px',
                                                     fontWeight: 700,
-                                                    color: '#006b5e',
+                                                    color: '#f5401b',
                                                     cursor: 'pointer',
                                                     transition: 'all .2s',
                                                     display: 'flex',
@@ -705,7 +694,7 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                                     gap: '8px',
                                                 }}
                                                 onMouseEnter={(e) => {
-                                                    e.currentTarget.style.backgroundColor = 'rgba(0,107,94,.05)';
+                                                    e.currentTarget.style.backgroundColor = 'rgba(245, 64, 27,.05)';
                                                 }}
                                                 onMouseLeave={(e) => {
                                                     e.currentTarget.style.backgroundColor = 'transparent';
@@ -719,7 +708,7 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                 })()}
 
                                 {/* Regency List Chips */}
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', rowGap: '28px', columnGap: '12px' }}>
                                     {Object.entries(sulselRegencies).map(([id, reg]) => (
                                         <div
                                             key={id}
@@ -730,23 +719,23 @@ export default function SulawesiMapSection({ onNavigateDestinationDetail }) {
                                                 display: 'flex', alignItems: 'center', gap: '10px',
                                                 padding: '10px 14px', borderRadius: '12px', cursor: 'pointer',
                                                 background: activeRegencyId === id || hoveredRegencyId === id
-                                                    ? 'rgba(0,107,94,.1)'
+                                                    ? 'rgba(245, 64, 27,.08)'
                                                     : 'transparent',
                                                 border: activeRegencyId === id
-                                                    ? '1.5px solid rgba(0,107,94,.25)'
+                                                    ? '1.5px solid rgba(245, 64, 27,.25)'
                                                     : '1.5px solid transparent',
                                                 transition: 'background .25s ease',
                                             }}
                                         >
                                             <div style={{
                                                 width: '9px', height: '9px', borderRadius: '50%', flexShrink: 0,
-                                                backgroundColor: activeRegencyId === id ? '#23F7DB' : '#006b5e',
-                                                boxShadow: activeRegencyId === id ? '0 0 6px rgba(35,247,219,.8)' : 'none',
+                                                backgroundColor: activeRegencyId === id ? '#23F7DB' : '#f5401b',
+                                                boxShadow: activeRegencyId === id ? '0 0 6px rgba(35, 247, 219,.8)' : 'none',
                                             }} />
                                             <span style={{
                                                 fontFamily: font, fontSize: '12px',
                                                 fontWeight: activeRegencyId === id ? 700 : 500,
-                                                color: activeRegencyId === id ? '#006b5e' : '#5c4039',
+                                                color: activeRegencyId === id ? '#f5401b' : '#0f1a17',
                                             }}>{reg.name.replace("Kabupaten ", "").replace("Kota ", "")}</span>
                                         </div>
                                     ))}

@@ -17,6 +17,14 @@ export default function AdminDrivers() {
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
 
+    // Phone normalizer: converts 08xxx or +628xxx to 628xxx
+    const normalizePhone = (raw) => {
+        const digits = raw.replace(/[^0-9]/g, '');
+        if (digits.startsWith('0')) return '62' + digits.slice(1);
+        if (digits.startsWith('62')) return digits;
+        return digits;
+    };
+
     // Form state
     const [formData, setFormData] = useState({
         id: '',
@@ -25,7 +33,7 @@ export default function AdminDrivers() {
         photo: '', // File object or URL string
         license_type: 'Licensed Specialist',
         vehicle_name: '',
-        vehicle_type: 'MPV Standard',
+        vehicle_type: 'car',
         plate_number: '',
         regency_id: '',
         capacity: 5,
@@ -165,7 +173,7 @@ export default function AdminDrivers() {
             photo: '',
             license_type: 'Licensed Specialist',
             vehicle_name: '',
-            vehicle_type: 'MPV Standard',
+            vehicle_type: 'car',
             plate_number: '',
             regency_id: regencies.length > 0 ? regencies[0].id : '',
             capacity: 5,
@@ -185,7 +193,7 @@ export default function AdminDrivers() {
             photo: driver.photo || '',
             license_type: driver.license_type || 'Licensed Specialist',
             vehicle_name: driver.vehicle_name || '',
-            vehicle_type: driver.vehicle_type || 'MPV Standard',
+            vehicle_type: driver.vehicle_type || 'car',
             plate_number: driver.plate_number || '',
             regency_id: driver.regency_id || '',
             capacity: driver.capacity || 5,
@@ -210,12 +218,15 @@ export default function AdminDrivers() {
         setLoading(true);
 
         try {
+            // Normalize phone to 62xxx format before sending
+            const normalizedPhone = normalizePhone(formData.phone);
+
             const payload = new FormData();
             payload.append('name', formData.name);
-            payload.append('phone', formData.phone);
+            payload.append('phone', normalizedPhone);
             payload.append('license_type', formData.license_type);
             payload.append('vehicle_name', formData.vehicle_name);
-            payload.append('vehicle_type', formData.vehicle_type);
+            payload.append('vehicle_type', formData.vehicle_type); // 'car' or 'bus'
             payload.append('plate_number', formData.plate_number);
             if (formData.regency_id) {
                 payload.append('regency_id', formData.regency_id);
@@ -225,9 +236,8 @@ export default function AdminDrivers() {
             payload.append('status', formData.status);
             payload.append('is_active', formData.is_active ? '1' : '0');
 
+            // Only attach file if a new photo was selected
             if (formData.photo instanceof File) {
-                payload.append('photo', formData.photo);
-            } else if (typeof formData.photo === 'string') {
                 payload.append('photo', formData.photo);
             }
 
@@ -241,7 +251,6 @@ export default function AdminDrivers() {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
-                    'X-XSRF-TOKEN': getXsrfToken(),
                     'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
                 },
                 body: payload
@@ -253,7 +262,14 @@ export default function AdminDrivers() {
                 setView('list');
                 fetchDrivers();
             } else {
-                alert(data.message || 'Terjadi kesalahan saat menyimpan data.');
+                let errMsg = data.message || 'Terjadi kesalahan saat menyimpan data.';
+                if (data.errors) {
+                    const detail = Object.entries(data.errors)
+                        .map(([field, msgs]) => `${field}: ${msgs.join(', ')}`)
+                        .join('\n');
+                    errMsg += `\n\nDetail:\n${detail}`;
+                }
+                alert(errMsg);
             }
         } catch (err) {
             console.error("Gagal menyimpan data pengemudi:", err);
@@ -295,7 +311,7 @@ export default function AdminDrivers() {
                 .form-input:focus {
                     border-color: #f5401b;
                     background-color: #ffffff;
-                    box-shadow: 0 0 0 3px rgba(245,64,27,0.1);
+                    box-shadow: 0 0 0 3px rgba(245, 64, 27,0.1);
                 }
                 .form-select {
                     font-family: ${font};
@@ -326,13 +342,13 @@ export default function AdminDrivers() {
                     align-items: center;
                     gap: 8px;
                     padding: 14px 32px;
-                    box-shadow: 0 4px 14px rgba(245,64,27,0.25);
+                    box-shadow: 0 4px 14px rgba(245, 64, 27,0.25);
                     transition: all 0.22s ease;
                 }
                 .btn-submit:hover {
                     background-color: #de2f08;
                     transform: translateY(-1px);
-                    box-shadow: 0 6px 20px rgba(245,64,27,0.35);
+                    box-shadow: 0 6px 20px rgba(245, 64, 27,0.35);
                 }
                 .btn-cancel {
                     background: transparent;
@@ -680,15 +696,17 @@ export default function AdminDrivers() {
 
                                 {/* Phone */}
                                 <div className="form-group">
-                                    <label className="form-label">Phone Number</label>
+                                    <label className="form-label">Phone Number (WhatsApp)</label>
                                     <input 
                                         type="text" 
                                         className="form-input" 
-                                        placeholder="e.g. +62 812-xxxx-xxxx"
+                                        placeholder="Contoh: 08123456789 atau 628123456789"
                                         value={formData.phone}
                                         onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))}
+                                        onBlur={e => setFormData(p => ({ ...p, phone: normalizePhone(e.target.value) }))}
                                         required
                                     />
+                                    <span style={{ fontSize: '11px', color: '#5c4039', marginLeft: '4px' }}>Otomatis diubah ke format 62xxx saat disimpan</span>
                                 </div>
 
                                 {/* License Type */}
@@ -735,16 +753,15 @@ export default function AdminDrivers() {
 
                                 {/* Vehicle Type */}
                                 <div className="form-group">
-                                    <label className="form-label">Vehicle Segment / Type</label>
+                                    <label className="form-label">Vehicle Type</label>
                                     <select 
                                         className="form-select"
                                         value={formData.vehicle_type}
                                         onChange={e => setFormData(p => ({ ...p, vehicle_type: e.target.value }))}
                                         required
                                     >
-                                        <option value="SUV Luxury">SUV Luxury</option>
-                                        <option value="MPV Standard">MPV Standard</option>
-                                        <option value="Group Van">Group Van</option>
+                                        <option value="car">Mobil (Car)</option>
+                                        <option value="bus">Bus Pariwisata (Bus)</option>
                                     </select>
                                 </div>
 

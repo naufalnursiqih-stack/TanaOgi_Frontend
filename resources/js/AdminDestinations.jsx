@@ -264,7 +264,14 @@ export default function AdminDestinations() {
                 setView('list');
                 fetchDestinations();
             } else {
-                alert(data.message || 'Terjadi kesalahan saat menyimpan data.');
+                let errMsg = data.message || 'Terjadi kesalahan saat menyimpan data.';
+                if (data.errors) {
+                    const detail = Object.entries(data.errors)
+                        .map(([field, msgs]) => `${field}: ${msgs.join(', ')}`)
+                        .join('\n');
+                    errMsg += `\n\nDetail:\n${detail}`;
+                }
+                alert(errMsg);
             }
         } catch (err) {
             console.error("Gagal menyimpan destinasi:", err);
